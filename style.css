@@ -30,6 +30,7 @@ header h1 {
 header nav ul {
     list-style: none;
     display: flex;
+    align-items: center;
 }
 
 header nav ul li {
