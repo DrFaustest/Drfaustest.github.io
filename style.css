@@ -1,55 +1,84 @@
-/* Reset default browser styles */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-/* Global styles */
 body {
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
-    color: #333;
-    background-color: #fff;
+    font-size: xx-large;
 }
-
-/* Page header styles */
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+header h1{
+    background-color: #000000;
+    color: #ffffff;
     padding: 10px;
-    background-color: #f2f2f2;
-}
-
-header h1 {
-    font-size: 24px;
-}
-
-header nav ul {
-    list-style: none;
-    display: flex;
-    align-items: center;
-}
-
-header nav ul li {
-    margin-right: 10px;
-}
-
-header nav ul li a {
-    text-decoration: none;
-    color: #333;
-}
-
-/* Main content styles */
-main {
-    padding: 10px;
-}
-
-/* Footer styles */
-footer {
     text-align: center;
-    background-color: #f2f2f2;
-    padding: 10px;
+    font-size: 3vh;
 }
+
+#introduction h2{
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    font-size: 3vh;
+}
+#introduction p{
+    font-size: 2vh;
+}
+
+#weatherH2{
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    font-size: 3vh;
+}
+
+#LiveCarousel{
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+    font-size: 3vh;
+}
+#location {
+  font-size: 2vh;
+  text-align: center;
+}
+#forecast-container {
+  overflow-x: scroll;
+  padding: 10px 0;
+}
+#forecast-container div {
+  display: inline-block;
+  text-align: center;
+  border: 1px solid #000000;
+  padding: 10px;
+}
+
+.forecast-item {
+    display: inline-block;
+    width: 25vw;
+    height: 25vh;
+    margin-right: 10px;
+    text-align: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    white-space: normal;
+    word-wrap: break-word;
+    vertical-align: top;
+    box-sizing: border-box
+  }
+  
+  #forecast-container {
+    overflow-x: scroll;
+    padding: 10px 0;
+    white-space: nowrap;
+  }
+  
+  #forecast-container::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  #forecast-container::-webkit-scrollbar-thumb {
+    background-color: #000000;
+    border-radius: 10px;
+  }
+  
+  #forecast-container::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+  }

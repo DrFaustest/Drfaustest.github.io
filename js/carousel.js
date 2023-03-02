@@ -6,7 +6,7 @@ $(document).ready(function() {
     function loadJSON(callback) {   
         var xhr = new XMLHttpRequest();
         xhr.overrideMimeType("application/json");
-        xhr.open('GET', './Omaha_Live.json', true);
+        xhr.open('GET', 'js/Omaha_Live.json', true);
         xhr.onreadystatechange = function () {
             if (xhr.readyState === 4 && xhr.status === 200) {
                 callback(xhr.responseText);

@@ -9,7 +9,9 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="script.js"></script>
+    <script src="js/carousel.js"></script>
+    <script src="js/weather.js"></script>
+    <script src="js/script.js"></script>
 </head>
 <body>
     <header class="w3-container w3-center">
@@ -21,12 +23,15 @@
             <a href="#" class="w3-bar-item w3-button w3-mobile">Contact</a></li>
     </nav>
     <main>
-        <h2>Local Weather</h2>
-        <div id="weather">
-            <p>Weather data is loading...</p>
-        <article  class="w3-panel w3-border w3-round-xxlarge w3-card-4">
+        <h2 id="weatherH2"  >Local Weather</h2>
+        <h3 id="location"></h3>
+        <div id="forecast-container">
+            
+        </div>
+          
+        <article id="introduction" class="w3-panel w3-border w3-round-xxlarge w3-card-4">
             <h2 class="w3-container w3-center">Showcasing my Web Development Skills</h2>
-            <p class=" w3-center w3-padding-large">Welcome to my portfolio website, where I showcase my current skills as a web developer. This site is a living example of my progression and growth, as I continue to learn and refine my abilities in this field. As you explore my portfolio, you'll see a collection of my projects that demonstrate my expertise in web development, from front-end design and development to back-end programming and database management. Each project represents a unique challenge that I overcame through innovation, creativity, and technical know-how. I hope you enjoy browsing my portfolio and gain a better understanding of my skills as a web developer.</p>
+            <p class=" w3-center w3-padding-large">Welcome to my portfolio website, where I showcase my current skills as a web developer. This site is a living example of my progression and growth, as I continue to learn and refine my abilities in this field.<br><br> As you explore my portfolio, you'll see a collection of my projects that demonstrate my expertise in web development, from front-end design and development to back-end programming and database management. Each project represents a unique challenge that I overcame through innovation, creativity, and technical know-how.<br><br> I hope you enjoy browsing my portfolio and gain a better understanding of my skills as a web developer.</p>
         </article>
         <section class=" w3-display-container">
             <h2 id="LiveCarousel">Live Look Omaha NE</h2>
