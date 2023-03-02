@@ -6,7 +6,7 @@ header h1{
     color: #ffffff;
     padding: 10px;
     text-align: center;
-    font-size: 3vh;
+    font-size: 5vw;
 }
 
 #introduction h2{
@@ -14,10 +14,10 @@ header h1{
     color: #ffffff;
     padding: 10px;
     text-align: center;
-    font-size: 3vh;
+    font-size: 5vw;
 }
 #introduction p{
-    font-size: 2vh;
+    font-size: 5vw;
 }
 
 #weatherH2{
@@ -25,7 +25,7 @@ header h1{
     color: #ffffff;
     padding: 10px;
     text-align: center;
-    font-size: 3vh;
+    font-size: 5vw;
 }
 
 #LiveCarousel{
@@ -33,10 +33,10 @@ header h1{
     color: #ffffff;
     padding: 10px;
     text-align: center;
-    font-size: 3vh;
+    font-size: 5vw;
 }
 #location {
-  font-size: 2vh;
+  font-size: 5vw;
   text-align: center;
 }
 #forecast-container {
@@ -52,11 +52,10 @@ header h1{
 
 .forecast-item {
     display: inline-block;
-    width: 25vw;
-    height: 25vh;
+    width: 25%;
+    height: 25%;
     margin-right: 10px;
     text-align: center;
-    border: 1px solid #ddd;
     padding: 10px;
     white-space: normal;
     word-wrap: break-word;
@@ -66,6 +65,7 @@ header h1{
   
   #forecast-container {
     overflow-x: scroll;
+    height: 25%;
     padding: 10px 0;
     white-space: nowrap;
   }
@@ -82,3 +82,8 @@ header h1{
   #forecast-container::-webkit-scrollbar-track {
     background-color: #f1f1f1;
   }
+  .forecast-image {
+    width: 100%;
+    height: auto;
+  }
+  

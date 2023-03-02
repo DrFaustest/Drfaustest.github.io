@@ -1,93 +1,138 @@
-$(document).ready(function() {
-    const weatherImages = {
-        'Sunny': './svg/animated/day.svg',
-        'Cloudy': './svg/animated/cloudy.svg',
-        'Rainy': './svg/animated/rainy.svg',
-        // Add more mappings as needed
-      };
-    if ('geolocation' in navigator) {
-      navigator.geolocation.getCurrentPosition(position => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-        const apiUrl = `https://api.weather.gov/points/${latitude},${longitude}`;
-    
-        fetch(apiUrl)
-          .then(response => response.json())
-          .then(data => {
-            console.log(data); // Display the API response in the console
-            const forecastUrl = data.properties.forecast;
-            const city = data.properties.relativeLocation.properties.city;
-            const state = data.properties.relativeLocation.properties.state;
-            const locationName = `${city}, ${state}`;
-            document.querySelector('#location').textContent = locationName;
-            return fetch(forecastUrl);
-          })
-          .then(response => response.json())
-          .then(data => {
-            // Parse the JSON response and extract the forecast data you want
-            const periods = data.properties.periods.filter(item => item.temperature !== null);
-            const forecastData = periods.reduce((acc, item) => {
-              const date = new Date(item.startTime).toLocaleDateString();
-              if (acc[date]) {
-                acc[date].temperature.push(item.temperature);
-                const description = item.shortForecast.split('then').join('');
-                acc[date].description.push(description.trim());
-              } else {
-                acc[date] = {
-                  date: date,
-                  time: new Date(item.startTime).toLocaleTimeString(),
-                  temperature: [item.temperature],
-                  description: [item.shortForecast.split('then').join('').trim()],
-                  image: item.symbol ? (item.isDaytime ? item.symbol : item.symbol.replace('day', 'night')) : null
-                };
-              }
-              return acc;
-            }, {});
-    
-            // Convert the grouped data to an array and display it on your website
-            const forecastDataArray = Object.values(forecastData);
-            const forecastContainer = document.querySelector('#forecast-container');
-            forecastDataArray.forEach(item => {
-              const temperatureSum = item.temperature.reduce((acc, val) => acc + val);
-              const temperatureAverage = Math.round(temperatureSum / item.temperature.length);
-              const description = item.description.join(' / ');
-              const forecastItem = document.createElement('div');
-              forecastItem.classList.add('forecast-item');
-              forecastItem.innerHTML = `
-                <p class="date-time">${item.date}<br>${item.time}</p>
-                <p class="temperature">${temperatureAverage}°F</p>
-                <p class="description">${description}</p>
-              `;
-              forecastItem.classList.add('forecast-item');
-    
-              // Check if the image file exists before appending it to the forecast item
-              if (item.image) {
-                const image = new Image();
-                image.src = `images/${item.image}.svg`;
-                console.log(`Loading image: ${item.image}.svg`);
-                image.onerror = () => {
-                  forecastItem.classList.add('no-image');
-                };
-                image.onload = () => {
-                  const imageWrapper = document.createElement('div');
-                  imageWrapper.classList.add('forecast-image');
-                  imageWrapper.innerHTML = `<img src="images/${item.image}.svg">`;
-                  forecastItem.insertBefore(imageWrapper, forecastItem.firstChild);
-                };
-                  console.log(`Loading image: ${item.image}.svg`);
+const weatherImages = {
+  'Sunny': {
+    url: '../svg/animated/day.svg',
+    height: '200',
+    width: '200',
+  },
+  'Cloudy': {
+    url: '../svg/animated/cloudy.svg',
+    height: '200',
+    width: '200',
+  },
+  'Rainy': {
+    url: '../svg/animated/rainy-1.svg',
+    height: '200',
+    width: '200',
+  },
+  'Snowy': {
+    url: '../svg/animated/snowy-1.svg',
+    height: '200',
+    width: '200',
+  },
+  'Thunder': {
+    url: '../svg/animated/thunder.svg',
+    height: '200',
+    width: '200',
+  },
+};
 
-              } else {
-                forecastItem.classList.add('no-image');
-              }
-    
-              forecastContainer.appendChild(forecastItem);
-            });
-          })
-          .catch(error => console.log(error));
-      });
-    } else {
-      console.log('Geolocation is not supported by your browser');
-    }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const forecastContainer = document.querySelector('#forecast-container');
+  const locationEl = document.querySelector('#location');
+
+  let apiUrl = 'https://api.weather.gov/points/41.2565,-95.9345';
+
+  if ('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition(({ coords }) => {
+      const { latitude, longitude } = coords;
+      const apiUrl = `https://api.weather.gov/points/${latitude},${longitude}`;
+    }, () => {
+      console.log('Error getting geolocation');
+    });
+  } else {
+    console.log('Geolocation is not supported by your browser');
+  }
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(({ properties }) => {
+          const forecastUrl = properties.forecast;
+          const city = properties.relativeLocation.properties.city;
+          const state = properties.relativeLocation.properties.state;
+          const locationName = `${city}, ${state}`;
+          locationEl.textContent = locationName;
+          return fetch(forecastUrl);
+        })
+        .then(response => response.json())
+        .then(({ properties }) => {
+          const periods = properties.periods.filter(({ temperature }) => temperature !== null);
+          const forecastData = periods.reduce((acc, { startTime, temperature, shortForecast, symbol, isDaytime }) => {
+            const date = new Date(startTime).toLocaleDateString();
+            const time = new Date(startTime).toLocaleTimeString();
+            const description = shortForecast.split('then').join('').trim();
+            const image = symbol
+              ? weatherImages[isDaytime ? symbol : symbol.replace('day', 'night')]
+              : null;
+
+            if (acc[date]) {
+              acc[date].temperature.push(temperature);
+              acc[date].description.push(description);
+            } else {
+              acc[date] = { date, time, temperature: [temperature], description: [description], image };
+            }
+
+            return acc;
+          }, {});
+
+          const forecastDataArray = Object.values(forecastData);
+          forecastDataArray.forEach(({ date, time, temperature, description, image }) => {
+            const temperatureSum = temperature.reduce((acc, val) => acc + val);
+            const temperatureAverage = Math.round(temperatureSum / temperature.length);
+          
+            const forecastItem = document.createElement('div');
+            forecastItem.classList.add('forecast-item');
+
+            const checkImage = String(description).toLowerCase()
+          
+            if (checkImage.includes('snow')) {
+              image = weatherImages['Snowy'];
+            } else if (checkImage.includes('thunder')) {
+              image = weatherImages['Thunder'];
+            } else if (checkImage.includes('rain')) {
+              image = weatherImages['Rainy'];
+            } else if (checkImage.includes('cloudy')) {
+              image = weatherImages['Cloudy'];
+            } else if (checkImage.includes('sunny')) {
+              image = weatherImages['Sunny'];
+            } else {
+              image = null;
+            }
+            
+            console.log(image);
+          
+            if (image) {
+              const imageEl = new Image();
+              imageEl.src = image.url;
+              imageEl.height = image.height;
+              imageEl.width = image.width;
+              forecastItem.appendChild(imageEl);
+              
+            } else {
+              forecastItem.classList.add('no-image');
+            }
+          
+            const textContent = document.createElement('div');
+            textContent.classList.add('forecast-text');
+            textContent.innerHTML = `
+              <p class="date-time">${date}<br>${time}</p>
+              <p class="temperature">${temperatureAverage}°F</p>
+              ${image ? '' : `<p class="description">${description}</p>`}
+            `;
+            forecastItem.appendChild(textContent);
+          
+            if (image) {
+              const imageEl = forecastItem.querySelector('img');
+              imageEl.onerror = () => forecastItem.classList.add('no-image');
+              imageEl.onload = () => forecastItem.classList.add('has-image');
+            } else {
+              forecastItem.classList.add('no-image');
+            }
+          
+            forecastContainer.appendChild(forecastItem);
+          });
+          
+        })
+        .catch(error => console.error(error));
   });
-  
-  
+
+
