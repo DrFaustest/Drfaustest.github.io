@@ -1,27 +1,43 @@
 *{
-    margin: 0;
+    max-width: 800px; /* Set the maximum width of the page */
+    margin: 0 auto;
     padding: 0;
     box-sizing: border-box;
+    color: black;
 }
 
 body{
-    background-color: cornflowerblue;
+    background-color: rgb(255, 255, 255);
+    font-size: xx-large;
+
 }
 
+nav{
+    background-color: rgb(0, 0, 0);
+    color: white;
+    border-radius: 10px;
+    margin: 20px auto;
+    font-size: 2em;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+
 header{
+
     background-color: rgb(255, 255, 255);
-    padding: 20px;
+
 }
 
 header > h1 {
     color: black;
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
-    height: 16vw;
+    font-size: 2em;
 }
 
 .score-board{
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(219, 219, 219);
     width: 200px;
     padding: 20px;
     border-radius: 10px;
@@ -35,7 +51,7 @@ header > h1 {
 .badge {
     background-color: red;
     color: white;
-    font-size: 14px;
+    font-size: 20px;
     padding: 2px 10px;
     font-family: 'Courier New', Courier, monospace;
 }
@@ -53,7 +69,7 @@ header > h1 {
 }
 .result {
     color: rgb(255, 255, 255);
-    font-size: 40px;
+    font-size: 2em;
 }
 .result > p{
     text-align: center;
@@ -69,11 +85,11 @@ header > h1 {
     width: 32vw;
     height: auto;
     display: inline-block;
-    border: 4px solid white;
+    border: 4px solid rgb(255, 255, 255);
     border-radius: 50%;
     margin: 0 20px;
 }
-.choices img{
+.choice img{
     width: 30vw;
     height: auto;
 }
@@ -83,7 +99,7 @@ header > h1 {
 }
 #action-message{
     text-align: center;
-    font-size: 50px;
+    font-size: 2em;
     color: white;
     font-weight: bold;
     font-family: 'Courier New', Courier, monospace;
