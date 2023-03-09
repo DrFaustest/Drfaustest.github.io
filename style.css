@@ -1,23 +1,42 @@
 body {
     font-size: xx-large;
+    max-width: 800px; /* Set the maximum width of the page */
+    margin: 0 auto; /* Center the content horizontally */
+}
+@media screen and (min-width: 800px) {
+  body {
+    background-color: black; /* Add a black background */
+  }
+}
+.PageContainer {
+    background-color: #ffffff;
+    color: #000000;
+    padding: 10px;
+    text-align: center;
+
 }
 header h1{
     background-color: #000000;
     color: #ffffff;
     padding: 10px;
     text-align: center;
-    font-size: 5vw;
+    font-size: 1em;
 }
+
+ul {
+  list-style-type: none;
+}
+
 
 #introduction h2{
     background-color: #000000;
     color: #ffffff;
     padding: 10px;
     text-align: center;
-    font-size: 5vw;
+    font: size 1em;;
 }
 #introduction p{
-    font-size: 5vw;
+    font-size: 1em;
 }
 
 #weatherH2{
@@ -25,7 +44,7 @@ header h1{
     color: #ffffff;
     padding: 10px;
     text-align: center;
-    font-size: 5vw;
+    font-size: 1em;
 }
 
 #LiveCarousel{
@@ -33,10 +52,10 @@ header h1{
     color: #ffffff;
     padding: 10px;
     text-align: center;
-    font-size: 5vw;
+    font-size: 1em;
 }
 #location {
-  font-size: 5vw;
+  font-size: 1em;
   text-align: center;
 }
 #forecast-container {
@@ -52,11 +71,11 @@ header h1{
 
 .forecast-item {
     display: inline-block;
-    width: 25%;
+    width: 30%;
     height: 25%;
     margin-right: 10px;
+    margin-left: 10px;
     text-align: center;
-    padding: 10px;
     white-space: normal;
     word-wrap: break-word;
     vertical-align: top;

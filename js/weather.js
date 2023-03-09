@@ -30,19 +30,26 @@ const weatherImages = {
 document.addEventListener('DOMContentLoaded', () => {
   const forecastContainer = document.querySelector('#forecast-container');
   const locationEl = document.querySelector('#location');
-
-  let apiUrl = 'https://api.weather.gov/points/41.2565,-95.9345';
-
-  if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition(({ coords }) => {
-      const { latitude, longitude } = coords;
-      const apiUrl = `https://api.weather.gov/points/${latitude},${longitude}`;
-    }, () => {
-      console.log('Error getting geolocation');
-    });
-  } else {
-    console.log('Geolocation is not supported by your browser');
+  const apiUrl = getWeatherLocation();
+  
+  function getWeatherLocation() {
+    let apiUrl;
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        const { latitude, longitude } = coords;
+        apiUrl = `https://api.weather.gov/points/${latitude},${longitude}`;
+        fetchWeather(apiUrl);
+      }, () => {
+        console.log('Error getting geolocation');
+      });
+    } else {
+      console.log('Geolocation is not supported by your browser');
+      apiUrl = 'https://api.weather.gov/points/41.2565,-95.9345';
+      fetchWeather(apiUrl);
+    }
   }
+
+function fetchWeather(apiUrl) {
       fetch(apiUrl)
         .then(response => response.json())
         .then(({ properties }) => {
@@ -133,6 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
           
         })
         .catch(error => console.error(error));
-  });
+    }
+});
 
 
