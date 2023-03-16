@@ -70,21 +70,21 @@ function fetchWeather(apiUrl) {
             const image = symbol
               ? weatherImages[isDaytime ? symbol : symbol.replace('day', 'night')]
               : null;
-
+    
             if (acc[date]) {
               acc[date].temperature.push(temperature);
               acc[date].description.push(description);
             } else {
               acc[date] = { date, time, temperature: [temperature], description: [description], image };
             }
-
+    
             return acc;
           }, {});
-
+    
           const forecastDataArray = Object.values(forecastData);
           forecastDataArray.forEach(({ date, time, temperature, description, image }) => {
-            const temperatureSum = temperature.reduce((acc, val) => acc + val);
-            const temperatureAverage = Math.round(temperatureSum / temperature.length);
+            const temperatureMin = Math.min(...temperature);
+            const temperatureMax = Math.max(...temperature);
           
             const forecastItem = document.createElement('div');
             forecastItem.classList.add('forecast-item');
@@ -122,7 +122,7 @@ function fetchWeather(apiUrl) {
             textContent.classList.add('forecast-text');
             textContent.innerHTML = `
               <p class="date-time">${date}<br>${time}</p>
-              <p class="temperature">${temperatureAverage}°F</p>
+              <p class="temperature">Low: ${temperatureMin}°F \n High: ${temperatureMax}°F</p>
               ${image ? '' : `<p class="description">${description}</p>`}
             `;
             forecastItem.appendChild(textContent);
