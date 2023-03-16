@@ -65,7 +65,7 @@ function fetchWeather(apiUrl) {
           const periods = properties.periods.filter(({ temperature }) => temperature !== null);
           const forecastData = periods.reduce((acc, { startTime, temperature, shortForecast, symbol, isDaytime }) => {
             const date = new Date(startTime).toLocaleDateString();
-            const time = new Date(startTime).toLocaleTimeString();
+            const time = new Date(startTime).toLocaleTimeString([], {hour: 'numeric', hour12: true});
             const description = shortForecast.split('then').join('').trim();
             const image = symbol
               ? weatherImages[isDaytime ? symbol : symbol.replace('day', 'night')]
@@ -121,7 +121,7 @@ function fetchWeather(apiUrl) {
             const textContent = document.createElement('div');
             textContent.classList.add('forecast-text');
             textContent.innerHTML = `
-              <p class="date-time">${date}<br>${time}</p>
+              <p class="date-time">${date}<br></p>
               <p class="temperature">Low: ${temperatureMin}°F \n High: ${temperatureMax}°F</p>
               ${image ? '' : `<p class="description">${description}</p>`}
             `;
