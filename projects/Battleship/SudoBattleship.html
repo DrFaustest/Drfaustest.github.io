@@ -2,8 +2,24 @@
 <html>
   <head>
     <title>Sudo Battleship Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       /* Styling for the grid playspace */
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
+  grid-template-rows: repeat(5, 20%);
+  grid-gap: 2%;
+  margin: 5% auto;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .grid-item {
+    font-size: 16px;
+  }
+}
+
       .grid-container {
         display: grid;
         grid-template-columns: repeat(5, 50px);
@@ -19,6 +35,13 @@
         font-weight: bold;
         border: 1px solid #999;
       }
+.input-container {
+  margin: 5% auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
       .input-container {
         margin: 20px auto;
         display: flex;
@@ -98,6 +121,10 @@
         document.getElementById(guess).style.backgroundColor = "green";
         //set the display field to "You sank my battleship!"
         document.getElementById("display").innerHTML = "You sank my battleship!";
+        // disable the grid items
+        document.querySelectorAll(".grid-item").forEach(item => {
+          item.disabled = true;
+        });
       } else {
         // set the display field to "You missed!"
         document.getElementById("display").innerHTML = "You missed!";
@@ -133,6 +160,8 @@
       // reset the background color of the grid items
       document.querySelectorAll(".grid-item").forEach(item => {
         item.style.backgroundColor = "#eee";
+        // enable the grid items
+        item.disabled = false;
       });
     });
   </script>
