@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+  ...
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <style>
+    .button-column {
+      display: flex;
+      flex-direction: column;
+      margin-right: 10px;
+    }
+
+    .button-column button {
+      margin-bottom: 5px;
+      width: 150px;
+    }
+  </style>
+</head>
+<body>
+  <div class="PageContainer">
+    <header class="w3-container w3-center">
+      <h1>Ball Pit</h1>
+    </header>
+    <nav class="w3-bar w3-boarder w3-black w3-mobile">
+      <a href="../../index.html" class="w3-bar-item w3-button w3-mobile w3-white">Home</a>
+      <a href="../../contact.html" class="w3-bar-item w3-button w3-mobile">About</a>
+      <a href="contact.html" class="w3-bar-item w3-button w3-mobile">Contact</a>
+    </nav>
+    <canvas id="ballCanvas" width="550" height="400" style="border: 1px dashed black" ></canvas>
+    <div class="buttons">
+            <button id="increaseSpeed">Increase Speed</button>
+            <button id="increaseSize">Increase Size</button>
+            <button id="randomColor">Random Color</button>
+            <br>
+            <button id="decreaseSpeed">Decrease Speed</button>
+            <button id="decreaseSize">Decrease Size</button>
+            <button id="addBall">Add Ball</button>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
