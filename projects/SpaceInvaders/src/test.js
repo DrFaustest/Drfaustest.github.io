@@ -4,10 +4,12 @@ window.addEventListener("DOMContentLoaded", function () {
   // Initialize canvas, context, images, sounds, and variables
   const gameCanvas = document.getElementById("gameCanvas");
   const gameContext = gameCanvas.getContext("2d");
-  gameCanvas.width = window.innerWidth - 100;
-  gameCanvas.height = window.innerHeight - 250;
-  const baseScreenWidth = 1440;
-  const scaleFactor = Math.max(1, gameCanvas.width / baseScreenWidth);
+  gameCanvas.width = window.innerWidth - (window.innerWidth * 0.1);
+  gameCanvas.height = window.innerHeight - (window.innerHeight * 0.1);
+  const baseScreenWidth = 800;
+  console.log(baseScreenWidth);
+  console.log(window.innerWidth, window.innerHeight)
+  const scaleFactor = Math.max(1, gameCanvas.height / baseScreenWidth);
 
   const ship = {
     x: gameCanvas.width / 2,
@@ -36,6 +38,9 @@ window.addEventListener("DOMContentLoaded", function () {
   bulletImage.src = "../images/laserGreen.png";
   const enemyImage = new Image();
   enemyImage.src = "../images/enemyShip.png";
+  const enemyType2Image = new Image();
+enemyType2Image.src = "../images/enemyUFO.png";
+
   const lifePickupImage = new Image();
 lifePickupImage.src = "../images/life.png";
 
@@ -49,15 +54,17 @@ lifePickupImage.src = "../images/life.png";
   const backgroundMusic = new Audio("../sounds/neon-noir.mp3");
   backgroundMusic.loop = true;
   backgroundMusic.play();
+  let laserSoundInstance = null;
+  let destroySoundInstance = null;
 
   // Initialize background animation
   const backgroundCanvas = document.getElementById("background");
   const backgroundContext = backgroundCanvas.getContext("2d");
-  const numPixels = 1000;
+  const numPixels = 500;
   const pixelSize = 1;
   const pixels = [];
   backgroundSetup();
-  setInterval(backgroundDraw, 50);
+  setInterval(backgroundDraw, 60);
 
   // Game state and score variables
   let score = 0;
@@ -114,7 +121,7 @@ function drawLives() {
   gameContext.fillStyle = "white";
   gameContext.font = `normal bold ${16 * scaleFactor}px bruno ace`;
   gameContext.textAlign = "center";
-  gameContext.fillText(`Lives: ${lives}`, gameCanvas.width / 2, 40);
+  gameContext.fillText(`Lives: ${lives}`, gameCanvas.width / 10, 30);
 }
 
   function checkLifePickups() {
@@ -244,6 +251,7 @@ function drawLives() {
       }
     });
   }
+  
 
   function updateLifePickups() {
     lifePickups.forEach((pickup, index) => {
@@ -258,19 +266,27 @@ function drawLives() {
     if (Math.random() < 0.01) {
       const size = 40 * scaleFactor;
       const x = Math.random() * (gameCanvas.width - size * 2) + size;
-      enemies.push({ x, y: 0, size, width: size, height: size });
+      const type = Math.random() < 0.7 ? 1 : 2; // Randomly select enemy type
+      const hitPoints = type === 1 ? 1 : 2; // type 2 enemies have 2 hit points
+      const image = type === 1 ? enemyImage : enemyType2Image; // Set the image based on enemy type
+      enemies.push({ x, y: 0, size, width: size, height: size, type, hitPoints, image });
     }
   }
+  
 
   function checkCollisions() {
     enemies.forEach((enemy, index) => {
       bullets.forEach((bullet, bulletIndex) => {
         const dist = Math.hypot(bullet.x - enemy.x, bullet.y - enemy.y);
         if (dist - enemy.size - 5 < 1) {
-          score += 1;
-          playDestroySound();
-          enemies.splice(index, 1);
-          bullets.splice(bulletIndex, 1);
+          enemy.hitPoints--; // Reduce hitsToDestroy value by 1
+          bullets.splice(bulletIndex, 1); // Remove bullet after hitting the enemy
+  
+          if (enemy.hitPoints <= 0) { // Check if the enemy is destroyed
+            score += enemy.type === 1 ? 1 : 5; // Add points to score based on enemy type
+            playDestroySound();
+            enemies.splice(index, 1);
+          }
         }
       });
   
@@ -284,6 +300,8 @@ function drawLives() {
       }
     });
   }
+  
+  
 
   // Draw functions
   function drawShip() {
@@ -315,29 +333,31 @@ function drawLives() {
   }
 
   function drawEnemy(enemy) {
+    const image = enemy.type === 1 ? enemyImage : enemyType2Image;
     gameContext.drawImage(
-      enemyImage,
+      image,
       enemy.x,
       enemy.y,
       enemy.width,
       enemy.height
     );
   }
+  
 
   function drawScore() {
     gameContext.fillStyle = "white";
-    gameContext.font = `normal bold ${30 * scaleFactor}px bruno ace SC`;
+    gameContext.font = `normal bold ${16 * scaleFactor}px bruno ace SC`;
     gameContext.textAlign = "center";
-    gameContext.fillText(`Score: ${score}`, gameCanvas.width / 2, 20);
+    gameContext.fillText(`Score: ${score}`, gameCanvas.width / 2, 30);
   }
 
   function drawClock() {
     if (startTime !== null) {
       const time = Math.floor((Date.now() - startTime) / 1000);
       gameContext.fillStyle = "white";
-      gameContext.font = `normal bold ${30 * scaleFactor}px bruno ace`;
+      gameContext.font = `normal bold ${16 * scaleFactor}px bruno ace`;
       gameContext.textAlign = "right";
-      gameContext.fillText(`Time: ${time}`, gameCanvas.width - 70, 20);
+      gameContext.fillText(`Time: ${time}`, gameCanvas.width - 70, 30);
     }
   }
 
