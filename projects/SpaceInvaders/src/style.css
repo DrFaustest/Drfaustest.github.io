@@ -24,3 +24,8 @@ body, html {
   z-index: 2;
   color: transparent;
 }
+
+@font-face {
+  font-family: 'BrunoAceSC', serif;
+  src: url(../fonts/Bruno_Ace_SC/BrunoAceSC-Regular.ttf);
+}
