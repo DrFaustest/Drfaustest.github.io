@@ -25,6 +25,11 @@ body, html {
   color: transparent;
 }
 
+nav {
+  z-index: 3;
+  position: relative;
+}
+
 @font-face {
   font-family: 'BrunoAceSC', serif;
   src: url(../fonts/Bruno_Ace_SC/BrunoAceSC-Regular.ttf);

@@ -4,7 +4,6 @@ import { Enemy } from "./EnemyClass.js";
 import { LifePickup } from "./LivesClass.js";
 import { Ship } from "./ShipClass.js";
 
-
 class Game {
   constructor() {
     this.gameCanvas = document.getElementById("gameCanvas");
@@ -12,8 +11,10 @@ class Game {
     this.gameCanvas.width = window.innerWidth - window.innerWidth * 0.1;
     this.gameCanvas.height = window.innerHeight - window.innerHeight * 0.1;
     this.baseScreenWidth = 800;
-    this.scaleFactor = Math.max(1, this.gameCanvas.height / this.baseScreenWidth);
-
+    this.scaleFactor = Math.max(
+      1,
+      this.gameCanvas.height / this.baseScreenWidth
+    );
     this.gameState = 1;
     this.score = 0;
     this.keys = {};
@@ -21,15 +22,39 @@ class Game {
     this.gameOver = false;
     this.autoFireInterval = null;
     this.startTime = null;
-    this.display = new GameDisplay(this.gameContext, this.gameCanvas, this.scaleFactor);
+    this.display = new GameDisplay(
+      this.gameContext,
+      this.gameCanvas,
+      this.scaleFactor
+    );
     this.ship = new Ship(this.gameCanvas, this.scaleFactor);
     this.lifePickups = [];
     this.lives = 3;
     this.extraLivesDropped = 0;
     this.enemies = [];
     this.bullets = [];
+    this.waveTimer = 0;
+    this.dropPoints = [];
+    this.dropPointSpacing = this.gameCanvas.width * 0.05;
+    for (
+      let i = this.dropPointSpacing;
+      i < this.gameCanvas.width * 0.95;
+      i += this.dropPointSpacing
+    ) {
+      this.dropPoints.push(i);
+    }
+    this.lastSpawnPoint = null;
+    this.spawnDirection = "right";
+    this.waveComplete = false;
+    this.currentVolley = 0;
+    this.enemySpawnInterval = 800;
+    this.leftSpawnPoint;
+    this.rightSpawnPoint;
+    this.speedBuff = 500;
 
-    this.laserSound = new Audio("../sounds/zapsplat_cartoon_anime_hit_zap_laser.mp3");
+    this.laserSound = new Audio(
+      "../sounds/zapsplat_cartoon_anime_hit_zap_laser.mp3"
+    );
     this.laserSound.playbackRate = 2;
     this.destroySound = new Audio(
       "../sounds/esm_8bit_explosion_medium_with_voice_bomb_boom_blast_cannon_retro_old_school_classic_cartoon.mp3"
@@ -45,9 +70,9 @@ class Game {
 
   async gameLoop() {
     console.log("gameLoop started");
-  
+
     const loop = async () => {
-      switch(this.gameState) {
+      switch (this.gameState) {
         case 1:
           this.display.clearCanvas();
           this.display.drawStartScreen();
@@ -75,16 +100,11 @@ class Game {
           this.display.clearCanvas();
           break;
       }
-  
-      // Call loop again on next frame
       requestAnimationFrame(loop);
-    }
-  
-    // Start the loop
+    };
     loop();
   }
-  
-  
+
   async waitForStart() {
     return new Promise((resolve) => {
       this.waitForStartResolve = resolve;
@@ -110,23 +130,32 @@ class Game {
     this.gameOver = false;
     this.gameStarted = false;
     this.startTime = null;
+    this.currentWave = 0;
+    this.enemySpawnInterval = 800;
   }
 
   handleStartGame() {
     console.log("handleStartGame called");
+    this.ship.moveOnKey();
     this.gameStarted = true;
     this.gameState = 2;
   }
 
   update() {
     if (this.gameStarted) {
-      this.gameContext.clearRect(0, 0, this.gameCanvas.width, this.gameCanvas.height);
+      this.gameContext.clearRect(
+        0,
+        0,
+        this.gameCanvas.width,
+        this.gameCanvas.height
+      );
       this.display.drawHUD(this.lives, this.score, this.startTime);
       this.assetSpawn();
       this.updateEnemies();
       this.updateBullets();
       this.updateLifePickups();
       this.checkCollisions();
+      this.updateAutofireSpeed();
       this.ship.draw(this.gameContext);
     }
 
@@ -137,7 +166,7 @@ class Game {
 
   updateEnemies() {
     this.enemies.forEach((enemy, index) => {
-      if (enemy.move()) {
+      if (enemy.move(this.score)) {
         this.enemies.splice(index, 1);
         this.lives--;
       } else {
@@ -166,6 +195,17 @@ class Game {
     });
   }
 
+  updateAutofireSpeed() {
+    const maxSpeed = 1000;
+    const minSpeed = 100;
+    const speedDecreasePerPoint = 5;
+    let autofireSpeed = maxSpeed - this.score * speedDecreasePerPoint;
+    if (autofireSpeed < minSpeed) {
+      autofireSpeed = minSpeed;
+    }
+    this.speedBuff = autofireSpeed;
+  }
+
   checkCollisions() {
     this.enemies.forEach((enemy, index) => {
       this.bullets.forEach((bullet, bulletIndex) => {
@@ -188,7 +228,10 @@ class Game {
       }
     });
     this.lifePickups.forEach((lifePickup, index) => {
-      const dist = Math.hypot(this.ship.x - lifePickup.x, this.ship.y - lifePickup.y);
+      const dist = Math.hypot(
+        this.ship.x - lifePickup.x,
+        this.ship.y - lifePickup.y
+      );
       if (dist - lifePickup.size - this.ship.size < 1) {
         this.lifePickups.splice(index, 1);
         this.lives++;
@@ -197,49 +240,151 @@ class Game {
   }
 
   assetSpawn() {
-    const maxEnemies = 10;
-    const spawnInterval = 500; // Time in milliseconds to spawn an enemy
-
-    // Spawn enemies at a regular interval
-    if (this.enemies.length < maxEnemies && !this.enemySpawnInterval) {
-      this.enemySpawnInterval = setInterval(() => {
-        this.enemies.push(Enemy.spawn(this.gameCanvas, this.scaleFactor));
-      }, spawnInterval);
-    }
-    
-
-    // If the number of enemies exceeds maxEnemies, stop spawning
-    if (this.enemies.length >= maxEnemies && this.enemySpawnInterval) {
-        clearInterval(this.enemySpawnInterval);
-        this.enemySpawnInterval = null;
-    }
-
-    // Drop an extra life every 30 points
     let livesToDrop = Math.floor(this.score / 30);
     if (livesToDrop > this.extraLivesDropped && this.lifePickups.length <= 2) {
-        this.lifePickups.push(new LifePickup(this.gameCanvas.width / 2, 0, this.scaleFactor));
-        this.extraLivesDropped++;
+      this.lifePickups.push(
+        new LifePickup(this.gameCanvas.width / 2, 0, this.scaleFactor)
+      );
+      this.extraLivesDropped++;
     }
-}
+    if (this.currentVolley === 0) {
+      this.currentVolley = this.currentVolley + 1;
+      this.controlEnemyWaves();
+    }
+    if (this.waveComplete && !this.cooldownTimer) {
+      this.cooldownTimer = setTimeout(() => {
+        clearTimeout(this.cooldownTimer);
+        this.cooldownTimer = null;
+        this.waveComplete = false;
+        this.controlEnemyWaves();
+        this.currentVolley = this.currentVolley + 1;
+        this.enemySpawnInterval -= 10;
+      }, 5000);
+    }
+  }
 
-  
-setupEventListeners() {
+  controlEnemyWaves() {
+    if (!this.currentWave) {
+      let count = 0;
+      this.waveTimer = setInterval(() => {
+        this.spawnLinearWave();
+        count++;
+        if (count >= 30) {
+          clearInterval(this.waveTimer);
+          this.currentWave = "Linear";
+          this.waveComplete = true;
+        }
+      }, this.enemySpawnInterval);
+    } else {
+      const waveTypes = ["X", "L", "Linear"];
+      const randomWave =
+        waveTypes[Math.floor(Math.random() * waveTypes.length)];
+      this.currentWave = randomWave;
+      let waveCount =
+        this.currentWave === "X" ? 20 : this.currentWave === "L" ? 19 : 30;
+      let count = 0;
+      this.waveTimer = setInterval(() => {
+        this[`spawn${this.currentWave}Wave`](count);
+        count++;
+        if (count >= waveCount) {
+          clearInterval(this.waveTimer);
+          this.waveComplete = true;
+        }
+      }, this.enemySpawnInterval);
+    }
+  }
+
+  spawnXWave(count) {
+    const initialX =
+      this.dropPoints[count % 2 === 0 ? 0 : this.dropPoints.length - 1];
+    const enemy = Enemy.spawn(this.gameCanvas, this.scaleFactor, initialX, "x");
+    this.enemies.push(enemy);
+  }
+
+  spawnLWave(count) {
+    const lWaveDirection = this.lWaveDirection === "left" ? "right" : "left";
+    const initialX =
+      lWaveDirection === "left"
+        ? this.dropPoints[count]
+        : this.dropPoints[this.dropPoints.length - 1 - count];
+    const enemy = Enemy.spawn(this.gameCanvas, this.scaleFactor, initialX, "l");
+    this.enemies.push(enemy);
+    this.lWaveDirection = lWaveDirection;
+  }
+
+  spawnLinearWave() {
+    let initialX;
+    if (
+      this.leftSpawnPoint === undefined ||
+      this.rightSpawnPoint === undefined
+    ) {
+      initialX = Math.floor(this.dropPoints.length / 2);
+      this.leftSpawnPoint = initialX - 1;
+      this.rightSpawnPoint = initialX + 1;
+      this.spawnDirection = "right";
+    } else {
+      if (this.spawnDirection === "right") {
+        initialX = this.rightSpawnPoint;
+        this.rightSpawnPoint++;
+        if (this.rightSpawnPoint >= this.dropPoints.length) {
+          this.rightSpawnPoint = Math.floor(this.dropPoints.length / 2) + 1;
+        }
+        this.spawnDirection = "left";
+      } else {
+        initialX = this.leftSpawnPoint;
+        this.leftSpawnPoint--;
+        if (this.leftSpawnPoint < 0) {
+          this.leftSpawnPoint = Math.floor(this.dropPoints.length / 2) - 1;
+        }
+        this.spawnDirection = "right";
+      }
+    }
+    const enemy = Enemy.spawn(
+      this.gameCanvas,
+      this.scaleFactor,
+      this.dropPoints[initialX],
+      "linear"
+    );
+    this.enemies.push(enemy);
+  }
+
+  startAutofire() {
+    clearInterval(this.autoFireInterval);
+    this.autoFireInterval = setInterval(() => {
+      this.bullets.push(
+        Bullet.spawn(this.ship, this.scaleFactor, this.laserSound)
+      );
+      if (this.speedBuff !== this.currentSpeed) {
+        this.currentSpeed = this.speedBuff;
+        this.startAutofire();
+      }
+    }, this.speedBuff);
+  }
+
+  stopAutofire() {
+    clearInterval(this.autoFireInterval);
+    this.autoFireInterval = null;
+  }
+
+  setupEventListeners() {
     window.addEventListener("keydown", (e) => {
+      this.ship.keyMove(e.key, true);
       switch (this.gameState) {
-        case 1:  // Before the game starts
+        case 1:
           if (e.key === " ") {
             e.preventDefault();
             this.handleStartGame();
             this.waitForStartResolve();
           }
           break;
-        case 2:  // During the game
-          this.keys[e.key] = true;
-          if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-            this.ship.move(e.key);
+        case 2:
+          if (e.key === " ") {
+            this.bullets.push(
+              Bullet.spawn(this.ship, this.scaleFactor, this.laserSound)
+            );
           }
           break;
-        case 3:  // Game over
+        case 3:
           if (e.key === " ") {
             this.gameOver = false;
             this.restartGame();
@@ -250,40 +395,29 @@ setupEventListeners() {
     });
 
     window.addEventListener("keyup", (e) => {
-      if (this.gameState === 2) { // Only disable keys during the game
-        this.keys[e.key] = false;
-      }
+      this.ship.keyMove(e.key, false);
     });
 
     window.addEventListener("mousedown", (e) => {
       switch (this.gameState) {
-        case 1: // Before the game starts
+        case 1:
           this.handleStartGame();
           this.waitForStartResolve();
           break;
-        case 2: // During the game
-          this.bullets.push(Bullet.spawn(this.ship, this.scaleFactor, this.laserSound));
-          this.autoFireInterval = setInterval(
-            () => this.bullets.push(Bullet.spawn(this.ship, this.scaleFactor, this.laserSound)),
-            500
+        case 2:
+          this.bullets.push(
+            Bullet.spawn(this.ship, this.scaleFactor, this.laserSound)
           );
           break;
-        case 3: // Game over
-            this.gameOver = false;
-            this.restartGame();
-            this.waitForRestartResolve();
-      }
-    });
-
-    window.addEventListener("mouseup", (e) => {
-      if (this.gameState === 2 && this.autoFireInterval) { // Only stop autofire during the game
-        clearInterval(this.autoFireInterval);
-        this.autoFireInterval = null;
+        case 3:
+          this.gameOver = false;
+          this.restartGame();
+          this.waitForRestartResolve();
       }
     });
 
     window.addEventListener("mousemove", (e) => {
-      if (this.gameState === 2) { // During the game
+      if (this.gameState === 2) {
         this.ship.move(e.clientX);
       }
     });
@@ -293,16 +427,15 @@ setupEventListeners() {
       (e) => {
         e.preventDefault();
         switch (this.gameState) {
-          case 1: // Before the game starts
+          case 1:
             this.handleStartGame();
             this.waitForStartResolve();
             break;
-          case 2: // During the game
-            this.bullets.push(Bullet.spawn(this.ship, this.scaleFactor, this.laserSound));
-            this.autoFireInterval = setInterval(
-              () => this.bullets.push(Bullet.spawn(this.ship, this.scaleFactor, this.laserSound)),
-              500
+          case 2:
+            this.bullets.push(
+              Bullet.spawn(this.ship, this.scaleFactor, this.laserSound)
             );
+            this.startAutofire();
             break;
         }
       },
@@ -313,24 +446,18 @@ setupEventListeners() {
       "touchend",
       (e) => {
         e.preventDefault();
-        if (this.gameState === 2 && this.autoFireInterval) { // Only stop autofire during the game
-          clearInterval(this.autoFireInterval);
-          this.autoFireInterval = null;
+        if (this.gameState === 2) {
+          this.stopAutofire();
         }
       },
       { passive: false }
     );
 
     window.addEventListener("touchmove", (e) => {
-      if (this.gameState === 2) { // During the game
+      if (this.gameState === 2) {
         this.ship.move(e.touches[0].clientX);
       }
     });
   }
 }
-
-  
-  // Create an instance of the Game class to start the game
-  const game = new Game();
-  
-
+const game = new Game();
