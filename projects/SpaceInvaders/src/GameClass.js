@@ -51,11 +51,6 @@ class Game {
     this.leftSpawnPoint;
     this.rightSpawnPoint;
     this.speedBuff = 500;
-
-    this.laserSound = new Audio(
-      "../sounds/zapsplat_cartoon_anime_hit_zap_laser.mp3"
-    );
-    this.laserSound.playbackRate = 2;
     this.destroySound = new Audio(
       "../sounds/esm_8bit_explosion_medium_with_voice_bomb_boom_blast_cannon_retro_old_school_classic_cartoon.mp3"
     );

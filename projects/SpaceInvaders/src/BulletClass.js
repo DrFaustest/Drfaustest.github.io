@@ -7,13 +7,6 @@ export class Bullet {
     this.width = 10 * scaleFactor;
     this.height = 20 * scaleFactor;
     this.scaleFactor = scaleFactor;
-    this.laserSound = laserSound;
-    this.laserSound.playbackRate = 3;
-    this.laserSound.volume = 0.5;
-    if (!this.laserSound.paused) {
-      this.laserSound.currentTime = 0;
-    }
-    this.laserSound.play();
   }
 
   draw(gameContext) {
