@@ -28,6 +28,9 @@ body, html {
 nav {
   z-index: 3;
   position: relative;
+  width: 100%;
+  /*position the nav buttons in the center of the window with space between*/
+
 }
 
 @font-face {
