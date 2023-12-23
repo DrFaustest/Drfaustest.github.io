@@ -1,251 +1,156 @@
+/* Global Styles */
 body {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
+  margin: 0;
 }
 
+a {
+  text-decoration: none; /* Removes underline from all links */
+}
+
+ul {
+  list-style-type: none; /* Removes bullets from all lists */
+  margin: 0;
+  padding: 0;
+}
+
+/* Navigation Bar */
 nav {
-    background-color: grey; /* Sets the background color */
-    position: sticky; /* Makes the navbar stick to the top of the page */
-    inset: 0; /* Ensures the navbar fills the entire width of the page */
-    top: 0px; /* Position the navbar at the very top */
-    z-index: 1000; /* Ensures navbar stays above other content */
-  }
-  
-  nav a {
-    color: white; /* Sets the text color */
-    font-weight: bold; /* Makes the text bold */
-    padding: 10px; /* Adds space around the links */
-    text-decoration: none; /* Removes underline from links */
-  }
-  
-  nav a:hover {
-    color: #ccc; /* Lightens the text color on hover */
-  }
-  
-  /* Additional styling to ensure the navigation links are in a row */
-  nav ul {
-    list-style-type: none; /* Removes bullets from list items */
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-  }
-  
-  nav li {
-    float: left; /* Places the list items in a row */
-  }
-  
-
-header {
-    background-color: #333;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
+  background-color: grey;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 10px 0;
+  display: flex;
+  justify-content: center;
 }
 
-.profile-pic {
-    width: 10em; /* Adjust as necessary */
-    height: auto; /* Adjust to keep aspect ratio */
-    border-radius: 50%; /* Creates the circular frame */
-    object-fit: cover; /* Ensures the image covers the frame without distortion */
-    border: 3px solid white; /* Optional: adds a border around the image */
-    margin: 10px; /* Adjust as necessary for positioning */
-  }
+nav a {
+  color: white;
+  font-weight: bold;
+  padding: 10px;
+}
 
-  #projects {
-    padding: 20px;
-    text-align: center;
+nav a:hover {
+  color: #ccc;
+}
+
+/* Header */
+header {
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+}
+
+/* Profile Picture */
+.profile-pic {
+  width: 10em;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid white;
+  margin: 10px;
+}
+
+/* Projects Section */
+#projects {
+  padding: 20px;
+  text-align: center;
 }
 
 .project-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .project-item {
-    margin: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: adds shadow for depth */
-    border-radius: 10px; /* Rounded corners */
-    overflow: hidden; /* For rounded corners on images */
-    max-width: 300px;
-}
-
-.project-image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-}
-
-.project-info {
-    padding: 10px;
-}
-
-.project-info h3 {
-    margin-top: 0;
-}
-
-.project-item:hover {
-  transform: scale(1.05); /* Slightly enlarge on hover */
+  margin: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 300px;
   transition: transform 0.3s ease-in-out;
 }
 
-
-  
-
-section {
-    margin: 20px;
-    padding: 20px;
-    border: 1px solid #ddd;
+.project-item:hover {
+  transform: scale(1.05);
 }
 
-#news-ticker {
-    overflow: hidden;
-}
-
-/*
-#news-content {
-    white-space: nowrap;
-    animation: scroll-news 10s linear infinite;
-}
-
-@keyframes scroll-news {
-    from { transform: translateX(100%); }
-    to { transform: translateX(-100%); }
-}
-*/
-
-#forecast-container {
-    display: flex;
-    overflow-x: auto;
-    padding: 10px;
-    background-color: #f0f0f0; /* Light grey background */
-    border-radius: 5px; /* Rounded corners */
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-}
-
-.forecast-item {
-    flex: 0 0 auto; /* Do not grow, do not shrink, and base width on content */
-    margin-right: 20px; /* Space between items */
-    background-color: #ffffff; /* White background for each item */
-    border-radius: 5px; /* Rounded corners for each item */
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); /* Shadow for each item */
-    padding: 10px;
-    display: flex;
-    align-items: center; /* Align image and text vertically */
-}
-
-.image-container {
-    margin-right: 10px; /* Space between image and text */
-}
-
-.forecast-text {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.forecast-text p {
-    margin: 0;
-    font-size: 14px; /* Adjust text size */
-    color: #333; /* Dark grey color for text */
-}
-
-.date-time {
-    font-weight: bold;
-}
-
-#news-content {
-    display: flex;
-    overflow-x: auto;
-    white-space: nowrap;
-    padding: 10px 0;
-}
-
-.news-item {
-    flex: 0 0 auto;
-    margin-right: 20px;
-    min-width: 200px;
-    white-space: normal;
-}
-
-.news-item h3 {
-    font-size: 1rem;
-    margin: 0 0 5px 0;
-}
-
-.news-item p {
-    font-size: 0.9rem;
-    margin: 0;
-}
-
-
-
-
-#LiveCarousel {
-  position: relative; /* Ensure this container provides the positioning context */
-}
-
-#slideshow-container {
-  width: 100%; /* Adjust width as needed */
-  height: 500px; /* Adjust height as needed */
-  position: relative; /* Important for positioning the buttons */
-  overflow: hidden; /* Hide overflow */
-}
-
-#slideshow-container img {
+.project-image {
   width: 100%;
-  height: 100%;
-  object-fit: contain; /* Use 'cover' if you want images to fill the area */
+  height: auto;
+  object-fit: cover;
 }
 
-#prevButton, #nextButton {
-  position: absolute; /* Position relative to slideshow-container */
-  top: 50%; /* Center vertically */
-  transform: translateY(-50%); /* Adjust vertical alignment */
-  z-index: 10; /* Ensure buttons are above images */
-  /* Additional styling for buttons (size, background, etc.) */
+.project-info h3 {
+  margin-top: 0;
 }
 
-#prevButton {
-  left: 10px; /* Adjust if needed for spacing from the left edge */
+/* Generic Section Styling */
+section {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
 }
 
-#nextButton {
-  right: 10px; /* Adjust if needed for spacing from the right edge */
+/* Media Queries for Mobile First Approach */
+@media screen and (max-width: 768px) {
+  .profile-pic {
+      width: 8em;
+  }
+
+  .project-item {
+      max-width: 100%;
+  }
+
+  nav a {
+      font-size: 1.2em;
+  }
 }
 
+@media screen and (max-width: 480px) {
+  nav {
+      padding: 5px 0;
+  }
 
+  nav a {
+      padding: 5px;
+  }
 
+  .profile-pic {
+      width: 6em;
+  }
 
+  .project-item {
+      margin: 10px;
+  }
+}
 
+/* Footer */
 footer {
-    background-color: #333; /* Dark background for contrast */
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    font-size: 0.8em;
-  }
-  
-  footer ul {
-    list-style: none; /* No bullets */
-    padding: 0;
-  }
-  
-  footer ul li {
-    display: inline; /* Inline list items */
-    margin-right: 20px;
-  }
-  
-  footer a {
-    color: white;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  footer a:hover {
-    text-decoration: underline;
-  }
-  
-  footer p {
-    margin: 10px 0 0;
-  }
-  
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 0.8em;
+}
+
+footer ul li {
+  display: inline;
+  margin-right: 20px;
+}
+
+footer a {
+  color: white;
+  font-weight: bold;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer p {
+  margin: 10px 0 0;
+}
