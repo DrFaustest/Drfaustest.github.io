@@ -164,7 +164,14 @@ function getLocationAndFetchForecast() {
 function fetchForecast(latitude, longitude) {
     const url = `https://api.weather.gov/points/${latitude},${longitude}`; // Dynamic URL based on location
 
-    fetch(url, {mode: 'no-cors'})
+    const requestOptions = {
+        method: 'GET',
+        headers: {
+            'User-Agent': 'DrFaustest.github.io (scottaf80234@gmail.com)'
+        }
+    };
+
+    fetch(url, requestOptions)
         .then(response => response.json())
         .then(data => {
             const forecastUrl = data.properties.forecast;
