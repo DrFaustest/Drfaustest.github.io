@@ -1,63 +1,143 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-    <title>Dr Faustest Portfolio</title>
+    <title>Scott Faust Portfolio</title>
     <meta name="description" content="Portfolio page for aspiring developer">
     <meta name="keywords" content="Web development, Front-end development, Back-end development, Full-stack development, HTML, CSS, JavaScript, React, Node.js, Express, RESTful API, User experience, User interface, Responsive design, Mobile-first design, Cross-browser compatibility, Accessibility, Performance optimization, Git, Agile methodology">
     <meta name="author" content="Scott Faust">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="js/carousel.js"></script>
-    <script src="js/weather.js"></script>
-    <script src="js/script.js"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <div class="PageContainer">
-    <header class="w3-container w3-center">
-        <h1>Scott Faust From Omaha NE</h1>
+    <header>
+        <h1>Scott Faust</h1>
+        <img src="images/Profile.JPG"alt="Scott Faust" class="profile-pic">
+
     </header>
-    <nav class="w3-bar w3-boarder w3-black w3-mobile">
-            <a href="#" class="w3-bar-item w3-button w3-mobile w3-white">Home</a>
-            <a href="#" class="w3-bar-item w3-button w3-mobile">About</a>
-            <a href="contact.html" class="w3-bar-item w3-button w3-mobile">Contact</a>
+    <nav>
+        <ul>
+            <li><a href="#about-me">About Me</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#news-ticker">News Ticker</a></li>
+            <li><a href="#weather">Weather</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
     </nav>
-    <main>
-        <h2 id="weatherH2"  >Local Weather<br>(From the Weather.gov API)</h2>
-        <h3 id="location"></h3>
-        <div id="forecast-container">
-            
+
+    <section id="about-me">
+        <h2>About Me</h2>
+        <p>Hello! I'm Scott Faust, and I'm on a journey to harness the transformative power of technology as a software engineer. My passion lies in not just understanding the intricacies of code but in using it as a tool to make a real-world impact.</p>
+        <p>Born and raised in the nurturing environment of Denver, Colorado, my fascination with technology started at a young age. I found myself intrigued by the endless possibilities that software engineering presented – it was like having a language to converse with the future. Joining the Airforce right out of high school, I served as an Aircraft Mechanic, where I got my first hands-on experience with sophisticated technology. This experience wasn't just about understanding machinery; it was a lesson in precision, discipline, and the importance of every small part in a larger system.</p>
+        <p>After my retirement in 2018, I embarked on a new mission – to become a software engineer. My journey at the University of Nebraska at Omaha isn't just an academic pursuit; it's a path to realizing my dream of making the world a better place. Here, I'm not only honing my skills in coding and software development but also learning how to leverage these skills to create accessible, user-friendly solutions.</p>
+        <p>My vision is a world where technology is not just an elite privilege but a tool accessible to everyone, everywhere. I believe that in the right hands, technology can be a great equalizer, breaking down barriers and opening doors to limitless possibilities. Whether it's developing applications that improve everyday life, creating systems that make information more accessible, or contributing to groundbreaking innovations, I'm committed to using my skills for the greater good.</p>
+        <p>As I stride forward in my career, I carry with me a commitment to excellence, a passion for learning, and a steadfast belief that technology, when used wisely and ethically, can indeed make the world a better place for all.</p>
+    </section>
+
+    <section id="projects">
+        <h2>Projects</h2>
+        <div class="project-list">
+            <div class="project-item">
+                <img src="path/to/preview1.jpg" alt="Project 1 Preview" class="project-image">
+                <div class="project-info">
+                    <h3>Rock Paper Scissors</h3>
+                    <p>Short description of Project 1...</p>
+                    <a href="projects/RockPaperScissors/default.html" target="_blank">View Project</a>
+                </div>
+            </div>
+            <div class="project-item">
+                <img src="path/to/preview1.jpg" alt="Project 1 Preview" class="project-image">
+                <div class="project-info">
+                    <h3>Battleship ish</h3>
+                    <p>Short description of Project 1...</p>
+                    <a href="projects/Battleship/SudoBattleship.html" target="_blank">View Project</a>
+                </div>
+            </div>
+            <div class="project-item">
+                <img src="path/to/preview1.jpg" alt="Project 1 Preview" class="project-image">
+                <div class="project-info">
+                    <h3>Ball Pit</h3>
+                    <p>Short description of Project 1...</p>
+                    <a href="projects/Project 3/index.html" target="_blank">View Project</a>
+                </div>
+            </div>
+            <div class="project-item">
+                <img src="path/to/preview1.jpg" alt="Project 1 Preview" class="project-image">
+                <div class="project-info">
+                    <h3>Space Invaders</h3>
+                    <p>Short description of Project 1...</p>
+                    <a href="projects/SpaceInvaders/src/index.html" target="_blank">View Project</a>
+                </div>
+            </div>
+            <div class="project-item">
+                <img src="path/to/preview1.jpg" alt="Project 1 Preview" class="project-image">
+                <div class="project-info">
+                    <h3>Matrix Style Background</h3>
+                    <p>Short description of Project 1...</p>
+                    <a href="projects/MatrixBackground/index.html" target="_blank">View Project</a>
+                </div>
+            </div>
+    </section>
+
+    <section id="education">
+        <h2>Education</h2>
+    
+        <div class="education-section">
+            <h3>University of Nebraska at Omaha (UNO)</h3>
+            <p><strong>Bachelor of Science in Computer Science, Focus on Software Engineering</strong><br>
+            2020 - Present</p>
+            <p>Embarking on a journey to redefine my career path, I joined the University of Nebraska at Omaha to pursue a Bachelor of Science in Computer Science, with a special focus on Software Engineering. This decision marked a pivotal point in my life - a transition from a decorated career in the Airforce as an Aircraft Mechanic to delving into the intricacies of software development and engineering.</p>
+            <p>At UNO, my academic experience has been a blend of rigorous coursework, practical projects, and collaborative learning. I've immersed myself in a variety of subjects such as algorithms, system design, database management, and software development practices. Each class has not only contributed to a solid foundation in computer science principles but has also sparked creativity and innovation in solving real-world problems.</p>
         </div>
-          
+    
+        <div class="education-section">
+            <h3>Metropolitan Community College</h3>
+            <p><strong>Associate's Degree in Applied Science and Information Technology, Computer Programming</strong><br>
+            2018 - 2020</p>
+            <p>Prior to UNO, my academic pursuits led me to Metropolitan Community College, where I earned my Associate's Degree in Applied Science and Information Technology with a specialization in Computer Programming. It was here that my passion for technology found its first formal expression. The curriculum provided me with a comprehensive understanding of programming fundamentals, web development, and the basics of computer systems.</p>
+            <p>This program was instrumental in shaping my initial understanding of the tech world. It laid the groundwork for my future studies and offered a glimpse into the potential of software engineering to drive change and innovation.</p>
+        </div>
+    
+        <div class="education-section">
+            <h3>Continuous Learning</h3>
+            <p>Driven by an insatiable thirst for knowledge, my education extends beyond formal institutions. I am constantly exploring new technologies, keeping up-to-date with industry trends, and engaging in online courses and communities. This ongoing commitment to learning ensures that I stay relevant and versatile in a field that is ever-evolving.</p>
+        </div>
+    </section>
+    
 
+    <section id="news-ticker">
+        <h2>News Ticker</h2>
+        <div id="news-content">
+            <!-- News ticker content -->
+        </div>
+    </section>
 
-        <section class="w3-display-container w3-border w3-round-xxlarge w3-card-4">
-            <h2 id="LiveCarousel">Live Look Omaha NE</h2>
-            <div id="slideshow-container" class="mySlides"></div>        <button id="prevButton" class="w3-button w3-display-topleft w3-xxlarge w3-white">&#10094;</button>
-            <button id="nextButton" class="w3-button w3-display-topright w3-xxlarge w3-white">&#10095;</button>
-        </section>
+    <section id="weather">
+        <h2 id="weather-heading">Local Weather</h2>
+        <div id="forecast-container">
+            <!-- Weather details -->
+        </div>
+    </section>
 
+    <section id="LiveCarousel">
+        <h2>Live Look Omaha NE</h2>
+        <div id="slideshow-container" class="mySlides">     
+        </div>  
+        <button id="prevButton" aria-label="Previous">&#10094;</button>
+        <button id="nextButton" aria-label="Next">&#10095;</button>
+    </section>
 
-        <section class=" w3-panel w3-border w3-round-xxlarge w3-card-4">
-            <h2 id="ProjectLinks" class="w3-center w3-xxlarge w3-black"  >My Projects</h2>
-            <ul>
-                <li><a href="projects/RockPaperScissors/default.html">Rock Paper Scissors</a></li>
-                <li><a href="projects/Battleship/SudoBattleship.html">Battleship ish</a></li>
-                <li><a href="projects/Project 3/index.html">Ball Pit</a></li>
-                <li><a href="projects/SpaceInvaders/src/index.html">Space Invaders</a></li>
-                <li><a href="projects/MatrixBackground/index.html">Matrix Background</a></li>
-                <li><a href="#">Project 6</a></li>
-            </ul>
-
-            <article id="introduction" class="w3-panel w3-border w3-round-xxlarge w3-card-4">
-                <h2 class="w3-container w3-center">Showcasing my Web Development Skills</h2>
-                <p class=" w3-center w3-padding-large">Welcome to my portfolio website, where I showcase my current skills as a web developer. This site is a living example of my progression and growth, as I continue to learn and refine my abilities in this field.<br><br> As you explore my portfolio, you'll see a collection of my projects that demonstrate my expertise in web development, from front-end design and development to back-end programming and database management. Each project represents a unique challenge that I overcame through innovation, creativity, and technical know-how.<br><br> I hope you enjoy browsing my portfolio and gain a better understanding of my skills as a web developer.</p>
-            </article>
-    </main>
+    <section id="contact">
+        <h2>Contact Me</h2>
+    </section>
     <footer>
-        <p>&copy; Scott Faust, 2023</p>
+        <p>&copy; 2023 Scott Faust. All rights reserved.</p>
+        <ul>
+          <li><a href="https://www.linkedin.com/in/scott-faust-omaha" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+          <li><a href="https://www.youtube.com/channel/UCZeHCn5ZtbCOerN2MxNFFwA" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+          <li><a href="https://github.com/drfaustest" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        </ul>
+        <p>Contact me at <a href="mailto:Scottaf80234@gmail.com">ScottAF80234@gmail.com</a></p>
     </footer>
-</div>
+    <script src="script.js"></script>
 </body>
 </html>

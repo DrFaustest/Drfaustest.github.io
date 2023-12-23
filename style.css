@@ -1,135 +1,251 @@
 body {
-    font-size: xx-large;
-    max-width: 800px; /* Set the maximum width of the page */
-    margin: 0 auto; /* Center the content horizontally */
+    font-family: Arial, sans-serif;
 }
-@media screen and (min-width: 800px) {
-  body {
-    background-color: black; /* Add a black background */
+
+nav {
+    background-color: grey; /* Sets the background color */
+    position: sticky; /* Makes the navbar stick to the top of the page */
+    inset: 0; /* Ensures the navbar fills the entire width of the page */
+    top: 0px; /* Position the navbar at the very top */
+    z-index: 1000; /* Ensures navbar stays above other content */
   }
-}
-.PageContainer {
-    background-color: #ffffff;
-    color: #000000;
-    padding: 10px;
+  
+  nav a {
+    color: white; /* Sets the text color */
+    font-weight: bold; /* Makes the text bold */
+    padding: 10px; /* Adds space around the links */
+    text-decoration: none; /* Removes underline from links */
+  }
+  
+  nav a:hover {
+    color: #ccc; /* Lightens the text color on hover */
+  }
+  
+  /* Additional styling to ensure the navigation links are in a row */
+  nav ul {
+    list-style-type: none; /* Removes bullets from list items */
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  nav li {
+    float: left; /* Places the list items in a row */
+  }
+  
+
+header {
+    background-color: #333;
+    color: white;
     text-align: center;
-
+    padding: 10px 0;
 }
-header h1{
-    background-color: #000000;
-    color: #ffffff;
-    padding: 10px;
+
+.profile-pic {
+    width: 10em; /* Adjust as necessary */
+    height: auto; /* Adjust to keep aspect ratio */
+    border-radius: 50%; /* Creates the circular frame */
+    object-fit: cover; /* Ensures the image covers the frame without distortion */
+    border: 3px solid white; /* Optional: adds a border around the image */
+    margin: 10px; /* Adjust as necessary for positioning */
+  }
+
+  #projects {
+    padding: 20px;
     text-align: center;
-    font-size: 1em;
 }
 
-ul {
-  list-style-type: none;
+.project-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
+.project-item {
+    margin: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: adds shadow for depth */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* For rounded corners on images */
+    max-width: 300px;
+}
 
-#introduction h2{
-    background-color: #000000;
-    color: #ffffff;
+.project-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.project-info {
     padding: 10px;
-    text-align: center;
-    font: size 1em;;
-}
-#introduction p{
-    font-size: 1em;
 }
 
-#weatherH2{
-    background-color: #000000;
-    color: #ffffff;
-    padding: 10px;
-    text-align: center;
-    font-size: 1em;
+.project-info h3 {
+    margin-top: 0;
 }
 
-#LiveCarousel{
-    background-color: #000000;
-    color: #ffffff;
-    padding: 10px;
-    text-align: center;
-    font-size: 1em;
+.project-item:hover {
+  transform: scale(1.05); /* Slightly enlarge on hover */
+  transition: transform 0.3s ease-in-out;
 }
-#location {
-  font-size: 1em;
-  text-align: center;
+
+
+  
+
+section {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
 }
+
+#news-ticker {
+    overflow: hidden;
+}
+
+/*
+#news-content {
+    white-space: nowrap;
+    animation: scroll-news 10s linear infinite;
+}
+
+@keyframes scroll-news {
+    from { transform: translateX(100%); }
+    to { transform: translateX(-100%); }
+}
+*/
+
 #forecast-container {
-  overflow-x: scroll;
-  padding: 10px 0;
-}
-#forecast-container div {
-  display: inline-block;
-  text-align: center;
-  border: 1px solid #000000;
-  padding: 10px;
+    display: flex;
+    overflow-x: auto;
+    padding: 10px;
+    background-color: #f0f0f0; /* Light grey background */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
 }
 
 .forecast-item {
-    display: inline-block;
-    width: 30%;
-    height: 25%;
-    margin-right: 10px;
-    margin-left: 10px;
-    text-align: center;
-    white-space: normal;
-    word-wrap: break-word;
-    vertical-align: top;
-    box-sizing: border-box
-  }
-  
-  #forecast-container {
-    overflow-x: scroll;
-    height: 25%;
-    padding: 10px 0;
+    flex: 0 0 auto; /* Do not grow, do not shrink, and base width on content */
+    margin-right: 20px; /* Space between items */
+    background-color: #ffffff; /* White background for each item */
+    border-radius: 5px; /* Rounded corners for each item */
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1); /* Shadow for each item */
+    padding: 10px;
+    display: flex;
+    align-items: center; /* Align image and text vertically */
+}
+
+.image-container {
+    margin-right: 10px; /* Space between image and text */
+}
+
+.forecast-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.forecast-text p {
+    margin: 0;
+    font-size: 14px; /* Adjust text size */
+    color: #333; /* Dark grey color for text */
+}
+
+.date-time {
+    font-weight: bold;
+}
+
+#news-content {
+    display: flex;
+    overflow-x: auto;
     white-space: nowrap;
-  }
-  
-  #forecast-container::-webkit-scrollbar {
-    width: 10px;
-  }
-  
-  #forecast-container::-webkit-scrollbar-thumb {
-    background-color: #000000;
-    border-radius: 10px;
-  }
-  
-  #forecast-container::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-  }
-  .forecast-image {
-    width: 100%;
-    height: auto;
-  }
-  
-  form {
-    margin-top: 20px;
-    font-size: 1em;
+    padding: 10px 0;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
+.news-item {
+    flex: 0 0 auto;
+    margin-right: 20px;
+    min-width: 200px;
+    white-space: normal;
 }
 
-input[type="text"], input[type="email"], textarea {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 20px;
-    font-size: 1em;
-    box-sizing: border-box;
+.news-item h3 {
+    font-size: 1rem;
+    margin: 0 0 5px 0;
 }
 
-input[type="submit"] {
-    font-size: 1em;
-    padding: 10px;
-    cursor: pointer;
-    background-color: #000000;
-    color: #ffffff;
-    border: none;
-    text-transform: uppercase;
+.news-item p {
+    font-size: 0.9rem;
+    margin: 0;
 }
+
+
+
+
+#LiveCarousel {
+  position: relative; /* Ensure this container provides the positioning context */
+}
+
+#slideshow-container {
+  width: 100%; /* Adjust width as needed */
+  height: 500px; /* Adjust height as needed */
+  position: relative; /* Important for positioning the buttons */
+  overflow: hidden; /* Hide overflow */
+}
+
+#slideshow-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Use 'cover' if you want images to fill the area */
+}
+
+#prevButton, #nextButton {
+  position: absolute; /* Position relative to slideshow-container */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Adjust vertical alignment */
+  z-index: 10; /* Ensure buttons are above images */
+  /* Additional styling for buttons (size, background, etc.) */
+}
+
+#prevButton {
+  left: 10px; /* Adjust if needed for spacing from the left edge */
+}
+
+#nextButton {
+  right: 10px; /* Adjust if needed for spacing from the right edge */
+}
+
+
+
+
+
+footer {
+    background-color: #333; /* Dark background for contrast */
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 0.8em;
+  }
+  
+  footer ul {
+    list-style: none; /* No bullets */
+    padding: 0;
+  }
+  
+  footer ul li {
+    display: inline; /* Inline list items */
+    margin-right: 20px;
+  }
+  
+  footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  footer a:hover {
+    text-decoration: underline;
+  }
+  
+  footer p {
+    margin: 10px 0 0;
+  }
+  
