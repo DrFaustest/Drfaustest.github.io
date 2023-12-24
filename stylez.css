@@ -1,0 +1,111 @@
+/* Base Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Header Styles */
+header {
+    text-align: center;
+    padding: 20px;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+}
+
+/* Navigation Styles */
+nav ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-around;
+    background-color: #007bff;
+    margin: 0;
+}
+
+nav ul li {
+    padding: 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+/* Section Styles */
+section {
+    padding: 20px;
+}
+
+h1, h2 {
+    color: #007bff;
+}
+
+/* Projects Section */
+.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.project-item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.project-image {
+    width: 100%;
+    border-radius: 5px;
+}
+
+/* Education Section */
+.education-section {
+    margin-bottom: 20px;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Media Queries for larger screens */
+@media (min-width: 768px) {
+    .container {
+        width: 75%;
+        margin: 0 auto;
+    }
+
+    .profile-pic {
+        width: 150px;
+        height: 150px;
+    }
+
+    nav ul {
+        justify-content: space-between;
+    }
+
+    .project-list {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}

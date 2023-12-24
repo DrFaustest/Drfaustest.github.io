@@ -1,11 +1,20 @@
 /* Global Styles */
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
+  max-width: 1200px; /* Max width for large screens */
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 2em;
 }
 
 a {
   text-decoration: none; /* Removes underline from all links */
+  color: blue;
+}
+
+a:focus, a:hover {
+  text-decoration: underline; /* Focus and hover state */
 }
 
 ul {
@@ -16,13 +25,18 @@ ul {
 
 /* Navigation Bar */
 nav {
-  background-color: grey;
+  background-color: #4a4a4a;
   position: sticky;
   top: 0;
   z-index: 1000;
   padding: 10px 0;
+  font-size: 1.5em;
+}
+
+nav ul {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly; /* Distribute space evenly */
+  flex-wrap: wrap; /* Prevent wrapping */
 }
 
 nav a {
@@ -57,6 +71,7 @@ header {
 #projects {
   padding: 20px;
   text-align: center;
+  display: flex-box;
 }
 
 .project-list {
@@ -70,7 +85,6 @@ header {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
   overflow: hidden;
-  max-width: 300px;
   transition: transform 0.3s ease-in-out;
 }
 
@@ -96,37 +110,40 @@ section {
 }
 
 /* Media Queries for Mobile First Approach */
-@media screen and (max-width: 768px) {
-  .profile-pic {
-      width: 8em;
-  }
+@media screen and (min-width: 768px) {
+nav {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  width: 100%; /* Stretch the nav section to full width */
+}
 
-  .project-item {
-      max-width: 100%;
+nav a {
+  margin-right: 15px;
+}
+
+/*.project-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}*/
+
+nav a:last-child {
+    margin-right: 0;
+    display: flex;
+    justify-content: space-between; /* Distribute space evenly */
+    flex-wrap: nowrap; /* Prevent wrapping */
   }
 
   nav a {
-      font-size: 1.2em;
+    margin-right: 15px; /* Space out the links */
+  }
+
+  nav a:last-child {
+    margin-right: 0; /* Remove margin for the last item */
   }
 }
 
-@media screen and (max-width: 480px) {
-  nav {
-      padding: 5px 0;
-  }
-
-  nav a {
-      padding: 5px;
-  }
-
-  .profile-pic {
-      width: 6em;
-  }
-
-  .project-item {
-      margin: 10px;
-  }
-}
 
 /* Footer */
 footer {
