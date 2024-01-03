@@ -1,0 +1,1 @@
+### This program is to look through the images in the image folder and delete the ones that are not used in the website.

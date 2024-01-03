@@ -1,3 +1,80 @@
+/* Media Queries for Mobile First Approach */
+@media screen and (max-width: 768px) {
+  body {
+    font-size: 1.5em;
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh; /* Set the height of the body to full viewport height */
+    }
+  }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%; /* Stretch the nav section to full width */
+  }
+  
+  nav a {
+    margin-right: 15px;
+  }
+  
+  /*.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }*/
+  
+  nav a:last-child {
+      margin-right: 0;
+      display: flex;
+      justify-content: space-between; /* Distribute space evenly */
+      flex-wrap: nowrap; /* Prevent wrapping */
+    }
+  
+    nav a {
+      margin-right: 15px; /* Space out the links */
+    }
+  
+    nav a:last-child {
+      margin-right: 0; /* Remove margin for the last item */
+    }
+  }
+@media screen and (min-width: 768px) {
+  nav {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    width: 100%; /* Stretch the nav section to full width */
+  }
+  
+  nav a {
+    margin-right: 15px;
+  }
+  
+  /*.project-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }*/
+  
+  nav a:last-child {
+      margin-right: 0;
+      display: flex;
+      justify-content: space-between; /* Distribute space evenly */
+      flex-wrap: nowrap; /* Prevent wrapping */
+    }
+  
+    nav a {
+      margin-right: 15px; /* Space out the links */
+    }
+  
+    nav a:last-child {
+      margin-right: 0; /* Remove margin for the last item */
+    }
+  }
+
 /* Global Styles */
 body {
   font-family: Arial, Helvetica, sans-serif;
@@ -139,40 +216,7 @@ section {
   }
 
 
-/* Media Queries for Mobile First Approach */
-@media screen and (min-width: 768px) {
-nav {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: nowrap;
-  width: 100%; /* Stretch the nav section to full width */
-}
 
-nav a {
-  margin-right: 15px;
-}
-
-/*.project-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}*/
-
-nav a:last-child {
-    margin-right: 0;
-    display: flex;
-    justify-content: space-between; /* Distribute space evenly */
-    flex-wrap: nowrap; /* Prevent wrapping */
-  }
-
-  nav a {
-    margin-right: 15px; /* Space out the links */
-  }
-
-  nav a:last-child {
-    margin-right: 0; /* Remove margin for the last item */
-  }
-}
 
 
 /* Footer */
