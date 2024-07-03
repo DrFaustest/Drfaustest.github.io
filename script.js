@@ -2,6 +2,21 @@ document.addEventListener('DOMContentLoaded', function() {
     carousel();
     fetchNews();
     getLocationAndFetchForecast();
+
+    // Accordion functionality
+    document.querySelectorAll('.accordion-header').forEach(button => {
+        button.addEventListener('click', () => {
+            const content = button.nextElementSibling;
+
+            button.classList.toggle('active');
+
+            if (button.classList.contains('active')) {
+                content.style.display = 'block';
+            } else {
+                content.style.display = 'none';
+            }
+        });
+    });
 });
 
 function loadJSON(callback) {   
@@ -17,8 +32,6 @@ function loadJSON(callback) {
 }
 
 function carousel() {
-
-
     loadJSON(function(response) {
         var data = JSON.parse(response);
         var slideIndex = 0;
@@ -27,90 +40,59 @@ function carousel() {
         var manualControl = false;
         
         // Preload all images
-        for (var i = 0; i < data.data.length; i++) {
+        data.data.forEach((url, i) => {
             var img = new Image();
-            img.style.width = "100%";
-            img.src = data.data[i];
-            images.push(img);
-        }
+            img.onload = function() {
+                images.push(img);
+                if (i === 0) {
+                    x.innerHTML = "";
+                    x.appendChild(img);
+                }
+            };
+            img.onerror = function() {
+                console.error("Image failed to load: " + url);
+            };
+            img.src = url;
+            img.classList.add('carousel-image');
+        });
         
-        // Display the first image
-        x.innerHTML = "";
-        x.appendChild(images[0]);
         
-        // add event listeners to the previous and next buttons
+        // Add event listeners to the previous and next buttons
         var prevButton = document.getElementById("prevButton");
         prevButton.onclick = function() {
             manualControl = true;
             slideIndex--;
             if (slideIndex < 0) {
-                slideIndex = data.data.length - 1;
+                slideIndex = images.length - 1;
             }
             x.innerHTML = "";
             x.appendChild(images[slideIndex]);
         };
+
         var nextButton = document.getElementById("nextButton");
         nextButton.onclick = function() {
             manualControl = true;
             slideIndex++;
-            if (slideIndex >= data.data.length) {
+            if (slideIndex >= images.length) {
                 slideIndex = 0;
             }
             x.innerHTML = "";
             x.appendChild(images[slideIndex]);
         };
-        
-        // Load the next and previous images when the current image is being displayed
-        function loadNextImage() {
-            var nextIndex = (slideIndex + 1) % data.data.length;
-            var nextImg = images[nextIndex];
-            if (!nextImg.complete) {
-                nextImg.onload = function() {
-                    loadNextImage();
-                }
-            }
-        }
-        
-        function loadPreviousImage() {
-            var previousIndex = (slideIndex - 1 + data.data.length) % data.data.length;
-            var previousImg = images[previousIndex];
-            if (!previousImg.complete) {
-                previousImg.onload = function() {
-                    loadPreviousImage();
-                }
-            }
-        }
-        
-        function displayNextImage() {
-            slideIndex++;
-            if (slideIndex >= data.data.length) {
-                slideIndex = 0;
-            }
-            x.innerHTML = "";
-            x.appendChild(images[slideIndex]);
-            loadNextImage();
-        }
-        
-        function displayPreviousImage() {
-            slideIndex--;
-            if (slideIndex < 0) {
-                slideIndex = data.data.length - 1;
-            }
-            x.innerHTML = "";
-            x.appendChild(images[slideIndex]);
-            loadPreviousImage();
-        }
-        
-        loadNextImage();
-        loadPreviousImage();
+
+        // Auto-rotate carousel every 4 seconds
         setInterval(function() {
             if (!manualControl) {
-                displayNextImage();
+                slideIndex++;
+                if (slideIndex >= images.length) {
+                    slideIndex = 0;
+                }
+                x.innerHTML = "";
+                x.appendChild(images[slideIndex]);
             }
         }, 4000);
     });
 }
-
 
 function fetchNews() {
     const rssUrl = 'http://feeds.bbci.co.uk/news/rss.xml';
@@ -226,5 +208,3 @@ function displayForecast(periods, locationName) {
         forecastContainer.appendChild(forecastItem);
     });
 }
-
-
