@@ -1,190 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <title>Scott Faust Portfolio</title>
-    <meta name="description" content="Portfolio page for aspiring developer">
-    <meta name="keywords" content="Web development, Front-end development, Back-end development, Full-stack development, HTML, CSS, JavaScript, React, Node.js, Express, RESTful API, User experience, User interface, Responsive design, Mobile-first design, Cross-browser compatibility, Accessibility, Performance optimization, Git, Agile methodology">
-    <meta name="author" content="Scott Faust">
-    <link rel="stylesheet" type="text/css" href="stylez.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
 </head>
+
 <body>
+    <!-- Header Section -->
     <header>
-        <h1 class="typewriter">Scott Faust</h1>
-        <img src="images/Profile.JPG" alt="Scott Faust" class="profile-pic">
+        <div class="container">
+            <h1>Scott Faust</h1>
+            <p>Software Cultivator</p>
+            <nav>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
-    <nav>
-        <ul>
-            <li><a href="#about-me">About Me</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#education">Education</a></li>
-            <li><a href="#news-ticker">News Ticker</a></li>
-            <li><a href="#weather">Weather</a></li>
-        </ul>
-    </nav>
 
-    <section id="about-me">
-        <h2>About Me</h2>
-        <p>Hello! I'm Scott Faust, and I'm on a journey to harness the transformative power of technology as a software engineer...</p>
+<!-- About Section -->
+    <section id="about">
+        <div class="container">
+            <h2>About Me</h2>
+            <p>Hello! I’m Scott, a dedicated and detail-oriented Computer Science student with a concentration in Software Engineering at the University of Nebraska at Omaha. With a 3.961 GPA and a background in applied science and information technology, I bring a strong foundation in programming and a passion for artificial intelligence.</p>
+
+            <p>Prior to pursuing my degree, I served in the United States Air Force as an aircraft mechanic, working on B-1B and KC-135 airframes. This experience not only honed my technical skills but also instilled in me a deep sense of discipline and problem-solving. My career shift to computer science is driven by a desire to innovate and contribute to the rapidly evolving tech industry.</p>
+
+            <p>My academic journey includes exploring recursion as a teaching assistant, analyzing complex datasets, and building functional software systems. I am also deeply interested in artificial intelligence and aspire to develop technologies that enhance human-computer interaction and decision-making.</p>
+
+            <p>Beyond academics, I enjoy cycling, gaming, and learning new skills like Mandarin to keep my mind sharp. I’m also passionate about personal growth and resilience, leveraging my experiences to overcome challenges and achieve my goals.</p>
+
+            <p>If you'd like to learn more about my work, feel free to explore my projects below or reach out to connect—I’m always excited to collaborate and share ideas!</p>
+
+            <img src="media\img\Profile.JPGcropped.JPG" alt="Your Photo" class="profile-picture">
+        </div>
     </section>
 
+
+    <!-- Projects Section -->
     <section id="projects">
-        <h2>Projects</h2>
-        <div class="project-list">
-            <div class="project-item swoop-in">
-                <div class="card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <img src="images/RockPaperScissiors.png" alt="Project 1 Preview" class="project-image">
-                            <h3>Rock Paper Scissors</h3>
-                        </div>
-                        <div class="card-back">
-                            <h3>Rock Paper Scissors</h3>
-                            <p>The "Rock Paper Scissors" project is a web-based implementation of the classic game...</p>
-                            <a href="projects/RockPaperScissors/default.html" target="_blank">View Project</a>
-                        </div>
-                    </div>
-                </div>
+        <div class="container">
+            <h2>Projects</h2>
+            <div class="project">
+                <h3>Ball Pit</h3>
+                <p>Experience the Interactive Ball Pit, a visually engaging project that demonstrates advanced collision detection, responsive design, and smooth animations. With dynamic controls for speed, size, color, and more, this project showcases the power of the HTML5 Canvas API and object-oriented programming to create an immersive and interactive experience.</p>
+                <a href="media\Projects\Ball Pit\index.html" target="_blank">View Project</a>
             </div>
-            <div class="project-item waterfall-down">
-                <div class="card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <img src="images/Sudo.png" alt="Project 2 Preview" class="project-image">
-                            <h3>Sudo Battleship</h3>
-                        </div>
-                        <div class="card-back">
-                            <h3>Sudo Battleship</h3>
-                            <p>"Sudo Battleship" is a web-based implementation of the classic Battleship game...</p>
-                            <a href="projects/Battleship/SudoBattleship.html" target="_blank">View Project</a>
-                        </div>
-                    </div>
-                </div>
+            <div class="project">
+                <h3>Battleship</h3>
+                <p>This project is a dynamic and interactive battleship game where players guess the location of a hidden target on a grid. The game provides real-time feedback using a color gradient from blue to red to indicate proximity, enhancing the player's experience with intuitive visual hints. It showcases seamless integration of JavaScript for game logic and CSS for responsive, engaging design.</p>
+                <a href="media\Projects\Battleship\SudoBattleship.html" target="_blank">View Project</a>
             </div>
-            <div class="project-item swoop-in">
-                <div class="card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <img src="images/BallPit.png" alt="Project 3 Preview" class="project-image">
-                            <h3>Ball Pit</h3>
-                        </div>
-                        <div class="card-back">
-                            <h3>Ball Pit</h3>
-                            <p>The "Ball Pit" project is an interactive web application featuring a canvas-based animation...</p>
-                            <a href="projects/Project 3/index.html" target="_blank">View Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="project-item waterfall-down">
-                <div class="card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <img src="images/Space.png" alt="Project 4 Preview" class="project-image">
-                            <h3>Space Invaders</h3>
-                        </div>
-                        <div class="card-back">
-                            <h3>Space Invaders</h3>
-                            <p>The "Space Invaders" project is a complex JavaScript-based game involving multiple classes...</p>
-                            <a href="projects/SpaceInvaders/src/index.html" target="_blank">View Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="project-item swoop-in">
-                <div class="card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <img src="images/Matrix.png" alt="Project 5 Preview" class="project-image">
-                            <h3>Matrix Style Background</h3>
-                        </div>
-                        <div class="card-back">
-                            <h3>Matrix Style Background</h3>
-                            <p>The "Matrix Style Background" project is an HTML page featuring a canvas element...</p>
-                            <a href="projects/MatrixBackground/index.html" target="_blank">View Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="project-item waterfall-down">
-                <div class="card">
-                    <div class="card-inner">
-                        <div class="card-front">
-                            <img src="images/LiveLookOmaha.png" alt="Live Look Omaha" class="project-image">
-                            <h3>Live Look Omaha</h3>
-                        </div>
-                        <div class="card-back">
-                            <h3>Live Look Omaha</h3>
-                            <p>The "Live Look Omaha" project is a web scraping example using public domain images...</p>
-                            <a href="live_look_omaha.html" target="_blank">View Project</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>        
-    </section>
-
-    <section id="education">
-        <h2>Education</h2>
-        <div class="education-section">
-            <h3>University of Nebraska at Omaha (UNO)</h3>
-            <p><strong>Bachelor of Science in Computer Science, Focus on Software Engineering</strong><br>
-            2023 - Present(2025-26)</p>
-            <p>Embarking on a journey to redefine my career path, I joined the University of Nebraska at Omaha to pursue a Bachelor of Science in Computer Science...</p>
-        </div>
-        <div class="education-section">
-            <h3>Metropolitan Community College</h3>
-            <p><strong>Associate's Degree in Applied Science and Information Technology, Computer Programming</strong><br>
-            2020 - 2023</p>
-            <p>Prior to UNO, my academic pursuits led me to Metropolitan Community College, where I earned my Associate's Degree in Applied Science...</p>
-        </div>
-        <div class="education-section">
-            <h3>Continuous Learning</h3>
-            <p>Driven by an insatiable thirst for knowledge, my education extends beyond formal institutions...</p>
+            <div class="project">
+                <h3>Space Rangers</h3>
+                <p>Space Rangers is a fast-paced 2D browser-based arcade shooter built with JavaScript and HTML5 Canvas. Featuring responsive controls, dynamic enemy AI, and immersive visuals with sound effects, this project highlights expertise in game mechanics, object-oriented programming, and resource management, delivering an engaging and polished gaming experience.</p>
+                <a href="media\Projects\SpaceInvaders\src\index.html" target="_blank">View Project</a>
         </div>
     </section>
 
-    <section id="news-ticker">
-        <h2>News Ticker</h2>
-        <div id="news-content">
-            <!-- News ticker content -->
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="container">
+            <h2>Contact</h2>
+            <p>Feel free to reach out to me using the form below:</p>
+            <form id="contactForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+
+                <button type="submit">Send</button>
+            </form>
+            <p id="formStatus"></p> <!-- Placeholder for form submission status -->
         </div>
     </section>
 
-    <section id="weather">
-        <h2 id="weather-heading">Local Weather</h2>
-        <div id="forecast-container">
-            <!-- Weather details -->
-        </div>
-    </section>
-
-    <section id="faq">
-        <h2>Frequently Asked Questions</h2>
-        <div class="accordion">
-            <div class="accordion-item">
-                <button class="accordion-header">Question 1</button>
-                <div class="accordion-content">
-                    <p>Answer to question 1.</p>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <button class="accordion-header">Question 2</button>
-                <div class="accordion-content">
-                    <p>Answer to question 2.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
+    <!-- Footer -->
     <footer>
-        <p>&copy; 2023 Scott Faust. All rights reserved.</p>
-        <ul>
-            <li><a href="https://www.linkedin.com/in/scott-faust-omaha" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
-            <li><a href="https://www.youtube.com/channel/UCZeHCn5ZtbCOerN2MxNFFwA" target="_blank" rel="noopener noreferrer">YouTube</a></li>
-            <li><a href="https://github.com/drfaustest" target="_blank" rel="noopener noreferrer">GitHub</a></li>
-        </ul>
-        <p>Contact me at <a href="mailto:Scottaf80234@gmail.com">ScottAF80234@gmail.com</a></p>
+        <div class="container">
+            <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+            <ul>
+                <li><a href="https://github.com/DrFaustest" target="_blank" rel="noopener">GitHub</a></li>
+                <li><a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener">LinkedIn</a></li>
+                <li><a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener">Facebook</a></li>
+            </ul>
+        </div>
     </footer>
-    <script src="script.js"></script>
+
+    <script>
+        const form = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            const endpoint = 'https://formspree.io/f/xlddoevv';
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    formStatus.textContent = 'Message sent successfully!';
+                    form.reset();
+                } else {
+                    formStatus.textContent = 'Failed to send message. Please try again.';
+                }
+            } catch (error) {
+                formStatus.textContent = 'An error occurred. Please try again.';
+            }
+        });
+    </script>
 </body>
+
 </html>

@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sudo Battleship Game</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* Styling for the grid playspace */
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f9;
+        text-align: center;
+      }
+
+      nav {
+        background-color: #333;
+        color: white;
+        padding: 10px 0;
+      }
+
+      nav .w3-bar-item {
+        text-decoration: none;
+        color: white;
+        padding: 10px 20px;
+        font-weight: bold;
+      }
+
+      nav .w3-bar-item:hover {
+        background-color: #575757;
+        border-radius: 5px;
+      }
+
+      .grid-container {
+        display: grid;
+        grid-template-columns: repeat(5, 60px);
+        grid-template-rows: repeat(5, 60px);
+        grid-gap: 10px;
+        margin: 30px auto;
+        justify-content: center;
+      }
+
+      .grid-item {
+        background-color: white;
+        color: black;
+        border: none;
+        border-radius: 8px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .grid-item:disabled {
+        cursor: not-allowed;
+      }
+
+      .grid-item:hover:not(:disabled) {
+        background-color: #f0f0f0;
+      }
+
+      .input-container {
+        margin: 20px auto;
+        text-align: center;
+      }
+
+      .controlButton {
+        padding: 12px 25px;
+        font-size: 16px;
+        cursor: pointer;
+        border: none;
+        border-radius: 8px;
+        background-color: #28a745;
+        color: white;
+        transition: background-color 0.3s;
+      }
+
+      .controlButton:hover {
+        background-color: #218838;
+      }
+
+      .displayField {
+        margin-top: 20px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .hint {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+        margin-top: 15px;
+      }
+
+      .ice {
+        background-color: #0000ff; /* Blue */
+        color: white;
+      }
+
+      .freezing {
+        background-color: #6699ff; /* Light Blue */
+        color: white;
+      }
+
+      .cold {
+        background-color: #99ccff; /* Sky Blue */
+        color: black;
+      }
+
+      .warm {
+        background-color: #ff9966; /* Orange */
+        color: black;
+      }
+
+      .hot {
+        background-color: #ff3300; /* Red */
+        color: white;
+      }
+
+      .about-section {
+        margin: 40px auto;
+        max-width: 600px;
+        text-align: left;
+        font-size: 18px;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      .about-section h2 {
+        text-align: center;
+        color: #28a745;
+      }
+    </style>
+  </head>
+
+  <body>
+    <nav class="w3-bar">
+      <a href="../../../index.html" class="w3-bar-item">Home</a>
+    </nav>
+
+    <div class="grid-container">
+      <!-- Grid items for the game board -->
+      <button id="1a" class="grid-item" aria-label="Grid 1A">1A</button>
+      <button id="1b" class="grid-item" aria-label="Grid 1B">1B</button>
+      <button id="1c" class="grid-item" aria-label="Grid 1C">1C</button>
+      <button id="1d" class="grid-item" aria-label="Grid 1D">1D</button>
+      <button id="1e" class="grid-item" aria-label="Grid 1E">1E</button>
+      <button id="2a" class="grid-item" aria-label="Grid 2A">2A</button>
+      <button id="2b" class="grid-item" aria-label="Grid 2B">2B</button>
+      <button id="2c" class="grid-item" aria-label="Grid 2C">2C</button>
+      <button id="2d" class="grid-item" aria-label="Grid 2D">2D</button>
+      <button id="2e" class="grid-item" aria-label="Grid 2E">2E</button>
+      <button id="3a" class="grid-item" aria-label="Grid 3A">3A</button>
+      <button id="3b" class="grid-item" aria-label="Grid 3B">3B</button>
+      <button id="3c" class="grid-item" aria-label="Grid 3C">3C</button>
+      <button id="3d" class="grid-item" aria-label="Grid 3D">3D</button>
+      <button id="3e" class="grid-item" aria-label="Grid 3E">3E</button>
+      <button id="4a" class="grid-item" aria-label="Grid 4A">4A</button>
+      <button id="4b" class="grid-item" aria-label="Grid 4B">4B</button>
+      <button id="4c" class="grid-item" aria-label="Grid 4C">4C</button>
+      <button id="4d" class="grid-item" aria-label="Grid 4D">4D</button>
+      <button id="4e" class="grid-item" aria-label="Grid 4E">4E</button>
+      <button id="5a" class="grid-item" aria-label="Grid 5A">5A</button>
+      <button id="5b" class="grid-item" aria-label="Grid 5B">5B</button>
+      <button id="5c" class="grid-item" aria-label="Grid 5C">5C</button>
+      <button id="5d" class="grid-item" aria-label="Grid 5D">5D</button>
+      <button id="5e" class="grid-item" aria-label="Grid 5E">5E</button>
+    </div>
+
+    <div class="input-container">
+      <div class="displayField" id="display">Make your guess!</div>
+      <div class="hint" id="hint"></div>
+      <br />
+      <button class="controlButton" id="resetButton">Reset</button>
+    </div>
+
+    <div class="about-section">
+      <h2>About This Project</h2>
+      <p>
+        The most impressive aspect of this project is its dynamic user interface
+        that provides real-time feedback based on user interaction. The grid
+        changes color based on the proximity of the user's guess to the hidden
+        target, incorporating a gradient scale from "Ice" to "Hot." This
+        feature enhances gameplay by offering intuitive hints while maintaining
+        a visually engaging experience. The seamless integration of logic and
+        styling demonstrates the power of combining JavaScript and CSS for
+        interactive applications.
+      </p>
+    </div>
+
+    <script>
+      let shipLocation = getShipLocation();
+      console.log("Ship location:", shipLocation);
+      let winState = false;
+
+      function getRandomNumber() {
+        return Math.floor(Math.random() * 5) + 1;
+      }
+
+      function getRandomLetter() {
+        const letters = ["a", "b", "c", "d", "e"];
+        return letters[Math.floor(Math.random() * 5)];
+      }
+
+      function getShipLocation() {
+        return getRandomNumber() + getRandomLetter();
+      }
+
+      function calculateHint(guess) {
+        const guessRow = parseInt(guess[0]);
+        const guessCol = guess[1].charCodeAt(0) - "a".charCodeAt(0) + 1;
+
+        const shipRow = parseInt(shipLocation[0]);
+        const shipCol = shipLocation[1].charCodeAt(0) - "a".charCodeAt(0) + 1;
+
+        const distance = Math.abs(shipRow - guessRow) + Math.abs(shipCol - guessCol);
+
+        if (distance === 0) return "hot";
+        if (distance === 1) return "warm";
+        if (distance === 2) return "cold";
+        if (distance === 3) return "freezing";
+        return "ice";
+      }
+
+      function checkGuess(guess) {
+        const displayField = document.getElementById("display");
+        const hintField = document.getElementById("hint");
+
+        const hint = calculateHint(guess);
+
+        if (guess === shipLocation) {
+          winState = true;
+          document.getElementById(guess).classList.add("hot");
+          displayField.innerText = "You sank my battleship!";
+          hintField.innerText = "";
+          disableGrid();
+        } else {
+          document.getElementById(guess).classList.add(hint);
+          displayField.innerText = "You missed! Try again.";
+          hintField.innerText = `Hint: ${hint.toUpperCase()}`;
+        }
+      }
+
+      function disableGrid() {
+        document.querySelectorAll(".grid-item").forEach((item) => {
+          item.disabled = true;
+        });
+      }
+
+      document.querySelectorAll(".grid-item").forEach((item) => {
+        item.addEventListener("click", (event) => {
+          if (winState) return;
+          const guess = event.target.id;
+          checkGuess(guess);
+        });
+      });
+
+      document.getElementById("resetButton").addEventListener("click", () => {
+        shipLocation = getShipLocation();
+        console.log("New ship location:", shipLocation);
+        winState = false;
+        document.getElementById("display").innerText = "Make your guess!";
+        document.getElementById("hint").innerText = "";
+        document.querySelectorAll(".grid-item").forEach((item) => {
+          item.className = "grid-item";
+          item.disabled = false;
+        });
+      });
+    </script>
+  </body>
+</html>

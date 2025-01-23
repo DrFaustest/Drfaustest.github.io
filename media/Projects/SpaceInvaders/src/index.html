@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Space Rangers-Scott Faust</title>
+  <style>
+    #background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+
+    #gameCanvas {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      color: transparent;
+    }
+
+    nav {
+      z-index: 3;
+      position: relative;
+      width: 100%;
+    }
+
+    #muteButton {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 3;
+    }
+
+    @font-face {
+      font-family: 'BrunoAceSC', serif;
+      src: url(../fonts/Bruno_Ace_SC/BrunoAceSC-Regular.ttf);
+    }
+  </style>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<nav class="w3-bar w3-border w3-black w3-mobile">
+  <a href="../../../../index.html" class="w3-bar-item w3-button w3-mobile w3-white">Home</a>
+  <button id="muteButton" class="w3-button w3-black">Unmute</button>
+</nav>
+<body>
+  <div id="stack">
+    <canvas id="gameCanvas"></canvas>
+    <canvas id="background"></canvas>
+  </div>
+
+  <script type="module" src="GameClass.js"></script>
+  <script src="background.js"></script>
+</body>
+</html>
