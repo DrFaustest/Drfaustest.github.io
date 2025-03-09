@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dynamic Leaderboard with AVL Tree</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .form-section {
+      margin-bottom: 20px;
+    }
+    label {
+      display: inline-block;
+      width: 100px;
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="number"] {
+      padding: 5px;
+      width: 200px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      padding: 6px 12px;
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    .message {
+      margin-top: 10px;
+      color: #d00;
+      font-weight: bold;
+    }
+    .output {
+      white-space: pre;
+      background: #e9ecef;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Dynamic Leaderboard</h1>
+    
+    <!-- Add Player Section -->
+    <div class="form-section" id="addPlayerSection">
+      <h2>Add Player</h2>
+      <label for="playerId">Player ID:</label>
+      <input type="text" id="playerId" placeholder="Enter ID">
+      <br>
+      <label for="score">Score:</label>
+      <input type="number" id="score" placeholder="Enter score">
+      <br>
+      <button onclick="addPlayer()">Add Player</button>
+    </div>
+    
+    <!-- Delete Player Section -->
+    <div class="form-section" id="deletePlayerSection">
+      <h2>Delete Player</h2>
+      <label for="deletePlayerId">Player ID:</label>
+      <input type="text" id="deletePlayerId" placeholder="Enter ID">
+      <br>
+      <button onclick="deletePlayer()">Delete Player</button>
+    </div>
+    
+    <!-- Find Rank Section -->
+    <div class="form-section" id="findRankSection">
+      <h2>Find Player Rank</h2>
+      <label for="rankPlayerId">Player ID:</label>
+      <input type="text" id="rankPlayerId" placeholder="Enter ID">
+      <br>
+      <button onclick="findRank()">Find Rank</button>
+      <div id="rankResult" class="message"></div>
+    </div>
+    
+    <!-- Top N Players Section -->
+    <div class="form-section" id="topPlayersSection">
+      <h2>Top N Players</h2>
+      <label for="topN">N:</label>
+      <input type="number" id="topN" placeholder="e.g., 3">
+      <br>
+      <button onclick="displayTopN()">Display Top N</button>
+      <div id="topNResult" class="output"></div>
+    </div>
+    
+    <!-- Leaderboard Display -->
+    <div class="form-section" id="leaderboardSection">
+      <h2>Leaderboard</h2>
+      <table id="leaderboardTable">
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Player ID</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Leaderboard rows will be added here -->
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- Tree Structure Display -->
+    <div class="form-section" id="treeSection">
+      <h2>AVL Tree Structure</h2>
+      <div id="treeOutput" class="output"></div>
+    </div>
+  </div>
+  
+<!-- 
+
+    This script implements an AVL Tree for managing a leaderboard of players. 
+    The AVL Tree ensures that the tree remains balanced after every insertion and deletion, 
+    providing efficient operations for maintaining and querying the leaderboard.
+
+    Classes:
+    - PlayerNode: Represents a node in the AVL Tree, containing playerId, score, left and right children, height, and size.
+    - LeaderboardAVL: Implements the AVL Tree with methods for insertion, deletion, rotations, and various utility functions.
+
+    Methods in LeaderboardAVL:
+    - getHeight(node): Returns the height of the given node.
+    - getSize(node): Returns the size of the given node.
+    - updateNode(node): Updates the height and size of the given node.
+    - getBalance(node): Returns the balance factor of the given node.
+    - rightRotate(y): Performs a right rotation on the given node.
+    - leftRotate(x): Performs a left rotation on the given node.
+    - insert(node, playerId, score): Inserts a new player node into the AVL Tree.
+    - minValueNode(node): Finds the node with the minimum value in the subtree rooted at the given node.
+    - deleteNode(node, playerId, score): Deletes a player node from the AVL Tree by playerId and score.
+    - getTopN(node, n, result): Performs a reverse in-order traversal to get the top N players in descending order by score.
+    - inOrder(node, result): Performs an in-order traversal to get all players sorted in ascending order by score.
+    - treeString(node, indent): Creates a string representation of the tree structure using pre-order traversal with indentation.
+    - findPlayer(node, playerId): Finds a node by playerId using a simple recursive search.
+    - findRank(node, playerId): Finds the rank of a player by doing a reverse in-order traversal.
+
+    Global Variables:
+    - leaderboard: An instance of the LeaderboardAVL class.
+    - root: The root node of the AVL Tree.
+
+    Utility Functions:
+    - updateLeaderboardDisplay(): Updates the leaderboard table display in the HTML document.
+    - updateTreeDisplay(): Updates the tree structure display in the HTML document.
+    - addPlayer(): Handler for adding a new player to the leaderboard.
+    - deletePlayer(): Handler for deleting a player from the leaderboard by playerId.
+    - findRank(): Handler for finding the rank of a player by playerId.
+    - displayTopN(): Handler for displaying the top N players in the leaderboard.
+-->
+  <script>
+    // Class representing a player node in the AVL Tree
+    class PlayerNode {
+      constructor(playerId, score) {
+        this.playerId = playerId;
+        this.score = score;
+        this.left = null;
+        this.right = null;
+        this.height = 1;
+        this.size = 1; // Number of nodes in subtree rooted at this node
+      }
+    }
+    
+    // AVL Tree class for the leaderboard
+    class LeaderboardAVL {
+      // Utility: Get height of the node
+      getHeight(node) {
+        return node ? node.height : 0;
+      }
+      
+      // Utility: Get size of the node
+      getSize(node) {
+        return node ? node.size : 0;
+      }
+      
+      // Update node's height and size
+      updateNode(node) {
+        if (node) {
+          node.height = 1 + Math.max(this.getHeight(node.left), this.getHeight(node.right));
+          node.size = 1 + this.getSize(node.left) + this.getSize(node.right);
+        }
+      }
+      
+      // Get balance factor
+      getBalance(node) {
+        return node ? this.getHeight(node.left) - this.getHeight(node.right) : 0;
+      }
+      
+      // Right rotate
+      rightRotate(y) {
+        let x = y.left;
+        let T2 = x.right;
+        
+        // Perform rotation
+        x.right = y;
+        y.left = T2;
+        
+        // Update heights and sizes
+        this.updateNode(y);
+        this.updateNode(x);
+        
+        return x;
+      }
+      
+      // Left rotate
+      leftRotate(x) {
+        let y = x.right;
+        let T2 = y.left;
+        
+        // Perform rotation
+        y.left = x;
+        x.right = T2;
+        
+        // Update heights and sizes
+        this.updateNode(x);
+        this.updateNode(y);
+        
+        return y;
+      }
+      
+      // Insert a new player node
+      insert(node, playerId, score) {
+        if (!node) {
+          return new PlayerNode(playerId, score);
+        }
+        // Define BST property:
+        // If scores are different, use score; if equal, use playerId (lexicographical)
+        if (score < node.score || (score === node.score && playerId.localeCompare(node.playerId) < 0)) {
+          node.left = this.insert(node.left, playerId, score);
+        } else {
+          node.right = this.insert(node.right, playerId, score);
+        }
+        
+        // Update this node's height and size
+        this.updateNode(node);
+        
+        // Get balance factor to check if node became unbalanced
+        let balance = this.getBalance(node);
+        
+        // Left Left Case
+        if (balance > 1 && (score < node.left.score || (score === node.left.score && playerId.localeCompare(node.left.playerId) < 0))) {
+          return this.rightRotate(node);
+        }
+        
+        // Right Right Case
+        if (balance < -1 && (score > node.right.score || (score === node.right.score && playerId.localeCompare(node.right.playerId) > 0))) {
+          return this.leftRotate(node);
+        }
+        
+        // Left Right Case
+        if (balance > 1 && (score > node.left.score || (score === node.left.score && playerId.localeCompare(node.left.playerId) > 0))) {
+          node.left = this.leftRotate(node.left);
+          return this.rightRotate(node);
+        }
+        
+        // Right Left Case
+        if (balance < -1 && (score < node.right.score || (score === node.right.score && playerId.localeCompare(node.right.playerId) < 0))) {
+          node.right = this.rightRotate(node.right);
+          return this.leftRotate(node);
+        }
+        
+        return node;
+      }
+      
+      // Find the node with minimum value (used in deletion)
+      minValueNode(node) {
+        let current = node;
+        while (current.left) {
+          current = current.left;
+        }
+        return current;
+      }
+      
+      // Delete a player by playerId (search by id then remove by key)
+      deleteNode(node, playerId, score) {
+        if (!node) return node;
+        
+        if (score < node.score || (score === node.score && playerId.localeCompare(node.playerId) < 0)) {
+          node.left = this.deleteNode(node.left, playerId, score);
+        } else if (score > node.score || (score === node.score && playerId.localeCompare(node.playerId) > 0)) {
+          node.right = this.deleteNode(node.right, playerId, score);
+        } else {
+          // Node found: node.playerId === playerId and node.score === score
+          if (!node.left || !node.right) {
+            let temp = node.left ? node.left : node.right;
+            if (!temp) {
+              // No child case
+              node = null;
+            } else {
+              node = temp;
+            }
+          } else {
+            // Node with two children: get the in-order successor (smallest in right subtree)
+            let temp = this.minValueNode(node.right);
+            node.playerId = temp.playerId;
+            node.score = temp.score;
+            node.right = this.deleteNode(node.right, temp.playerId, temp.score);
+          }
+        }
+        
+        if (!node) return node;
+        
+        // Update node
+        this.updateNode(node);
+        let balance = this.getBalance(node);
+        
+        // Balance the tree
+        // Left Left Case
+        if (balance > 1 && this.getBalance(node.left) >= 0) {
+          return this.rightRotate(node);
+        }
+        // Left Right Case
+        if (balance > 1 && this.getBalance(node.left) < 0) {
+          node.left = this.leftRotate(node.left);
+          return this.rightRotate(node);
+        }
+        // Right Right Case
+        if (balance < -1 && this.getBalance(node.right) <= 0) {
+          return this.leftRotate(node);
+        }
+        // Right Left Case
+        if (balance < -1 && this.getBalance(node.right) > 0) {
+          node.right = this.rightRotate(node.right);
+          return this.leftRotate(node);
+        }
+        return node;
+      }
+      
+      // Reverse in-order traversal to get players in descending order by score
+      getTopN(node, n, result = []) {
+        if (!node || result.length >= n) return result;
+        this.getTopN(node.right, n, result);
+        if (result.length < n) {
+          result.push({playerId: node.playerId, score: node.score});
+          this.getTopN(node.left, n, result);
+        }
+        return result;
+      }
+      
+      // In-order traversal to get all players sorted ascending (for display, we will reverse later)
+      inOrder(node, result = []) {
+        if (!node) return result;
+        this.inOrder(node.left, result);
+        result.push({playerId: node.playerId, score: node.score});
+        this.inOrder(node.right, result);
+        return result;
+      }
+      
+      // Utility to create a string representation of the tree structure (pre-order with indentation)
+      treeString(node, indent = "") {
+        if (!node) return "";
+        let str = indent + node.playerId + " (" + node.score + ")\n";
+        str += this.treeString(node.left, indent + "   ");
+        str += this.treeString(node.right, indent + "   ");
+        return str;
+      }
+      
+      // Find a node by playerId (simple recursive search)
+      findPlayer(node, playerId) {
+        if (!node) return null;
+        if (node.playerId === playerId) return node;
+        let leftSearch = this.findPlayer(node.left, playerId);
+        if (leftSearch) return leftSearch;
+        return this.findPlayer(node.right, playerId);
+      }
+      
+      // Find the rank of a player by doing a reverse in-order traversal (O(n) approach)
+      findRank(node, playerId) {
+        let rank = 0;
+        let found = false;
+        function traverse(n) {
+          if (!n || found) return;
+          traverse(n.right);
+          if (found) return;
+          rank++;
+          if (n.playerId === playerId) {
+            found = true;
+            return;
+          }
+          traverse(n.left);
+        }
+        traverse(node);
+        return found ? rank : -1;
+      }
+    }
+    
+    // Global leaderboard instance and root of AVL tree
+    const leaderboard = new LeaderboardAVL();
+    let root = null;
+    
+    // Utility: update the leaderboard table display (sorted descending order)
+    function updateLeaderboardDisplay() {
+      const tbody = document.querySelector("#leaderboardTable tbody");
+      tbody.innerHTML = "";
+      let players = leaderboard.inOrder(root);
+      // Reverse to get descending order (highest score first)
+      players = players.reverse();
+      players.forEach((player, index) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${index + 1}</td>
+                        <td>${player.playerId}</td>
+                        <td>${player.score}</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+    
+    // Utility: update tree structure display
+    function updateTreeDisplay() {
+      const treeDiv = document.getElementById("treeOutput");
+      treeDiv.textContent = leaderboard.treeString(root);
+    }
+    
+    // Add player handler
+    function addPlayer() {
+      const playerId = document.getElementById("playerId").value.trim();
+      const scoreVal = document.getElementById("score").value;
+      const score = parseInt(scoreVal, 10);
+      if (!playerId || isNaN(score)) {
+        alert("Please enter a valid Player ID and numeric Score.");
+        return;
+      }
+      root = leaderboard.insert(root, playerId, score);
+      updateLeaderboardDisplay();
+      updateTreeDisplay();
+      // Clear input fields
+      document.getElementById("playerId").value = "";
+      document.getElementById("score").value = "";
+    }
+    
+    // Delete player handler: searches by playerId, then deletes using found score.
+    function deletePlayer() {
+      const playerId = document.getElementById("deletePlayerId").value.trim();
+      if (!playerId) {
+        alert("Please enter a valid Player ID to delete.");
+        return;
+      }
+      const node = leaderboard.findPlayer(root, playerId);
+      if (!node) {
+        alert("Player not found.");
+        return;
+      }
+      root = leaderboard.deleteNode(root, playerId, node.score);
+      updateLeaderboardDisplay();
+      updateTreeDisplay();
+      document.getElementById("deletePlayerId").value = "";
+    }
+    
+    // Find rank handler
+    function findRank() {
+      const playerId = document.getElementById("rankPlayerId").value.trim();
+      if (!playerId) {
+        alert("Please enter a valid Player ID.");
+        return;
+      }
+      const rank = leaderboard.findRank(root, playerId);
+      const rankDiv = document.getElementById("rankResult");
+      if (rank === -1) {
+        rankDiv.textContent = "Player not found.";
+      } else {
+        rankDiv.textContent = "Rank of player " + playerId + " is: " + rank;
+      }
+      document.getElementById("rankPlayerId").value = "";
+    }
+    
+    // Display top N players handler
+    function displayTopN() {
+      const nVal = document.getElementById("topN").value;
+      const n = parseInt(nVal, 10);
+      if (isNaN(n) || n <= 0) {
+        alert("Please enter a valid positive number for N.");
+        return;
+      }
+      const topPlayers = leaderboard.getTopN(root, n);
+      let output = "";
+      topPlayers.forEach((player, index) => {
+        output += (index + 1) + ". " + player.playerId + " (Score: " + player.score + ")\n";
+      });
+      document.getElementById("topNResult").textContent = output;
+      document.getElementById("topN").value = "";
+    }
+  </script>
+</body>
+</html>
