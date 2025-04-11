@@ -1,0 +1,23 @@
+{
+    "canvasWidth": 800,
+    "canvasHeight": 600,
+    "pegRadius": 10,
+    "ballSpeed": 10,
+    "marginX": 0.05, 
+    "marginY": 0.1, 
+    "cannonAngleLimit": 0.785398, 
+    "pegTypes": ["blue", "orange", "purple", "green"],
+    "pegs": [
+        { "type": "blue", "x": 100, "y": 100 },
+        { "type": "orange", "x": 200, "y": 150 },
+        { "type": "purple", "x": 300, "y": 200 },
+        { "type": "green", "x": 400, "y": 250 }
+    ],
+    "score": 0,
+    "totalScore": 0,
+    "angle": 0,
+    "currentScore": 0,
+    "x": 0,
+    "y": 0,
+    "isOverlapping": false
+}
