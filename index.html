@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to external CSS file -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -24,72 +28,165 @@
         </div>
     </header>
 
-<!-- About Section -->
+    <!-- About Section -->
     <section id="about">
         <div class="container">
             <h2>About Me</h2>
-            <p>Hello! I’m Scott, a dedicated and detail-oriented Computer Science student with a concentration in Software Engineering at the University of Nebraska at Omaha. With a 3.961 GPA and a background in applied science and information technology, I bring a strong foundation in programming and a passion for artificial intelligence.</p>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hello! I'm Scott, a dedicated and detail-oriented Computer Science student with a concentration in Software Engineering at the University of Nebraska at Omaha. With a 3.961 GPA and a background in applied science and information technology, I bring a strong foundation in programming and a passion for artificial intelligence.</p>
+                    
+                    <p>Prior to pursuing my degree, I served in the United States Air Force as an aircraft mechanic, working on B-1B and KC-135 airframes. This experience not only honed my technical skills but also instilled in me a deep sense of discipline and problem-solving. My career shift to computer science is driven by a desire to innovate and contribute to the rapidly evolving tech industry.</p>
+                </div>
+                <div class="about-image">
+                    <img src="media\img\Profile.JPGcropped.JPG" alt="Profile Picture" class="profile-picture">
+                </div>
+            </div>
+            
+            <div class="skills-container">
+                <h3>Technical Skills</h3>
+                <div class="skills-grid">
+                    <span class="skill-badge">JavaScript</span>
+                    <span class="skill-badge">HTML/CSS</span>
+                    <span class="skill-badge">Python</span>
+                    <span class="skill-badge">Java</span>
+                    <span class="skill-badge">C++</span>
+                    <span class="skill-badge">SQL</span>
+                    <span class="skill-badge">Node.js</span>
+                    <span class="skill-badge">Next.js</span>
+                    <span class="skill-badge">React</span>
+                    <span class="skill-badge">Supabase</span>
+                    <span class="skill-badge">Vercel</span>
+                    <span class="skill-badge">Data Structures</span>
+                    <span class="skill-badge">Algorithms</span>
+                    <span class="skill-badge">Object-Oriented Design</span>
+                    <span class="skill-badge">Canvas API</span>
+                    <span class="skill-badge">Git</span>
+                    <span class="skill-badge">Agile Methodology</span>
+                </div>
+            </div>
 
-            <p>Prior to pursuing my degree, I served in the United States Air Force as an aircraft mechanic, working on B-1B and KC-135 airframes. This experience not only honed my technical skills but also instilled in me a deep sense of discipline and problem-solving. My career shift to computer science is driven by a desire to innovate and contribute to the rapidly evolving tech industry.</p>
-
-            <p>My academic journey includes exploring recursion as a teaching assistant, analyzing complex datasets, and building functional software systems. I am also deeply interested in artificial intelligence and aspire to develop technologies that enhance human-computer interaction and decision-making.</p>
-
-            <p>Beyond academics, I enjoy cycling, gaming, and learning new skills like Mandarin to keep my mind sharp. I’m also passionate about personal growth and resilience, leveraging my experiences to overcome challenges and achieve my goals.</p>
-
-            <p>If you'd like to learn more about my work, feel free to explore my projects below or reach out to connect—I’m always excited to collaborate and share ideas!</p>
-
-            <img src="media\img\Profile.JPGcropped.JPG" alt="Your Photo" class="profile-picture">
+            <div class="skills-container">
+                <h3>Transferable Skills</h3>
+                <div class="skills-grid">
+                    <span class="skill-badge">Advanced Troubleshooting</span>
+                    <span class="skill-badge">Systems Integration</span>
+                    <span class="skill-badge">Preventative Maintenance</span>
+                    <span class="skill-badge">Quality Assurance</span>
+                    <span class="skill-badge">Process Optimization</span>
+                    <span class="skill-badge">Technical Documentation</span>
+                    <span class="skill-badge">Root Cause Analysis</span>
+                    <span class="skill-badge">Performance Testing</span>
+                    <span class="skill-badge">Critical Thinking</span>
+                    <span class="skill-badge">Attention to Detail</span>
+                    <span class="skill-badge">Team Leadership</span>
+                    <span class="skill-badge">High-Pressure Operations</span>
+                </div>
+            </div>
+            
+            <div class="skills-container">
+                <h3>Global Experience</h3>
+                <div class="skills-grid">
+                    <span class="skill-badge">Travel Adaptability</span>
+                    <span class="skill-badge">Cross-Cultural Communication</span>
+                    <span class="skill-badge">Geographic Mobility</span>
+                    <span class="skill-badge">International Deployments</span>
+                    <span class="skill-badge">Linguistic Navigation</span>
+                    <span class="skill-badge">Remote Work Capability</span>
+                    <span class="skill-badge">Global Time Zone Flexibility</span>
+                    <span class="skill-badge">Situational Awareness</span>
+                    <span class="skill-badge">Cultural Adaptability</span>
+                    <span class="skill-badge">Location Independence</span>
+                    <span class="skill-badge">Relocation Readiness</span>
+                    <span class="skill-badge">Global Perspective</span>
+                </div>
+            </div>
         </div>
     </section>
-
 
     <!-- Projects Section -->
     <section id="projects">
         <div class="container">
             <h2>Projects</h2>
-            <div class="project" onclick="window.location.href='media/Projects/Graphs/index.html'">
-                <h3>Graph Algorithms Visualizer</h3>
-                <p>An interactive tool for visualizing graph algorithms like Dijkstra's and Bellman-Ford. This application allows users to create custom graphs, set start nodes, and watch step-by-step how shortest path algorithms work. Features include real-time distance table updates, animation controls, and the ability to handle both positive and negative edge weights. Perfect for algorithm learning and demonstration.</p>
-                <a href="media/Projects/Graphs/index.html">View Project</a>
-            </div>
-            <div class="project" onclick="window.location.href='media/Projects/Ball Pit/index.html'">
-                <h3>Ball Pit</h3>
-                <p>Experience the Interactive Ball Pit, a visually engaging project that demonstrates advanced collision detection, responsive design, and smooth animations. With dynamic controls for 
-                    speed, size, color, and more, this project showcases the power of the HTML5 Canvas API and object-oriented programming to create an immersive and interactive experience.</p>
-                <a href="media/Projects/Ball Pit/index.html">View Project</a>
-            </div>
-            <div class="project" onclick="window.location.href='media/Projects/Battleship/SudoBattleship.html'">
-                <h3>Battleship</h3>
-                <p>This project is a dynamic and interactive battleship game where players guess the location of a hidden target on a grid. The game provides real-time feedback using a color gradient 
-                    from blue to red to indicate proximity, enhancing the player's experience with intuitive visual hints. It showcases seamless integration of JavaScript for game logic and CSS for 
-                    responsive, engaging design.</p>
-                <a href="media/Projects/Battleship/SudoBattleship.html">View Project</a>
-            </div>
-            <div class="project" onclick="window.location.href='media/Projects/Job Scheduling/SoloProject2.html'">
-                <h3>Job Scheduling Optimizer</h3>
-                <p>This interactive application demonstrates a greedy algorithm for job scheduling with profits and deadlines. Users can add jobs with specific profits and time constraints, and the 
-                    program calculates the optimal schedule to maximize total profit. The project features a visual timeline representation of scheduled jobs, dynamic recalculation, and randomized job 
-                    generation for testing different scenarios. It showcases algorithm implementation for solving complex resource allocation problems.</p>
-                <a href="media/Projects/Job Scheduling/SoloProject2.html">View Project</a>
-            </div>
-            <div class="project" onclick="window.location.href='media/Projects/SpaceInvaders/src/index.html'">
-                <h3>Space Rangers</h3>
-                <p>Space Rangers is a fast-paced 2D browser-based arcade shooter built with JavaScript and HTML5 Canvas. Featuring responsive controls, dynamic enemy AI, and immersive visuals with 
-                    sound effects, this project highlights expertise in game mechanics, object-oriented programming, and resource management, delivering an engaging and polished gaming experience.</p>
-                <a href="media/Projects/SpaceInvaders/src/index.html">View Project</a>
-            </div>
-            <div class="project" onclick="window.location.href='media/Projects/AVLTree/index.html'">
-                <h3>AVL Tree Leaderboard</h3>
-                <p>An implementation of an AVL tree incorporated into an interactive leaderboard. This leaderboard allows users to manipulate the tree and observe the changes made to maintain balance. 
-                    The AVL tree is a self-balancing binary search tree, where the difference in heights between the left and right subtrees of any node is at most one. This property ensures that the tree 
-                    remains balanced, providing efficient operations for insertion, deletion, and lookup. The interactive leaderboard demonstrates these operations and the automatic balancing process, 
-                    making it a useful tool for understanding how AVL trees work.</p>
-                <a href="media/Projects/AVLTree/index.html">View Project</a>
-            </div>
-            <div class="project" onclick="window.location.href='media/Projects/Pegish/index.html'">
-                <h3>Pegish</h3>
-                <p>Pegish is a minimal viable product (MVP) of a Peggle clone. While still a work in progress, it demonstrates the core mechanics of the game, including ball physics, peg interactions, and basic scoring. This project showcases the potential for further development into a fully-featured game.</p>
-                <a href="media/Projects/Pegish/index.html">View Project</a>
+            <div class="projects-grid">
+                <div class="project" onclick="window.location.href='media/Projects/Graphs/index.html'">
+                    <img src="media/img/Graphs.png" alt="Graph Algorithms Visualizer" class="project-img">
+                    <div class="project-content">
+                        <h3>Graph Algorithms Visualizer</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">Algorithms</span>
+                            <span class="project-tag">Interactive</span>
+                        </div>
+                        <p>An interactive tool for visualizing graph algorithms like Dijkstra's and Bellman-Ford. This application allows users to create custom graphs and watch step-by-step how shortest path algorithms work.</p>
+                        <a href="media/Projects/Graphs/index.html">View Project</a>
+                    </div>
+                </div>
+                <div class="project" onclick="window.location.href='media/Projects/Ball Pit/index.html'">
+                    <img src="media/img/Ball_Pit_screenshot.png" alt="Ball Pit" class="project-img">
+                    <div class="project-content">
+                        <h3>Ball Pit</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">Canvas API</span>
+                            <span class="project-tag">Physics</span>
+                            <span class="project-tag">Animation</span>
+                        </div>
+                        <p>Experience the Interactive Ball Pit, a visually engaging project that demonstrates advanced collision detection, responsive design, and smooth animations.</p>
+                        <a href="media/Projects/Ball Pit/index.html">View Project</a>
+                    </div>
+                </div>
+                <div class="project" onclick="window.location.href='media/Projects/Battleship/SudoBattleship.html'">
+                    <img src="media/img/Battleship.png" alt="Battleship" class="project-img">
+                    <div class="project-content">
+                        <h3>Battleship</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">JavaScript</span>
+                            <span class="project-tag">Game</span>
+                            <span class="project-tag">Interactive</span>
+                        </div>
+                        <p>This project is a dynamic and interactive battleship game where players guess the location of a hidden target on a grid with intuitive visual hints.</p>
+                        <a href="media/Projects/Battleship/SudoBattleship.html">View Project</a>
+                    </div>
+                </div>
+                <div class="project" onclick="window.location.href='media/Projects/Job Scheduling/SoloProject2.html'">
+                    <img src="media/img/Job-Scheduling.png" alt="Job Scheduling Optimizer" class="project-img">
+                    <div class="project-content">
+                        <h3>Job Scheduling Optimizer</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">Algorithms</span>
+                            <span class="project-tag">Optimization</span>
+                            <span class="project-tag">UI/UX</span>
+                        </div>
+                        <p>This interactive application demonstrates a greedy algorithm for job scheduling with profits and deadlines, featuring visual timeline representation.</p>
+                        <a href="media/Projects/Job Scheduling/SoloProject2.html">View Project</a>
+                    </div>
+                </div>
+                <div class="project" onclick="window.location.href='media/Projects/SpaceInvaders/src/index.html'">
+                    <img src="media/img/Space-rangers.png" alt="Space Rangers" class="project-img">
+                    <div class="project-content">
+                        <h3>Space Rangers</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">Game Dev</span>
+                            <span class="project-tag">Canvas</span>
+                            <span class="project-tag">OOP</span>
+                        </div>
+                        <p>Space Rangers is a fast-paced 2D browser-based arcade shooter built with JavaScript and HTML5 Canvas, featuring responsive controls and dynamic enemy AI.</p>
+                        <a href="media/Projects/SpaceInvaders/src/index.html">View Project</a>
+                    </div>
+                </div>
+                <div class="project" onclick="window.location.href='media/Projects/AVLTree/index.html'">
+                    <img src="media/img/AVLtree.png" alt="AVL Tree Leaderboard" class="project-img">
+                    <div class="project-content">
+                        <h3>AVL Tree Leaderboard</h3>
+                        <div class="project-tags">
+                            <span class="project-tag">Data Structures</span>
+                            <span class="project-tag">Visualization</span>
+                            <span class="project-tag">Educational</span>
+                        </div>
+                        <p>An implementation of an AVL tree incorporated into an interactive leaderboard, demonstrating self-balancing operations in real-time.</p>
+                        <a href="media/Projects/AVLTree/index.html">View Project</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -118,12 +215,18 @@
     <!-- Footer -->
     <footer>
         <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" class="social-link">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" class="social-link">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" class="social-link">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
             <p>&copy; 2025 Scott Faust. All rights reserved.</p>
-            <ul>
-                <li><a href="https://github.com/DrFaustest" target="_blank" rel="noopener">GitHub</a></li>
-                <li><a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener">LinkedIn</a></li>
-                <li><a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener">Facebook</a></li>
-            </ul>
         </div>
     </footer>
 
