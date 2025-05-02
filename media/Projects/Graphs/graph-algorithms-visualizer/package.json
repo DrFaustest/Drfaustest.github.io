@@ -1,0 +1,22 @@
+{
+  "name": "graph-algorithms-visualizer",
+  "version": "1.0.0",
+  "description": "An interactive visualization tool for graph algorithms",
+  "main": "index.html",
+  "scripts": {
+    "start": "http-server -p 8080 --cors -o",
+    "test": "http-server -p 8081 --cors -o tests/test-runner.html"
+  },
+  "keywords": [
+    "graph",
+    "algorithms",
+    "visualization",
+    "dijkstra",
+    "bellman-ford"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Algorithms Visualizer - Tests</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            color: #333;
+        }
+        h1 {
+            color: #4b6cb7;
+            border-bottom: 2px solid #4b6cb7;
+            padding-bottom: 0.5rem;
+        }
+        .test-suite {
+            margin-bottom: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .test-suite-header {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+        .test-results {
+            padding: 1rem;
+        }
+        .test-case {
+            margin-bottom: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        .test-pass {
+            background-color: #e6ffe6;
+            border-left: 4px solid #a3be8c;
+        }
+        .test-fail {
+            background-color: #ffeded;
+            border-left: 4px solid #bf616a;
+        }
+        .pass-indicator {
+            color: #a3be8c;
+        }
+        .fail-indicator {
+            color: #bf616a;
+        }
+        .test-summary {
+            margin-top: 2rem;
+            padding: 1rem;
+            border-radius: 4px;
+            background-color: #f5f5f5;
+        }
+        .error-details {
+            font-family: monospace;
+            background-color: #f9f9f9;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Graph Algorithms Visualizer - Test Suite</h1>
+    <div id="test-container"></div>
+    <div id="test-summary" class="test-summary">Loading tests...</div>
+
+    <!-- Load classes to test -->
+    <script src="../js/graph.js"></script>
+    <script src="../js/dijkstra.js"></script>
+    <script src="../js/bellman-ford.js"></script>
+
+    <!-- Test framework -->
+    <script>
+        // Simple test framework
+        class TestRunner {
+            constructor() {
+                this.testSuites = [];
+                this.testContainer = document.getElementById('test-container');
+                this.testSummary = document.getElementById('test-summary');
+                this.totalTests = 0;
+                this.passedTests = 0;
+            }
+
+            addTestSuite(name, testFn) {
+                this.testSuites.push({ name, testFn });
+            }
+
+            async runTests() {
+                console.log("Running tests:", this.testSuites.length, "test suites found");
+                this.testSummary.innerHTML = `Running ${this.testSuites.length} test suites...`;
+                
+                for (const suite of this.testSuites) {
+                    const suiteElement = this.createTestSuiteElement(suite.name);
+                    this.testContainer.appendChild(suiteElement);
+                    
+                    const resultsElement = document.createElement('div');
+                    resultsElement.className = 'test-results';
+                    suiteElement.appendChild(resultsElement);
+
+                    try {
+                        const tests = [];
+                        const testObj = {
+                            test: (name, fn) => {
+                                tests.push({ name, fn });
+                            }
+                        };
+
+                        // Call the test suite function to register tests
+                        suite.testFn(testObj);
+                        console.log(`Registered ${tests.length} tests in suite: ${suite.name}`);
+                        
+                        let passedInSuite = 0;
+
+                        // Run the tests in the suite
+                        for (const test of tests) {
+                            this.totalTests++;
+                            
+                            try {
+                                await test.fn();
+                                this.passedTests++;
+                                passedInSuite++;
+                                this.addTestResult(resultsElement, test.name, true);
+                            } catch (error) {
+                                this.addTestResult(resultsElement, test.name, false, error);
+                            }
+                        }
+
+                        // Update suite header with results
+                        const headerCountElement = suiteElement.querySelector('.test-count');
+                        headerCountElement.textContent = `${passedInSuite}/${tests.length} passed`;
+                        
+                        if (passedInSuite === tests.length) {
+                            headerCountElement.className = 'pass-indicator test-count';
+                        } else {
+                            headerCountElement.className = 'fail-indicator test-count';
+                        }
+                    } catch (error) {
+                        console.error(`Error in test suite ${suite.name}:`, error);
+                        const errorElement = document.createElement('div');
+                        errorElement.className = 'test-fail';
+                        errorElement.textContent = `Suite error: ${error.message}`;
+                        resultsElement.appendChild(errorElement);
+                    }
+                }
+
+                // Update summary
+                this.testSummary.innerHTML = `
+                    <strong>Test Summary:</strong> ${this.passedTests}/${this.totalTests} tests passed
+                    (${Math.round((this.passedTests / this.totalTests) * 100) || 0}%)
+                `;
+            }
+
+            createTestSuiteElement(name) {
+                const suiteElement = document.createElement('div');
+                suiteElement.className = 'test-suite';
+                
+                const headerElement = document.createElement('div');
+                headerElement.className = 'test-suite-header';
+                
+                const nameElement = document.createElement('div');
+                nameElement.textContent = name;
+                
+                const countElement = document.createElement('div');
+                countElement.className = 'test-count';
+                countElement.textContent = 'Running...';
+                
+                headerElement.appendChild(nameElement);
+                headerElement.appendChild(countElement);
+                suiteElement.appendChild(headerElement);
+                
+                return suiteElement;
+            }
+
+            addTestResult(container, name, passed, error = null) {
+                const resultElement = document.createElement('div');
+                resultElement.className = passed ? 'test-case test-pass' : 'test-case test-fail';
+                
+                resultElement.innerHTML = `
+                    ${passed ? '✓' : '✗'} ${name}
+                `;
+                
+                if (error) {
+                    const errorDetailsElement = document.createElement('div');
+                    errorDetailsElement.className = 'error-details';
+                    errorDetailsElement.textContent = error.stack || error.message;
+                    resultElement.appendChild(errorDetailsElement);
+                }
+                
+                container.appendChild(resultElement);
+            }
+        }
+
+        // Create global test runner
+        window.testRunner = new TestRunner();
+        console.log("TestRunner created");
+    </script>
+
+    <!-- Load test suites -->
+    <script src="./graph.test.js"></script>
+    <script src="./dijkstra.test.js"></script>
+    <script src="./bellman-ford.test.js"></script>
+    <script src="./integration.test.js"></script>
+
+    <!-- Run tests -->
+    <script>
+        window.addEventListener('load', function() {
+            console.log("Page loaded, running tests");
+            window.testRunner.runTests();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Scheduling with Profits and Deadlines</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        nav {
+            background-color: #333;
+            padding: 10px 0;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin: 0 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+        
+        nav a:hover {
+            background-color: #555;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        input[type="text"], input[type="number"], button {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e7f4e4;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            padding: 2px 5px;
+            margin-left: 5px;
+            width: auto;
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .schedule-visual {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        #jobs_list li {
+            margin-bottom: 5px;
+            padding: 5px;
+            background-color: #f9f9f9;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="../../../index.html">Back to Portfolio</a>
+</nav>
+<div class="container">
+    <h2>Job Scheduling with Profits and Deadlines</h2>
+    <input type="text" id="job_id" placeholder="Job ID">
+    <input type="number" id="profit" placeholder="Profit">
+    <input type="number" id="deadline" placeholder="Deadline">
+    <button onclick="addJob()">Add Job</button>
+    <button onclick="scheduleJobs()" style="background-color:#008CBA; margin-top:15px;">Schedule Jobs</button>
+    <button onclick="clearAllJobs()" style="background-color:#f44336; margin-top:10px;">Clear All Jobs</button>
+    <button onclick="generateRandomJobs()" style="background-color:#ff9800; margin-top:10px;">Generate 20 Random Jobs</button>
+
+    <div class="error" id="error"></div>
+
+    <div class="result" id="result"></div>
+
+    <h3>Jobs List:</h3>
+    <ul id="jobs_list"></ul>
+</div>
+
+<script>
+    let jobs = [];
+
+    function addJob() {
+        let job_id = document.getElementById('job_id').value.trim();
+        let profit = parseInt(document.getElementById('profit').value);
+        let deadline = parseInt(document.getElementById('deadline').value);
+
+        if (!job_id) {
+            document.getElementById('error').innerText = 'Please provide a valid Job ID';
+            return;
+        }
+        
+        if (isNaN(profit) || profit <= 0) {
+            document.getElementById('error').innerText = 'Profit must be a positive number';
+            return;
+        }
+        
+        if (isNaN(deadline) || deadline <= 0) {
+            document.getElementById('error').innerText = 'Deadline must be a positive number';
+            return;
+        }
+        
+        // Check for duplicate job IDs
+        if (jobs.some(job => job.job_id === job_id)) {
+            document.getElementById('error').innerText = 'Job ID must be unique';
+            return;
+        }
+
+        const hasExistingSchedule = document.getElementById('result').style.display === 'block';
+        
+        jobs.push({job_id, profit, deadline});
+        updateJobsList();
+        clearInputs();
+        document.getElementById('error').innerText = '';
+        
+        // Automatically recalculate if a schedule already exists
+        if (hasExistingSchedule) {
+            scheduleJobs();
+            document.getElementById('result').insertAdjacentHTML('afterbegin', 
+                '<div style="background-color:#ffe0b2; padding:5px; margin-bottom:10px; border-radius:3px;">Schedule recalculated with new job: ' + job_id + '</div>');
+        }
+    }
+
+    function updateJobsList() {
+        let jobsList = document.getElementById('jobs_list');
+        jobsList.innerHTML = '';
+        jobs.forEach((job, index) => {
+            let li = document.createElement('li');
+            li.innerHTML = `${job.job_id}: Profit ${job.profit}, Deadline ${job.deadline} 
+                            <button class="delete-btn" onclick="deleteJob(${index})">Delete</button>`;
+            jobsList.appendChild(li);
+        });
+    }
+
+    function deleteJob(index) {
+        const deletedJobId = jobs[index].job_id;
+        jobs.splice(index, 1);
+        updateJobsList();
+        
+        // If there's a schedule displayed, mark it as outdated
+        if (document.getElementById('result').style.display === 'block') {
+            document.getElementById('result').insertAdjacentHTML('afterbegin', 
+                '<div style="background-color:#ffcdd2; padding:5px; margin-bottom:10px; border-radius:3px;">⚠️ Schedule is outdated after deleting job: ' + 
+                deletedJobId + '. <button onclick="scheduleJobs()" style="background-color:#008CBA; padding:3px 8px; margin-left:10px; color:white; border:none; border-radius:3px; cursor:pointer;">Recalculate</button></div>');
+        }
+    }
+
+    function clearInputs() {
+        document.getElementById('job_id').value = '';
+        document.getElementById('profit').value = '';
+        document.getElementById('deadline').value = '';
+    }
+
+    function clearAllJobs() {
+        if (confirm('Are you sure you want to clear all jobs?')) {
+            jobs = [];
+            updateJobsList();
+            document.getElementById('result').style.display = 'none';
+            document.getElementById('error').innerText = '';
+        }
+    }
+
+    function scheduleJobs() {
+        if (jobs.length === 0) {
+            document.getElementById('error').innerText = 'No jobs to schedule. Please add jobs first.';
+            return;
+        }
+
+        jobs.sort((a, b) => b.profit - a.profit);
+
+        let maxDeadline = Math.max(...jobs.map(job => job.deadline));
+        let slots = Array(maxDeadline).fill(null);
+        let totalProfit = 0;
+        let scheduledJobs = [];
+        let unscheduledJobs = [];
+
+        jobs.forEach(job => {
+            let scheduled = false;
+            for (let j = Math.min(maxDeadline, job.deadline) - 1; j >= 0; j--) {
+                if (!slots[j]) {
+                    slots[j] = job;
+                    totalProfit += job.profit;
+                    scheduledJobs.push(job.job_id);
+                    scheduled = true;
+                    break;
+                }
+            }
+            
+            if (!scheduled) {
+                unscheduledJobs.push(job.job_id);
+            }
+        });
+
+        let resultHTML = `<strong>Scheduled Jobs:</strong> ${scheduledJobs.join(', ')}<br>
+                      <strong>Maximum Profit:</strong> ${totalProfit}`;
+                      
+        if (unscheduledJobs.length > 0) {
+            resultHTML += `<br><strong>Unscheduled Jobs:</strong> ${unscheduledJobs.join(', ')}`;
+        }
+        
+        resultHTML += visualizeSchedule(slots);
+        
+        document.getElementById('result').innerHTML = resultHTML;
+        document.getElementById('result').style.display = 'block';
+        document.getElementById('error').innerText = '';
+    }
+
+    function visualizeSchedule(slots) {
+        let visualization = '<div class="schedule-visual" style="margin-top: 15px;">';
+        visualization += '<h4>Schedule Timeline:</h4>';
+        visualization += '<div style="display:flex; margin-bottom:5px;">';
+        
+        for (let i = 0; i < slots.length; i++) {
+            visualization += `<div style="flex:1; text-align:center; border-right:1px solid #ccc;">Time ${i+1}</div>`;
+        }
+        
+        visualization += '</div><div style="display:flex;">';
+        
+        for (let i = 0; i < slots.length; i++) {
+            if (slots[i]) {
+                visualization += `<div style="flex:1; text-align:center; padding:10px; background-color:#4CAF50; color:white; border:1px solid white;">
+                                ${slots[i].job_id}</div>`;
+            } else {
+                visualization += '<div style="flex:1; text-align:center; padding:10px; background-color:#f0f0f0; border:1px solid white;">Empty</div>';
+            }
+        }
+        
+        visualization += '</div></div>';
+        
+        return visualization;
+    }
+
+    function generateRandomJobs() {
+        // Check if a schedule exists
+        const hasExistingSchedule = document.getElementById('result').style.display === 'block';
+        
+        // Clear existing jobs first
+        jobs = [];
+        
+        // Generate 20 random jobs
+        const jobPrefixes = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K'];
+        const maxDeadline = 10;  // Maximum deadline value
+        const maxProfit = 100;   // Maximum profit value
+        
+        for (let i = 0; i < 20; i++) {
+            // Generate a unique job ID
+            let randomPrefix = jobPrefixes[Math.floor(Math.random() * jobPrefixes.length)];
+            let jobId = randomPrefix + (i + 1);
+            
+            // Generate random profit between 10 and maxProfit
+            let profit = Math.floor(Math.random() * (maxProfit - 10 + 1)) + 10;
+            
+            // Generate random deadline between 1 and maxDeadline
+            let deadline = Math.floor(Math.random() * maxDeadline) + 1;
+            
+            // Add the job to the list
+            jobs.push({job_id: jobId, profit: profit, deadline: deadline});
+        }
+        
+        // Update the display
+        updateJobsList();
+        document.getElementById('error').innerText = '';
+        
+        if (hasExistingSchedule) {
+            // Automatically recalculate and show a notification
+            scheduleJobs();
+            document.getElementById('result').insertAdjacentHTML('afterbegin', 
+                '<div style="background-color:#e3f2fd; padding:5px; margin-bottom:10px; border-radius:3px;">Schedule recalculated with 20 random jobs</div>');
+        } else {
+            document.getElementById('result').style.display = 'none';
+        }
+    }
+</script>
+</body>
+</html>

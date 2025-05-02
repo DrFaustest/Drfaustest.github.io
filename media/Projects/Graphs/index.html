@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph Algorithms Visualizer</title>
+    <link rel="icon" href="graph-algorithms-visualizer/assets/icons/favicon.svg">
+    <link rel="stylesheet" href="graph-algorithms-visualizer/css/reset.css">
+    <link rel="stylesheet" href="graph-algorithms-visualizer/css/style.css">
+    <style>
+        .nav-bar {
+            background-color: #333;
+            padding: 10px 20px;
+            text-align: left;
+        }
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .nav-bar a:hover {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="../../../index.html">← Back to Portfolio</a>
+    </div>
+    
+    <header>
+        <h1>Graph Algorithms Visualizer</h1>
+        <p>Interactive visualization tool for Dijkstra's and Bellman-Ford shortest path algorithms</p>
+    </header>
+
+    <main>
+        <div class="controls-container">
+            <div class="algorithm-selector">
+                <h2>Select Algorithm</h2>
+                <button id="dijkstra-btn" class="algorithm-btn active">Dijkstra's Algorithm</button>
+                <button id="bellman-ford-btn" class="algorithm-btn">Bellman-Ford Algorithm</button>
+            </div>
+            
+            <div class="graph-controls">
+                <h2>Graph Controls</h2>
+                <div class="control-group">
+                    <button id="add-node-btn">Add Node</button>
+                    <button id="add-edge-btn">Add Edge</button>
+                    <button id="delete-btn">Delete Selected</button>
+                </div>
+                <div class="control-group">
+                    <button id="clear-btn">Clear Graph</button>
+                    <button id="example1-btn">Example 1 (Dijkstra)</button>
+                    <button id="example2-btn">Example 2 (Bellman-Ford)</button>
+                </div>
+            </div>
+            
+            <div class="algorithm-controls">
+                <h2>Algorithm Controls</h2>
+                <div class="control-group">
+                    <label for="start-node">Start Node:</label>
+                    <select id="start-node"></select>
+                </div>
+                <div class="control-group">
+                    <button id="run-btn">Run Algorithm</button>
+                    <button id="step-btn">Step Algorithm</button>
+                    <button id="reset-btn">Reset</button>
+                </div>
+                <div class="speed-control">
+                    <label for="animation-speed">Animation Speed:</label>
+                    <input type="range" id="animation-speed" min="1" max="10" value="5">
+                </div>
+            </div>
+        </div>
+
+        <div class="visualization-container">
+            <div id="graph-canvas"></div>
+            <div id="algorithm-info">
+                <div id="current-step">
+                    <h3>Current Step</h3>
+                    <p id="step-description">Select an algorithm and press Run or Step to start.</p>
+                </div>
+                <div id="distance-table">
+                    <h3>Distance Table</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Node</th>
+                                <th>Distance</th>
+                                <th>Previous</th>
+                            </tr>
+                        </thead>
+                        <tbody id="distance-table-body">
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="instructions-container">
+            <h2>How to Use</h2>
+            <div class="instruction-steps">
+                <div class="instruction-step">
+                    <h3>1. Create or Select a Graph</h3>
+                    <p>Add nodes by clicking "Add Node" and then clicking on the canvas. Connect nodes by selecting "Add Edge", clicking on a source node, then a target node, and entering the weight.</p>
+                    <p>Alternatively, load one of the example graphs.</p>
+                </div>
+                <div class="instruction-step">
+                    <h3>2. Choose an Algorithm</h3>
+                    <p>Select either Dijkstra's or Bellman-Ford algorithm. Remember that Dijkstra's doesn't work with negative edges, while Bellman-Ford can handle them.</p>
+                </div>
+                <div class="instruction-step">
+                    <h3>3. Set Start Node</h3>
+                    <p>Select your starting node from the dropdown.</p>
+                </div>
+                <div class="instruction-step">
+                    <h3>4. Run or Step Through</h3>
+                    <p>Press "Run" to see the full algorithm or "Step" to advance one step at a time.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Created for Advanced Algorithms Demonstration</p>
+    </footer>
+
+    <div id="edge-weight-modal" class="modal">
+        <div class="modal-content">
+            <h2>Enter Edge Weight</h2>
+            <input type="number" id="edge-weight-input" placeholder="Weight (can be negative for Bellman-Ford)">
+            <div class="modal-buttons">
+                <button id="confirm-edge-btn">Add Edge</button>
+                <button id="cancel-edge-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="graph-algorithms-visualizer/js/graph.js"></script>
+    <script type="module" src="graph-algorithms-visualizer/js/dijkstra.js"></script>
+    <script type="module" src="graph-algorithms-visualizer/js/bellman-ford.js"></script>
+    <script type="module" src="graph-algorithms-visualizer/js/visualization.js"></script>
+    <script type="module" src="graph-algorithms-visualizer/js/ui-controller.js"></script>
+    <script type="module" src="graph-algorithms-visualizer/js/app.js"></script>
+</body>
+</html>
