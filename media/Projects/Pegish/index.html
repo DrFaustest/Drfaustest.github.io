@@ -3,41 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peggle Clone</title>
+    <title>Pegish - An Arcade Ball Game</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        nav {
-            background-color: #333;
-            padding: 10px 0;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            margin: 0 5px;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-        
-        nav a:hover {
-            background-color: #555;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;500;700&display=swap" rel="stylesheet">    <meta name="description" content="Pegish - A fun arcade-style ball and peg game. Test your skills as you aim and shoot to clear the board!">    <!-- Mobile web app settings -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#6200ea">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">    <meta property="og:url" content="https://drfaustest.github.io/media/Projects/Pegish/">
+    <meta property="og:title" content="Pegish - Arcade Ball Game">
+    <meta property="og:description" content="An addictive arcade-style ball and peg game. Test your skills as you aim and clear the board!">
+    <meta property="og:image" content="https://drfaustest.github.io/media/Projects/Pegish/icons/icon-placeholder.svg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">    <meta property="twitter:url" content="https://drfaustest.github.io/media/Projects/Pegish/">
+    <meta property="twitter:title" content="Pegish - Arcade Ball Game">
+    <meta property="twitter:description" content="An addictive arcade-style ball and peg game. Test your skills as you aim and clear the board!">
+    <meta property="twitter:image" content="https://drfaustest.github.io/media/Projects/Pegish/icons/icon-placeholder.svg"><!-- PWA support -->
+    <link rel="manifest" href="manifest.json">
+    <!-- Favicon and app icons -->
+    <link rel="shortcut icon" href="icons/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="icons/favicon.ico" type="image/x-icon">    <!-- Apple specific icons -->
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
 </head>
 <body>
-    <nav>
-        <a href="../../../index.html">Back to Portfolio</a>
-    </nav>
-    <div id="openingScreen">
-        <h1>Pegish</h1>
-        <button id="startButton">Start Game</button>
-    </div>
-    <div id="scoreBoard">Score: <span id="score">0</span></div>
-    <div id="gameLevel" style="position: absolute; top: 10px; left: 10px; font-size: 20px; color: white;">Level: 1</div>
-    <canvas id="gameCanvas" style="display: none;"></canvas>
+    <div id="game-container">
+        <!-- Navigation -->
+        <nav>
+            <a href="../../../index.html" class="back-button">
+                <span class="arrow">←</span> Back to Portfolio
+            </a>
+            <span class="game-title-small">Pegish</span>
+        </nav>
+        
+        <!-- Opening Screen -->
+        <div id="openingScreen">
+            <div class="title-container">
+                <h1>PEGISH</h1>
+                <p class="tagline">Clear the pegs. Score big.</p>
+            </div>
+            <button id="startButton">START GAME</button>
+            <div class="instructions">
+                <h2>How to Play</h2>
+                <ul>
+                    <li>Aim the cannon with your mouse or touch</li>
+                    <li>Click or tap to fire</li>
+                    <li>Clear all orange pegs to advance</li>
+                    <li>Purple pegs double your score</li>
+                    <li>Green pegs give massive bonus points</li>
+                </ul>
+            </div>
+        </div>        <!-- Game Interface -->
+        <div id="gameInterface" class="hidden">
+            <div id="gameStats">
+                <div id="scoreBoard">Score: <span id="score">0</span></div>
+                <div id="gameLevel">Level: <span id="levelNum">1</span></div>
+                <div id="ballsLeft">Balls: <span id="ballCount">5</span></div>
+            </div>
+            <canvas id="gameCanvas" width="800" height="540"></canvas>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="hidden">
+            <h2>Game Over</h2>
+            <p>Your final score: <span id="finalScore">0</span></p>
+            <button id="restartButton">Play Again</button>
+        </div>
+        
+        <!-- Level Complete Screen -->
+        <div id="levelCompleteScreen" class="hidden">
+            <h2>Level Complete!</h2>
+            <div class="level-stats">
+                <p>Score: <span id="levelScore">0</span></p>
+                <p>Bonus: <span id="levelBonus">0</span></p>
+            </div>
+            <button id="nextLevelButton">Next Level</button>
+        </div>    </div>
+    
+    <!-- Initialize canvas size before main scripts -->
+    <script src="scripts/init.js"></script>
+    <!-- Main game scripts -->
     <script src="scripts/main.js" type="module"></script>
+    <script src="scripts/sw-register.js"></script>
 </body>
 </html>

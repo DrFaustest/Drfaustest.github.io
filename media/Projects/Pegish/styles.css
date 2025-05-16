@@ -1,51 +1,412 @@
-body {
+/* Modern Pegish Game Styling */
+:root {
+    --primary-color: #6200ea;
+    --secondary-color: #00e5ff;
+    --accent-color: #ff4081;
+    --background-dark: #0a0e23;
+    --background-light: #1a1f3d;
+    --text-light: #ffffff;
+    --text-muted: #9e9e9e;
+    --success-color: #00c853;
+    --warning-color: #ffab00;
+    --blue-peg: #1e88e5;
+    --orange-peg: #ff9800;
+    --purple-peg: #9c27b0;
+    --green-peg: #00c853;
+}
+
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Exo 2', sans-serif;
+    background: radial-gradient(circle, var(--background-light) 0%, var(--background-dark) 100%);
+    color: var(--text-light);
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+}
+
+#game-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    width: 100%;
     height: 100vh;
-    background-color: #000;
+    position: relative;
 }
 
-canvas {
-    border: 1px solid #fff;
+/* Navigation */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;    background-color: rgba(10, 14, 35, 0.8);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
+.back-button {
+    color: var(--text-light);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.back-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.back-button .arrow {
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+.game-title-small {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    letter-spacing: 1px;
+}
+
+/* Opening Screen */
 #openingScreen {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #000;
-    color: #fff;
-    font-family: Arial, sans-serif;
+    justify-content: center;
+    width: 100%;
+    height: calc(100vh - 60px);
+    padding: 20px;
+    text-align: center;
+    margin-top: 60px;
 }
 
-#startButton {
-    padding: 20px 40px;
-    font-size: 1.5rem;
-    background-color: #007BFF;
-    color: #fff;
+.title-container {
+    margin-bottom: 30px;
+}
+
+#openingScreen h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 4.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    letter-spacing: 3px;
+    text-shadow: 0 2px 10px rgba(0, 229, 255, 0.3);
+}
+
+.tagline {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+}
+
+#startButton, #restartButton, #nextLevelButton {
+    font-family: 'Orbitron', sans-serif;
+    padding: 15px 40px;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, var(--primary-color), #3700b3);
+    color: var(--text-light);
     border: none;
-    border-radius: 5px;
+    border-radius: 30px;
     cursor: pointer;
-    margin-top: 20px;
+    margin: 20px 0;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(98, 0, 234, 0.4);
+    letter-spacing: 1px;
 }
 
-#startButton:hover {
-    background-color: #0056b3;
+#startButton:hover, #restartButton:hover, #nextLevelButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(98, 0, 234, 0.6);
+}
+
+#startButton:active, #restartButton:active, #nextLevelButton:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(98, 0, 234, 0.4);
+}
+
+.instructions {
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.instructions h2 {
+    font-family: 'Orbitron', sans-serif;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+}
+
+.instructions ul {
+    list-style-type: none;
+    text-align: left;
+    padding-left: 10px;
+}
+
+.instructions li {
+    margin: 8px 0;
+    position: relative;
+    padding-left: 25px;
+    line-height: 1.5;
+}
+
+.instructions li::before {
+    content: '•';
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 1.2em;
+}
+
+/* Game Interface */
+#gameInterface {
+    width: 100%;
+    height: calc(100vh - 60px);
+    margin-top: 60px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+canvas {
+    display: block;
+    width: 100%; /* Full width */
+    flex-grow: 1; /* Take available height */
+    background: transparent;
+    /* Preserve aspect ratio */
+    max-height: calc(100vh - 120px); /* Limit height to viewport minus header/footer space */
+}
+
+#gameStats {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: rgba(10, 14, 35, 0.7);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    z-index: 10;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+#scoreBoard, #gameLevel, #ballsLeft {
+    font-size: 1rem;
+    padding: 5px 10px;
+    border-radius: 5px;
 }
 
 #scoreBoard {
+    background: linear-gradient(90deg, rgba(0, 229, 255, 0.2), rgba(98, 0, 234, 0.2));
+    border: 1px solid rgba(0, 229, 255, 0.3);
+}
+
+#gameLevel {
+    background: linear-gradient(90deg, rgba(255, 64, 129, 0.2), rgba(255, 171, 0, 0.2));
+    border: 1px solid rgba(255, 64, 129, 0.3);
+}
+
+#ballsLeft {
+    background: linear-gradient(90deg, rgba(0, 200, 83, 0.2), rgba(76, 175, 80, 0.2));
+    border: 1px solid rgba(0, 200, 83, 0.3);
+}
+
+#score, #levelNum, #ballCount {
+    font-weight: 700;
+    margin-left: 5px;
+    color: var(--text-light);
+}
+
+/* Game Over & Level Complete Screen */
+#gameOverScreen, #levelCompleteScreen {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);    background: rgba(10, 14, 35, 0.9);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    border: 1px solid rgba(98, 0, 234, 0.3);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    min-width: 300px;
+}
+
+#gameOverScreen h2, #levelCompleteScreen h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: var(--accent-color);
+}
+
+#levelCompleteScreen h2 {
+    color: var(--success-color);
+}
+
+.level-stats {
+    margin: 20px 0;
+    font-size: 1.2rem;
+}
+
+.level-stats p {
+    margin: 10px 0;
+}
+
+/* Final Score Display */
+#finalScoreDisplay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background: rgba(10, 14, 35, 0.8);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    padding: 10px 20px;
+    border-radius: 30px;
+    color: var(--text-light);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    font-weight: bold;
+    z-index: 1000;
+    border: 2px solid var(--secondary-color);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+    animation: scorePopup 2s ease-in-out forwards;
+    white-space: nowrap;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+}
+
+@keyframes scorePopup {
+    0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+    30% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    70% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #openingScreen h1 {
+        font-size: 3rem;
+    }
+    
+    .instructions {
+        padding: 15px;
+    }
+    
+    #gameStats {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5px 10px;
+    }
+    
+    #scoreBoard, #gameLevel, #ballsLeft {
+        margin-bottom: 5px;
+        font-size: 0.9rem;
+    }
+    
+    #startButton, #restartButton, #nextLevelButton {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #openingScreen h1 {
+        font-size: 2.5rem;
+    }
+    
+    .back-button span:not(.arrow) {
+        display: none;
+    }
+    
+    .back-button .arrow {
+        margin-right: 0;
+    }
+}
+
+/* Touch Device Optimization */
+@media (hover: none) {
+    #startButton, #restartButton, #nextLevelButton {
+        background: var(--primary-color);
+    }
+    
+    .back-button:active {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+}
+
+/* Mobile orientation message */
+.orientation-message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 14, 35, 0.9);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.message-content {
+    background-color: var(--background-light);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 20px;
+    max-width: 80%;
+}
+
+.message-content p {
+    margin-bottom: 15px;
+    color: var(--text-light);
+}
+
+.message-content button {
+    background-color: var(--primary-color);
     color: white;
-    font-size: 1.5rem;
-    font-family: Arial, sans-serif;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px;
-    border-radius: 5px;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.message-content button:hover {
+    background-color: #3700b3;
+}
+
+/* Utilities */
+.hidden {
+    display: none !important;
 }
