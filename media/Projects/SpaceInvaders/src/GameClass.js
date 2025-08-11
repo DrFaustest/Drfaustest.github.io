@@ -2,7 +2,7 @@ import { GameDisplay } from "./DisplayClass.js";
 import { Bullet, Ship, LifePickup } from "./Player.js";
 import { Enemy, EnemyManager } from "./EnemyClass.js";
 import resourceManager from "./ResourceManager.js";
-
+import { Explosion } from "./Animations.js";
 
 class Game {
   constructor() {
@@ -31,7 +31,7 @@ class Game {
     this.lifePickups = [];
     this.lives = 3;
     this.extraLivesDropped = 0;
-
+    this.explosions = [];
     this.bullets = [];
     this.waveTimer = 0;
     this.dropPoints = [];
@@ -107,6 +107,12 @@ class Game {
 
   restartGame() {
     console.log("restartGame called");
+    this.explosions.forEach(explosion => {
+    if (explosion.element && explosion.element.parentNode) {
+      explosion.element.parentNode.removeChild(explosion.element);
+    }
+    });
+    this.explosions.length = 0;
     this.gameState = 1;
     this.lives = 3;
     this.score = 0;
@@ -144,7 +150,7 @@ class Game {
       this.updateEntities(this.enemyManager.enemies, (enemy) => enemy.move(this.score), (enemy) => enemy.draw(this.gameContext));
       this.updateEntities(this.bullets, (bullet) => bullet.move() || bullet.y < 0, (bullet) => bullet.draw(this.gameContext));
       this.updateEntities(this.lifePickups, (life) => life.move() || life.y > this.gameCanvas.height, (life) => life.draw(this.gameContext));
-
+      this.explosions = this.explosions.filter(explosion => explosion.update());
       this.checkCollisions();
       this.updateAutofireSpeed();
       this.ship.draw(this.gameContext);
@@ -167,43 +173,55 @@ class Game {
   }
 
   checkCollisions() {
-    const bottomBoundary = {
-      x: 0,
-      y: this.gameCanvas.height,
-      width: this.gameCanvas.width,
-      height: 1, // Represents the bottom boundary
-    };
-  
-    // Handle enemies
-    this.enemyManager.enemies.forEach((enemy, index) => {
-      // Check for collisions with bullets
-      this.bullets.forEach((bullet, bulletIndex) => {
-        if (this.isColliding(bullet, enemy)) {
-          enemy.hitPoints--;
-          this.bullets.splice(bulletIndex, 1); // Remove bullet
-          if (enemy.hitPoints <= 0) {
-            this.score += enemy.type === 1 ? 1 : 5;
-            resourceManager.playSound("explosion");
-            this.enemyManager.enemies.splice(index, 1); // Remove enemy
-          }
+  const bottomBoundary = {
+    x: 0,
+    y: this.gameCanvas.height,
+    width: this.gameCanvas.width,
+    height: 1, // Represents the bottom boundary
+  };
+
+  // Handle enemies (iterate backwards for safe removal)
+  for (let i = this.enemyManager.enemies.length - 1; i >= 0; i--) {
+    const enemy = this.enemyManager.enemies[i];
+    console.log("Checking collision with enemy", enemy);
+
+    // Check for collisions with bullets (also iterate backwards)
+    for (let j = this.bullets.length - 1; j >= 0; j--) {
+      const bullet = this.bullets[j];
+      console.log("Checking collision with bullet", bullet);
+      if (this.isColliding(bullet, enemy)) {
+        console.log("Bullet hit enemy", bullet, enemy);
+        enemy.hitPoints--;
+        this.bullets.splice(j, 1); // Remove bullet
+        if (enemy.hitPoints <= 0) {
+          this.score += enemy.type === 1 ? 1 : 5;
+          resourceManager.playSound("explosion");
+          console.log("Enemy destroyed");
+          this.explosions.push(new Explosion(enemy.x, enemy.y, this.scaleFactor));
+          console.log("Enemy destroyed creating explosion");
+          this.enemyManager.enemies.splice(i, 1); // Remove enemy
+          break; // Stop checking other bullets for this enemy
         }
-      });
-  
-      // Check for collisions with the ship
-      if (this.isColliding(this.ship, enemy)) {
-        resourceManager.playSound("explosion");
-        this.enemyManager.enemies.splice(index, 1); // Remove enemy
-        console.log("Ship collided with enemy");
-        this.lives--; // Reduce life by 1
       }
-  
-      // Check for collisions with the bottom boundary
-      if (this.isColliding(enemy, bottomBoundary)) {
-        console.log("Enemy collided with bottom boundary");
-        this.enemyManager.enemies.splice(index, 1); // Remove enemy
-        this.lives--; // Reduce life for missed enemy
-      }
-    });
+    }
+
+    // Check for collisions with the ship
+    if (this.enemyManager.enemies[i] && this.isColliding(this.ship, enemy)) {
+      resourceManager.playSound("explosion");
+      this.enemyManager.enemies.splice(i, 1); // Remove enemy
+      this.explosions.push(new Explosion(enemy.x, enemy.y, this.scaleFactor));
+      console.log("Ship collided with enemy");
+      this.lives--; // Reduce life by 1
+      continue;
+    }
+
+    // Check for collisions with the bottom boundary
+    if (this.enemyManager.enemies[i] && this.isColliding(enemy, bottomBoundary)) {
+      console.log("Enemy collided with bottom boundary");
+      this.enemyManager.enemies.splice(i, 1); // Remove enemy
+      this.lives--; // Reduce life for missed enemy
+    }
+  }
   
     // Drop extra lives logic
     let livesToDrop = Math.floor(this.score / 30);
