@@ -42,7 +42,7 @@ export function renderTreeVisualizer(visualArea, controlsArea) {
     el('input', { id: 'bst-val', placeholder: 'Value', type: 'number' }),
     el('button', { className: 'btn', onclick: () => { const value = Number(qs('#bst-val').value); if (!Number.isNaN(value)) { bstInstance.insert(value); drawTree(); highlightPseudo('ins2'); } } }, 'Insert'),
     el('button', { className: 'btn', onclick: () => { const value = Number(qs('#bst-val').value); if (!Number.isNaN(value)) { bstInstance.remove(value); drawTree(); highlightPseudo('rem'); } } }, 'Remove'),
-  el('button', { className: 'btn', onclick: () => { const value = Number(qs('#bst-val').value); if (!Number.isNaN(value)) { highlightSearchPath(value); } } }, 'Search')
+    el('button', { className: 'btn', onclick: () => { const value = Number(qs('#bst-val').value); if (!Number.isNaN(value)) { highlightSearchPath(value); } } }, 'Search'),
   el('button', { className: 'btn', onclick: () => animateTraversal("in") }, 'Inorder'),
   el('button', { className: 'btn', onclick: () => animateTraversal("pre") }, 'Preorder'),
   el('button', { className: 'btn', onclick: () => animateTraversal("post") }, 'Postorder'),
