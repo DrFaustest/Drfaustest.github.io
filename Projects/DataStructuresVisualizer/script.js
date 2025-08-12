@@ -1,20 +1,7 @@
 /**
- * Data Structures & Algorithms Visualizer
- * --------------------------------------
- * Single-file implementation of multiple interactive visualizations:
- *  - Array, Linked List, Stack, Queue
- *  - Binary Search Tree, AVL Tree, Red-Black Tree
- *  - Hash Table (chaining & open addressing)
- *  - Graph (BFS, DFS, Dijkstra + path reconstruction)
- *  - Sorting algorithms (Bubble, Insertion, Merge, Quick) with a step engine
- *
- * Features:
- *  - Pseudocode panel with dynamic highlighting (maps logical steps to lines)
- *  - Statistics panel (comparisons / swaps / total operations)
- *  - Step recording & playback controls (play, pause, prev, next, reset)
- *  - Adjustable animation speed
- *
- * NOTE: The goal of this refactor is readability. Behavior should remain unchanged.
+ * (LEGACY MONOLITHIC FILE)
+ * This original single-file implementation has been modularized into /js/*.js modules.
+ * Retained temporarily for reference; not loaded by index.html anymore.
  */
 
 // ---------------------------------------------------------------------------
