@@ -1,0 +1,87 @@
+/* Use portfolio's dark background and accent colors. The root styles are in ../../style.css; keep local rules scoped */
+.sudoku-board{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;max-width:720px;margin:0 auto;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+.cell{position:relative;padding:0}
+.cell input{width:100%;height:64px;text-align:center;font-size:20px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#fff;border-radius:6px}
+.cell input:focus{outline:2px solid rgba(243,156,18,0.12);border-color:rgba(243,156,18,0.8)}
+.cell.fixed input{background:rgba(243,156,18,0.06);font-weight:600;color:#fff}
+.cell.invalid input{background:rgba(231,76,60,0.12)}
+
+/* Thick borders between 3x3 boxes: use row/column math */
+.sudoku-board .cell input{border-width:1px}
+.sudoku-board .cell:nth-child(3n) input{border-right-width:4px}
+.sudoku-board .cell:nth-child(3n+1) input{border-left-width:4px}
+/* bottom borders for rows 3 and 6 */
+.sudoku-board .cell:nth-child(n+19):nth-child(-n+27) input,
+.sudoku-board .cell:nth-child(n+46):nth-child(-n+54) input{border-bottom-width:4px}
+
+.cell input{box-sizing:border-box}
+
+
+.message{min-height:1.1rem;text-align:center;color:rgba(255,255,255,0.8);margin-top:12px}
+
+.algo-desc{margin-top:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);padding:12px;border-radius:8px;color:#fff}
+.algo-desc h3{color:#f39c12;margin:0 0 6px 0}
+.algo-desc ul{margin:6px 0 0 18px}
+.algo-desc li{margin-bottom:6px}
+
+/* Controls and layout to match other projects */
+.controls{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:18px}
+.controls-inner{display:flex;gap:18px;align-items:center;justify-content:center}
+.control-group{display:flex;flex-direction:column;align-items:center;gap:6px}
+.control-group.playback{flex-direction:row}
+.controls label, .controls select{color:#fff}
+.controls select{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:8px;color:#fff}
+.playback button{background:#f39c12;color:#111;border-radius:12px;padding:8px 12px;border:none;margin-left:6px;font-weight:600}
+.playback button.danger{background:#e74c3c;color:#fff}
+
+/* Home button in header */
+.home-btn{display:inline-block;background:rgba(255,255,255,0.04);color:#fff;padding:8px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.06);text-decoration:none;font-weight:600}
+
+
+@media (max-width:720px){
+	.sudoku-board{max-width:100%;padding:10px}
+	.cell input{height:54px}
+	.controls-inner{flex-direction:column;gap:10px}
+	.control-group.playback{flex-direction:row}
+}
+
+/* Banner (project title) styling to match portfolio pages */
+.banner{margin-bottom:18px}
+.banner-top,.banner-bottom{height:6px;background:#f39c12;box-shadow:0 6px 14px rgba(0,0,0,0.6)}
+.banner-inner{display:flex;flex-direction:column;align-items:center;gap:8px;padding:28px 0;background:linear-gradient(135deg, rgba(0,0,0,0.6), rgba(15,52,96,0.6));border-top:1px solid rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.02)}
+.banner-title{color:#f39c12;font-size:3.2rem;margin:0;text-shadow:3px 3px 8px rgba(0,0,0,0.6);font-family:Montserrat, sans-serif}
+.banner .subtitle{color:#fff;opacity:0.9}
+.banner .home-btn{position:relative;top:0;margin-bottom:6px}
+
+/* Developer view styles */
+.layout-with-dev{display:grid;grid-template-columns:1fr;gap:18px;align-items:start}
+.layout-with-dev.dev-enabled{grid-template-columns:1fr 360px}
+.dev-panel{background:rgba(255,255,255,0.03);border-radius:10px;padding:10px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 30px rgba(0,0,0,0.6);height:100%;display:none}
+.layout-with-dev.dev-enabled .dev-panel{display:block}
+.dev-tabs{display:flex;gap:8px;margin-bottom:8px}
+.dev-tabs .tab{flex:1;padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);color:#fff}
+.dev-tabs .tab.active{background:#f39c12;color:#111;font-weight:700}
+.dev-content{max-height:520px;overflow:auto;padding:8px;background:rgba(0,0,0,0.25);border-radius:6px}
+.dev-tab-content{font-family:monospace;font-size:13px;color:#fff;line-height:1.4}
+.stack-log{margin-top:12px;border-top:1px dashed rgba(255,255,255,0.06);padding-top:8px}
+.stack-log .stack-frame{font-family:monospace;font-size:12px;color:rgba(255,255,255,0.9);padding:3px 0}
+.dev-line{padding:4px;border-radius:4px}
+.dev-line.current{background:rgba(52,152,219,0.14);border-left:4px solid #3498db}
+.dev-line.try{background:rgba(46,204,113,0.08);border-left:4px solid #2ecc71}
+.dev-line.backtrack{background:rgba(231,76,60,0.06);border-left:4px solid #e74c3c}
+
+/* Highlight cell states for the developer trace */
+.cell.current-cell input{box-shadow:0 0 0 3px rgba(52,152,219,0.12) inset}
+.cell.checking input{box-shadow:0 0 0 3px rgba(46,204,113,0.12) inset}
+.cell.backtrack input{box-shadow:0 0 0 3px rgba(231,76,60,0.12) inset}
+
+@media (max-width:1000px){.layout-with-dev{grid-template-columns:1fr}}
+
+/* Candidate/hint styling */
+.cell{position:relative}
+.candidates{position:absolute;inset:6px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:1px;pointer-events:none}
+.cand{font-size:10px;color:rgba(255,255,255,0.7);text-align:center;line-height:1;opacity:0.95}
+.cell .value{position:relative;z-index:2}
+.cell .fixed .value{font-weight:700}
+.cell .candidates{z-index:1}
+.hidden-candidates{display:none}

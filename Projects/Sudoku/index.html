@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Sudoku — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="banner">
+      <div class="banner-top"></div>
+      <header>
+        <div class="container banner-inner">
+          <a href="../../index.html" class="home-btn">Home</a>
+          <h1 class="banner-title">Sudoku</h1>
+          <div class="subtitle">Classic 9×9 Sudoku — generate, check, and solve</div>
+        </div>
+      </header>
+      <div class="banner-bottom"></div>
+    </div>
+
+    <main class="container">
+      <section class="controls" aria-label="Controls">
+        <div class="controls-inner">
+          <div class="control-group">
+            <label for="difficulty">Difficulty</label>
+            <select id="difficulty">
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+              <option value="minimal">Minimal</option>
+            </select>
+            <label class="hint-toggle"><input type="checkbox" id="showHints"> Show Hints</label>
+          </div>
+
+          <div class="control-group playback">
+            <button id="newBtn">New</button>
+            <button id="checkBtn">Check</button>
+            <button id="solveBtn">Solve</button>
+            <button id="clearBtn" class="danger">Clear</button>
+          </div>
+          <div class="control-group playback" id="devPlayback" style="display:none">
+            <button id="playBtn">Play</button>
+            <button id="pauseBtn" disabled>Pause</button>
+            <button id="stepBtn">Step</button>
+          </div>
+          <div class="control-group">
+            <label class="dev-toggle"><input type="checkbox" id="devView"> Developer View</label>
+          </div>
+        </div>
+      </section>
+
+      <section class="visualization layout-with-dev">
+        <div id="board" class="sudoku-board" aria-label="Sudoku board"></div>
+        <aside class="dev-panel">
+          <div class="dev-tabs">
+            <button class="tab active" data-tab="algo">Algorithm</button>
+          </div>
+          <div class="dev-content">
+            <div id="algo" class="dev-tab-content active" role="log" aria-live="polite">
+              <!-- pseudocode and algorithm highlights go here -->
+              <!-- stack log (backtracking frames) will appear below so it's visible within the Algorithm tab -->
+              <div id="stack" class="stack-log" aria-live="polite"></div>
+            </div>
+          </div>
+        </aside>
+        <p id="message" class="message" aria-live="polite"></p>
+        <section id="algo-desc" class="algo-desc">
+          <h3>How the solver works</h3>
+          <p>The solver combines constraint propagation and smart search to solve puzzles quickly:</p>
+          <ul>
+            <li><strong>Domains:</strong> Each cell keeps a set of possible digits (1–9).</li>
+            <li><strong>Propagation:</strong> We apply naked singles and hidden singles to reduce domains before searching.</li>
+            <li><strong>MRV branching:</strong> When needed we pick the cell with the fewest possibilities (Minimum Remaining Values) to branch on.</li>
+            <li><strong>Backtracking search:</strong> We try candidate digits and recurse; propagation shrinks the search tree significantly.</li>
+          </ul>
+          <p>This hybrid approach is both fast and easy to visualize in the Developer View.</p>
+        </section>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">
+        <div class="social-links">
+          <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" class="social-link" aria-label="GitHub profile">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn profile">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" class="social-link" aria-label="Facebook profile">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+        <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script type="module" src="./script.js"></script>
+  </body>
+</html>
