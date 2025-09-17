@@ -1,0 +1,2 @@
+export class HashTableChaining { constructor(size=8){ this.size=size; this.buckets=Array.from({length:size},()=>[]);} hash(k){ return k%this.size;} insert(k){ const i=this.hash(k); if(!this.buckets[i].includes(k)) this.buckets[i].push(k);} }
+export class HashTableOpen { constructor(size=11){ this.size=size; this.slots=Array(this.size).fill(null);} hash(k){ return k%this.size;} insert(k){ let i=this.hash(k), start=i; while(this.slots[i]!=null){ if(this.slots[i]===k) return; i=(i+1)%this.size; if(i===start) return;} this.slots[i]=k;} }
