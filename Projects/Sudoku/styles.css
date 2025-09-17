@@ -1,7 +1,14 @@
 /* Use portfolio's dark background and accent colors. The root styles are in ../../style.css; keep local rules scoped */
-.sudoku-board{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;max-width:720px;margin:0 auto;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
+:root{
+	/* base sizing: cell size will scale between min and max */
+	--cell-min:40px;
+	--cell-preferred:64px;
+	--cell-max:90px;
+	--board-gap:6px;
+}
+.sudoku-board{display:grid;grid-template-columns:repeat(9,1fr);gap:var(--board-gap);max-width:720px;margin:0 auto;padding:18px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;border:1px solid rgba(255,255,255,0.04);box-shadow:0 10px 30px rgba(0,0,0,0.6)}
 .cell{position:relative;padding:0}
-.cell input{width:100%;height:64px;text-align:center;font-size:20px;border:1px solid rgba(255,255,255,0.08);background:transparent;color:#fff;border-radius:6px}
+.cell input{width:100%;height:clamp(var(--cell-min), var(--cell-preferred), var(--cell-max));text-align:center;font-size:clamp(16px, 2.6vw, 22px);border:1px solid rgba(255,255,255,0.08);background:transparent;color:#fff;border-radius:6px}
 .cell input:focus{outline:2px solid rgba(243,156,18,0.12);border-color:rgba(243,156,18,0.8)}
 .cell.fixed input{background:rgba(243,156,18,0.06);font-weight:600;color:#fff}
 .cell.invalid input{background:rgba(231,76,60,0.12)}
@@ -37,12 +44,34 @@
 /* Home button in header */
 .home-btn{display:inline-block;background:rgba(255,255,255,0.04);color:#fff;padding:8px 14px;border-radius:20px;border:1px solid rgba(255,255,255,0.06);text-decoration:none;font-weight:600}
 
+/* Responsive adjustments */
+@media (max-width:920px){
+	:root{ --cell-preferred:56px; --board-gap:5px }
+	.banner-title{font-size:clamp(1.6rem, 5vw, 2.6rem)}
+}
 
 @media (max-width:720px){
-	.sudoku-board{max-width:100%;padding:10px}
-	.cell input{height:54px}
-	.controls-inner{flex-direction:column;gap:10px}
-	.control-group.playback{flex-direction:row}
+	/* Board should fit screen width with comfortable gaps */
+	.sudoku-board{max-width:100%;padding:10px;grid-template-columns:repeat(9, minmax(0, 1fr));gap:4px}
+	/* scale down cell height a bit on small screens */
+	:root{ --cell-preferred:50px; --cell-min:36px; --board-gap:4px }
+	.cell input{height:clamp(36px, 9vw, 56px);font-size:clamp(14px, 3.2vw,18px)}
+	.controls-inner{flex-direction:column;gap:10px;align-items:stretch}
+	.control-group{width:100%}
+	.control-group.playback{flex-direction:row;justify-content:center}
+	/* make buttons easier to tap */
+	.playback button{padding:10px 14px;border-radius:10px}
+}
+
+/* Very small / narrow devices (phones in portrait) */
+@media (max-width:420px){
+	:root{ --cell-preferred:44px; --cell-min:36px; --cell-max:56px; --board-gap:3px }
+	.sudoku-board{padding:8px}
+	.cell input{height:clamp(36px, 11vw, 52px);font-size:clamp(13px, 4.2vw,16px)}
+	/* reduce side padding on banner to avoid overflow */
+	.banner-inner{padding:18px 6px}
+	.banner-title{font-size:1.6rem}
+	.controls{padding:0 6px}
 }
 
 /* Banner (project title) styling to match portfolio pages */
@@ -71,11 +100,27 @@
 .dev-line.backtrack{background:rgba(231,76,60,0.06);border-left:4px solid #e74c3c}
 
 /* Highlight cell states for the developer trace */
+
 .cell.current-cell input{box-shadow:0 0 0 3px rgba(52,152,219,0.12) inset}
 .cell.checking input{box-shadow:0 0 0 3px rgba(46,204,113,0.12) inset}
 .cell.backtrack input{box-shadow:0 0 0 3px rgba(231,76,60,0.12) inset}
 
-@media (max-width:1000px){.layout-with-dev{grid-template-columns:1fr}}
+/* Ensure developer panel stacks below the board on smaller screens */
+@media (max-width:1000px){
+	/* Use a single column layout even when dev mode is enabled */
+	.layout-with-dev{grid-template-columns:1fr}
+	.layout-with-dev.dev-enabled{grid-template-columns:1fr}
+	/* Make dev panel span full width under the board and be scrollable if tall */
+	.layout-with-dev.dev-enabled .dev-panel{
+		grid-column: 1 / -1;
+		width: 100%;
+		display: block;
+		height: auto;
+		max-height: 40vh;
+		overflow: auto;
+		margin-top: 6px;
+	}
+}
 
 /* Candidate/hint styling */
 .cell{position:relative}
