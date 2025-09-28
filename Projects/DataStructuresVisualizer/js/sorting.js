@@ -1,4 +1,4 @@
-import { el, setPseudocode, highlightPseudo, appState, incStat, qs, registerImplementations } from './core.js';
+import { el, setPseudocode, highlightPseudo, appState, incStat, qs, registerImplementations, togglePlayButton } from './core.js';
 
 // Working array (not mutated during step generation; we clone for steps).
 let baseArray = [];
@@ -23,11 +23,15 @@ export function renderSortingVisualizer(visualArea, controlsArea) {
         if (Number.isNaN(n) || n < 4) n = 18; if (n > 200) n = 200;
         sizeInput.value = n;
         baseArray = Array.from({ length: n }, () => Math.floor(Math.random() * 90) + 10);
+        depthMap = new Map();
+        const buf = qs('#merge-buffer'); if(buf) buf.innerHTML='';
         drawBars();
+        appState.steps = []; appState.stepIndex = 0;
+        togglePlayButton(false, true); // Disable since steps are invalid
       });
       return sizeInput;
     })(),
-    el('select', { id: 'algo', onchange: updateSortPseudocode },
+    el('select', { id: 'algo', onchange: () => { updateSortPseudocode(); appState.steps = []; appState.stepIndex = 0; togglePlayButton(false, true); } },
       el('option', { value: 'bubble' }, 'Bubble'),
       el('option', { value: 'insertion' }, 'Insertion'),
       el('option', { value: 'merge' }, 'Merge'),
@@ -123,6 +127,7 @@ function shuffleBars() {
   const buf = qs('#merge-buffer'); if(buf) buf.innerHTML='';
   drawBars();
   appState.steps = []; appState.stepIndex = 0;
+  togglePlayButton(false, true); // Disable play button since no steps
 }
 function highlightBars(i, j) {
   document.querySelectorAll('.bar').forEach(b => b.classList.remove('active'));
@@ -140,6 +145,8 @@ function startSort() {
   const algo = qs('#algo').value; const original = [...baseArray];
   switch (algo) { case 'bubble': genBubbleSteps(); break; case 'insertion': genInsertionSteps(); break; case 'merge': genMergeSteps(); break; case 'quick': genQuickSteps(); break; }
   baseArray = [...original]; drawBars(); highlightPseudo('loop_i');
+  // Enable playback controls now that steps are generated
+  togglePlayButton(false, false);
 }
 
 // --- Step Generators ---

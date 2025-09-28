@@ -32,25 +32,33 @@
                 <p>This interactive visualizer helps students and enthusiasts explore the inner workings of data structures and algorithms. Select a topic below and interact with the visualization to see how updates, additions, deletions, and sorting work step-by-step.</p>
             </section>
             <section id="visualization">
-                <nav aria-label="Data Structure Selection" class="viz-toolbar">
-                    <label for="structure-select">Choose a topic:</label>
-                    <select id="structure-select" title="Choose a data structure or algorithm">
-                        <option value="array">Array</option>
-                        <option value="linked-list">Linked List</option>
-                        <option value="stack">Stack</option>
-                        <option value="queue">Queue</option>
-                        <option value="tree">Binary Tree (BST)</option>
-                        <option value="avl">AVL Tree</option>
-                        <option value="rbt">Red-Black Tree</option>
-                        <option value="hash">Hash Table</option>
-                        <option value="graph">Graph (BFS/DFS)</option>
-                        <option value="sorting">Sorting Algorithms</option>
-                    </select>
-                    <button id="load-btn" class="btn primary">Load</button>
-                </nav>
-                <div class="viz-split">
-                    <section id="visualization-area" aria-live="polite"></section>
-                    <aside id="controls-area" aria-label="Controls"></aside>
+                <h2>Choose a Category</h2>
+                <div class="category-grid">
+                    <a href="linear-structures.html" class="category-card">
+                        <i class="fas fa-list" aria-hidden="true"></i>
+                        <h3>Linear Structures</h3>
+                        <p>Arrays, Linked Lists, Stacks, Queues</p>
+                    </a>
+                    <a href="tree-structures.html" class="category-card">
+                        <i class="fas fa-tree" aria-hidden="true"></i>
+                        <h3>Tree Structures</h3>
+                        <p>Binary Trees, AVL Trees, Red-Black Trees</p>
+                    </a>
+                    <a href="graph-structures.html" class="category-card">
+                        <i class="fas fa-project-diagram" aria-hidden="true"></i>
+                        <h3>Graph Structures</h3>
+                        <p>Graphs with BFS/DFS algorithms</p>
+                    </a>
+                    <a href="sorting-algorithms.html" class="category-card">
+                        <i class="fas fa-sort" aria-hidden="true"></i>
+                        <h3>Sorting Algorithms</h3>
+                        <p>Bubble, Insertion, Merge, Quick Sort</p>
+                    </a>
+                    <a href="hash-tables.html" class="category-card">
+                        <i class="fas fa-hashtag" aria-hidden="true"></i>
+                        <h3>Hash Tables</h3>
+                        <p>Hash table operations and collisions</p>
+                    </a>
                 </div>
             </section>
         </div>
@@ -64,7 +72,6 @@
                 <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" title="Facebook" class="social-link"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
             </div>
         </div>
-    </footer>
     <script type="module" src="js/core.js"></script>
     <script type="module" src="js/router.js"></script>
 </body>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Structures Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Linear Structures Visualizer</h1>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="index.html">All Categories</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <section id="about">
+                <h2>About Linear Structures</h2>
+                <p>Explore linear data structures including arrays, linked lists, stacks, and queues. These structures organize data in a sequential manner.</p>
+            </section>
+            <section id="visualization">
+                <nav aria-label="Linear Structure Selection" class="viz-toolbar">
+                    <label for="structure-select">Choose a structure:</label>
+                    <select id="structure-select" title="Choose a linear data structure">
+                        <option value="array">Array</option>
+                        <option value="linked-list">Linked List</option>
+                        <option value="stack">Stack</option>
+                        <option value="queue">Queue</option>
+                    </select>
+                    <button id="load-btn" class="btn primary">Load</button>
+                </nav>
+                <div class="viz-split">
+                    <section id="visualization-area" aria-live="polite"></section>
+                    <aside id="controls-area" aria-label="Controls"></aside>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" title="GitHub" class="social-link"><i class="fab fa-github" aria-hidden="true"></i><span class="sr-only">GitHub</span></a>
+                <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" title="LinkedIn" class="social-link"><i class="fab fa-linkedin" aria-hidden="true"></i><span class="sr-only">LinkedIn</span></a>
+                <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" title="Facebook" class="social-link"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+            </div>
+        </div>
+    </footer>
+    <script type="module" src="js/core.js"></script>
+    <script type="module" src="js/linear-router.js"></script>
+</body>
+</html></content>
+<parameter name="filePath">c:\Users\scott\OneDrive\Documents\Programming\websites\Portfolio\Drfaustest.github.io\Projects\DataStructuresVisualizer\linear-structures.html
