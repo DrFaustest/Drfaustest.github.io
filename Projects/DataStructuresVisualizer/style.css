@@ -253,6 +253,21 @@ header nav a:hover { color: var(--accent); }
 .vertex { position: absolute; width: 32px; height: 32px; border-radius: 999px; background: #1d2230; border: 2px solid #2a3142; display: grid; place-items: center; font-weight: 700; color: var(--fg); -webkit-user-select: none; user-select: none; cursor: pointer; }
 .vertex.active { border-color: var(--accent); }
 .edge { position: absolute; pointer-events: none; }
+.graph-toggle { display:inline-flex; align-items:center; gap:.3rem; margin-left:.5rem; font-size:.78rem; color:var(--muted); }
+.graph-toggle input { accent-color: var(--accent); }
+
+.edge-modal-overlay { position:fixed; inset:0; background:rgba(12,16,24,0.72); display:flex; align-items:center; justify-content:center; z-index:1100; }
+.edge-modal-overlay.hidden { display:none; }
+.edge-modal { background:#111725; border:1px solid #253041; border-radius:12px; padding:1.2rem 1.4rem; width: min(320px, 90vw); box-shadow:0 22px 45px rgba(0,0,0,0.55); }
+.edge-modal h4 { margin:0 0 .85rem; color:var(--accent); letter-spacing:.08em; text-transform:uppercase; font-size:.82rem; }
+.edge-modal label { display:flex; flex-direction:column; gap:.35rem; font-size:.8rem; color:var(--muted); margin-bottom:.75rem; }
+.edge-modal select,
+.edge-modal input[type='number'] { background:#1c2230; border:1px solid #2a3142; border-radius:6px; color:var(--fg); padding:.45rem .6rem; font-size:.9rem; }
+.edge-weight-toggle { flex-direction:row !important; align-items:center; gap:.5rem; }
+.edge-weight-toggle input[type='checkbox'] { margin:0; accent-color:var(--accent); }
+.edge-weight-toggle input[type='number'] { width:90px; }
+.edge-modal-actions { display:flex; gap:.6rem; justify-content:flex-end; margin-top:.5rem; }
+.edge-modal-actions .btn { flex:1; }
 
 /* Footer */
 footer { background: #0e121a; border-top: 1px solid #242a38; color: var(--muted); }

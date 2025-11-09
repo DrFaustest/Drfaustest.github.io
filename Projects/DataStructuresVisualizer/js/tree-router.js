@@ -1,4 +1,4 @@
-import { appState, resetStepEngine, setPseudocode, highlightPseudo, ensurePanels } from './core.js';
+import { appState, resetStepEngine, setPseudocode, highlightPseudo, ensurePanels, runTeardown } from './core.js';
 // Router for tree structures
 import { renderTreeVisualizer } from './bst.js';
 import { renderAVLVisualizer } from './avl.js';
@@ -10,8 +10,9 @@ export function loadVisualizer(type){
     appState.current=type; resetStepEngine();
     const viz=document.getElementById('visualization-area');
     const controls=document.getElementById('controls-area');
-    if(!viz||!controls){ console.error('[tree-router] Missing visualization or controls area'); return; }
-    viz.innerHTML=''; controls.innerHTML='';
+  if(!viz||!controls){ console.error('[tree-router] Missing visualization or controls area'); return; }
+  runTeardown();
+  viz.innerHTML=''; controls.innerHTML='';
     ensurePanels();
     setPseudocode([{text:'Select a tree...', id:'idle'}]); highlightPseudo('idle');
     switch(type){

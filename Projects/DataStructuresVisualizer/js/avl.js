@@ -1,4 +1,31 @@
-import { el, setPseudocode, qs } from './core.js';
+import { el, setPseudocode, qs, setTeardown } from './core.js';
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function appendGlowFilter(svg){
+  if (!svg) return;
+  if (svg.querySelector('#tree-glow')) return;
+  const defs = document.createElementNS(SVG_NS, 'defs');
+  const filter = document.createElementNS(SVG_NS, 'filter');
+  filter.setAttribute('id', 'tree-glow');
+  filter.setAttribute('x', '-50%');
+  filter.setAttribute('y', '-50%');
+  filter.setAttribute('width', '200%');
+  filter.setAttribute('height', '200%');
+  const blur = document.createElementNS(SVG_NS, 'feGaussianBlur');
+  blur.setAttribute('in', 'SourceGraphic');
+  blur.setAttribute('stdDeviation', '2.5');
+  blur.setAttribute('result', 'blur');
+  const merge = document.createElementNS(SVG_NS, 'feMerge');
+  const mergeNode1 = document.createElementNS(SVG_NS, 'feMergeNode');
+  mergeNode1.setAttribute('in', 'blur');
+  const mergeNode2 = document.createElementNS(SVG_NS, 'feMergeNode');
+  mergeNode2.setAttribute('in', 'SourceGraphic');
+  merge.append(mergeNode1, mergeNode2);
+  filter.append(blur, merge);
+  defs.append(filter);
+  svg.append(defs);
+}
 
 // AVL tree node (stores height for O(1) balance factor checks).
 class AVLNode { constructor(value) { this.v = value; this.l = null; this.r = null; this.h = 1; } }
@@ -55,6 +82,12 @@ export function renderAVLVisualizer(visualArea, controlsArea) {
   { text: '    b = height(L)-height(R)', id: 'a5' },
   { text: '    rotate if |b|>1', id: 'a6' }
   ]);
+  const resizeHandler = () => drawAVL();
+  window.addEventListener('resize', resizeHandler);
+  setTeardown(() => {
+    window.removeEventListener('resize', resizeHandler);
+    avlInstance = null;
+  });
 }
 
 function avlLevels(root) {
@@ -77,6 +110,7 @@ function avlLevels(root) {
 function drawAVL() {
   const container = qs('#avl-tree'); const svg = qs('#avl-lines'); if (!container || !svg) return;
   container.innerHTML = ''; svg.innerHTML='';
+  appendGlowFilter(svg);
   const levels = avlLevels(avlInstance.root); const depth = levels.length;
   const nodeSize = 42; const verticalGap = 80; const containerWidth = container.clientWidth || container.parentElement.clientWidth || 600;
   const positions = new Map();
@@ -92,11 +126,29 @@ function drawAVL() {
   positions.forEach((pos, node) => {
     if (node.l && positions.has(node.l)) {
       const c1 = pos, c2 = positions.get(node.l);
-      svg.append(el('line', { x1: c1.x + nodeSize/2, y1: c1.y + nodeSize/2, x2: c2.x + nodeSize/2, y2: c2.y + nodeSize/2, stroke:'#2a3142', 'stroke-width':2 }));
+      svg.append(el('line', {
+        x1: c1.x + nodeSize/2,
+        y1: c1.y + nodeSize/2,
+        x2: c2.x + nodeSize/2,
+        y2: c2.y + nodeSize/2,
+        stroke: '#4cc9f0',
+        'stroke-width': 4,
+        'stroke-linecap': 'round',
+        'filter': 'url(#tree-glow)'
+      }));
     }
     if (node.r && positions.has(node.r)) {
       const c1 = pos, c2 = positions.get(node.r);
-      svg.append(el('line', { x1: c1.x + nodeSize/2, y1: c1.y + nodeSize/2, x2: c2.x + nodeSize/2, y2: c2.y + nodeSize/2, stroke:'#2a3142', 'stroke-width':2 }));
+      svg.append(el('line', {
+        x1: c1.x + nodeSize/2,
+        y1: c1.y + nodeSize/2,
+        x2: c2.x + nodeSize/2,
+        y2: c2.y + nodeSize/2,
+        stroke: '#4cc9f0',
+        'stroke-width': 4,
+        'stroke-linecap': 'round',
+        'filter': 'url(#tree-glow)'
+      }));
     }
   });
   // Nodes
@@ -107,8 +159,6 @@ function drawAVL() {
   });
   svg.setAttribute('height', String(depth * verticalGap + 120));
 }
-
-window.addEventListener('resize', () => drawAVL());
 
 function animateAVL(type){
   const order=[];

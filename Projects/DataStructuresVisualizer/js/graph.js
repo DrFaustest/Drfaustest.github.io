@@ -4,32 +4,153 @@ import { bfs as pureBFS, dfs as pureDFS, dijkstra as pureDijkstra } from './lib/
 
 // Central graph state object.
 let graphState = null;
+const SVG_NS = 'http://www.w3.org/2000/svg';
+let edgeModalOverlay = null;
+let edgeModalRefs = null;
 
 export function renderGraphVisualizer(visualArea, controlsArea) {
   const title = el('h2', {}, 'Graph (BFS / DFS / Dijkstra)');
   const canvas = el('div', { className: 'graph-canvas', id: 'graph-canvas' });
   const controlsForm = el('div', {},
     el('button', { className: 'btn', onclick: createVertex }, 'Add Vertex'),
-    el('button', { className: 'btn', onclick: createRandomEdge }, 'Add Edge'),
-    el('button', { className: 'btn', onclick: () => pendingEdgeSelectionStart() }, 'Weighted Edge'),
+    el('button', { className: 'btn', onclick: openEdgeModal }, 'Edge Builder'),
+    (() => {
+      const wrapper = el('label', { className: 'graph-toggle' },
+        el('input', {
+          type: 'checkbox',
+          id: 'graph-directed-toggle',
+          onchange: (ev) => toggleDirected(ev.target.checked)
+        }),
+        el('span', { className: 'toggle-label' }, 'Directed')
+      );
+      return wrapper;
+    })(),
     el('input', { id: 'start-vertex', placeholder: 'Start (id)', type: 'number', min: 0, style: { marginLeft: '.5rem' } }),
     el('button', { className: 'btn', onclick: runBFS }, 'BFS'),
     el('button', { className: 'btn', onclick: runDFS }, 'DFS'),
     el('button', { className: 'btn', onclick: runDijkstra }, 'Dijkstra'),
     el('button', { className: 'btn', onclick: highlightShortestPath }, 'Show Path'),
-    el('button', { className: 'btn', onclick: generateRandomGraph }, 'Random Graph'),
+  el('button', { className: 'btn', onclick: () => generateRandomGraph(false) }, 'Random Graph'),
+  el('button', { className: 'btn', onclick: () => generateRandomGraph(true) }, 'Random Weighted Graph'),
     el('button', { className: 'btn', onclick: clearGraphHighlights }, 'Clear')
   );
   visualArea.append(title, canvas);
   controlsArea.append(el('h3', {}, 'Graph Controls'), controlsForm);
-  graphState = { nextId: 0, vertices: [], edges: [], adj: new Map(), weights: new Map(), pendingEdge: null, lastDijkstra: null };
+  graphState = { nextId: 0, vertices: [], edges: [], adj: new Map(), weights: new Map(), lastDijkstra: null, directed: false };
+  ensureEdgeModal();
   showGraphBasePseudo();
   const resizeHandler = () => updateEdgePositions();
   window.addEventListener('resize', resizeHandler);
   setTeardown(() => {
     window.removeEventListener('resize', resizeHandler);
     graphState = null;
+    teardownEdgeModal();
   });
+}
+
+function toggleDirected(isDirected) {
+  if (!graphState) return;
+  if (graphState.directed === isDirected) return;
+  graphState.directed = isDirected;
+  // Remove existing edges since semantics differ between directed/undirected
+  graphState.edges.forEach(edge => edge.el.remove());
+  graphState.edges = [];
+  graphState.weights.clear();
+  graphState.adj.forEach(set => set.clear());
+  graphState.lastDijkstra = null;
+  clearGraphHighlights();
+}
+
+function ensureEdgeModal() {
+  if (edgeModalOverlay) return;
+  const weightToggle = el('input', { type: 'checkbox', id: 'edge-weighted-toggle' });
+  const weightInput = el('input', { id: 'edge-weight-input', type: 'number', min: 1, disabled: true, value: 1 });
+  weightToggle.addEventListener('change', () => {
+    weightInput.disabled = !weightToggle.checked;
+    if (weightToggle.checked && !weightInput.value) weightInput.value = 1;
+  });
+
+  const startSelect = el('select', { id: 'edge-start' });
+  const endSelect = el('select', { id: 'edge-end' });
+
+  const form = el('form', { id: 'edge-builder-form' },
+    el('label', {}, 'Start Node', startSelect),
+    el('label', {}, 'End Node', endSelect),
+    el('label', { className: 'edge-weight-toggle' },
+      weightToggle,
+      el('span', {}, 'Weighted'),
+      weightInput
+    ),
+    el('div', { className: 'edge-modal-actions' },
+      el('button', { type: 'submit', className: 'btn primary' }, 'Add Edge'),
+      el('button', { type: 'button', className: 'btn', onclick: closeEdgeModal }, 'Cancel')
+    )
+  );
+
+  form.addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    if (!graphState) return;
+    const start = Number(startSelect.value);
+    const end = Number(endSelect.value);
+    const weighted = weightToggle.checked;
+    const weightVal = weighted ? Number(weightInput.value) : 1;
+    if (Number.isNaN(start) || Number.isNaN(end)) { alert('Select valid vertices.'); return; }
+    if (start === end) { alert('Start and end must differ.'); return; }
+    if (!graphState.adj.has(start) || !graphState.adj.has(end)) { alert('Vertex id not found.'); return; }
+    if (weighted && (Number.isNaN(weightVal) || weightVal <= 0)) { alert('Provide a positive weight.'); return; }
+    const added = addEdge(start, end, weighted ? weightVal : 1, { weighted });
+    if (!added) { alert('Edge already exists.'); return; }
+    closeEdgeModal();
+  });
+
+  edgeModalOverlay = el('div', { id: 'edge-modal-overlay', className: 'edge-modal-overlay hidden', role: 'dialog', 'aria-modal': 'true' },
+    el('div', { className: 'edge-modal' },
+      el('h4', {}, 'Add Edge'),
+      form
+    )
+  );
+  edgeModalOverlay.addEventListener('click', (ev) => { if (ev.target === edgeModalOverlay) closeEdgeModal(); });
+  document.body.append(edgeModalOverlay);
+  edgeModalRefs = { form, weightToggle, weightInput, startSelect, endSelect };
+}
+
+function teardownEdgeModal() {
+  if (!edgeModalOverlay) return;
+  edgeModalOverlay.remove();
+  edgeModalOverlay = null;
+  edgeModalRefs = null;
+}
+
+function openEdgeModal() {
+  if (!graphState) return;
+  if (graphState.vertices.length < 2) { alert('Add at least two vertices first.'); return; }
+  ensureEdgeModal();
+  populateEdgeModalOptions();
+  edgeModalRefs.weightToggle.checked = false;
+  edgeModalRefs.weightInput.disabled = true;
+  edgeModalRefs.weightInput.value = 1;
+  edgeModalOverlay.classList.remove('hidden');
+  setTimeout(() => { edgeModalRefs.startSelect.focus(); }, 0);
+}
+
+function closeEdgeModal() {
+  if (!edgeModalOverlay) return;
+  edgeModalOverlay.classList.add('hidden');
+}
+
+function populateEdgeModalOptions() {
+  if (!edgeModalRefs) return;
+  const { startSelect, endSelect } = edgeModalRefs;
+  startSelect.innerHTML = '';
+  endSelect.innerHTML = '';
+  const fragStart = document.createDocumentFragment();
+  const fragEnd = document.createDocumentFragment();
+  graphState.vertices.forEach(({ id }) => {
+    fragStart.append(el('option', { value: id }, id));
+    fragEnd.append(el('option', { value: id }, id));
+  });
+  startSelect.append(fragStart);
+  endSelect.append(fragEnd);
 }
 
 function showGraphBasePseudo(){
@@ -56,7 +177,7 @@ function createVertex() {
   const y = Math.random() * (canvas.clientHeight - 40) + 4;
   const vertexEl = el('div', { className: 'vertex', style: { left: `${x}px`, top: `${y}px` }, dataset: { id: String(id) } }, id);
   vertexEl.addEventListener('mousedown', startDragVertex);
-  vertexEl.addEventListener('click', () => { if (graphState.pendingEdge) { edgeSelectionClick(vertexEl); } else { vertexEl.classList.toggle('active'); } });
+  vertexEl.addEventListener('click', () => { vertexEl.classList.toggle('active'); });
   canvas.append(vertexEl);
   graphState.vertices.push({ id, el: vertexEl });
   graphState.adj.set(id, new Set());
@@ -76,37 +197,71 @@ function startDragVertex(e) {
   document.addEventListener('mousemove', move); document.addEventListener('mouseup', up);
 }
 
-function createRandomEdge() {
+function createRandomEdge(weighted = false) {
   if (graphState.vertices.length < 2) return;
   const ids = graphState.vertices.map(v => v.id);
   let a = ids[Math.floor(Math.random() * ids.length)], b = a;
   while (b === a) b = ids[Math.floor(Math.random() * ids.length)];
-  addEdge(a, b);
+  const weight = weighted ? Math.floor(Math.random() * 8) + 2 : 1;
+  addEdge(a, b, weight, { weighted });
 }
-function pendingEdgeSelectionStart() { graphState.pendingEdge = { a: null }; }
-function edgeSelectionClick(vertexDom) {
-  if (graphState.pendingEdge.a == null) {
-    graphState.pendingEdge.a = Number(vertexDom.dataset.id);
-    vertexDom.classList.add('active');
-  } else {
-    const a = graphState.pendingEdge.a; const b = Number(vertexDom.dataset.id);
-    if (a !== b) { const w = Number(prompt('Weight?', '1')) || 1; addEdge(a, b, w); }
-    graphState.pendingEdge = null;
-    document.querySelectorAll('.vertex').forEach(vx => vx.classList.remove('active'));
-  }
+function edgeKey(a, b) {
+  if (!graphState) return `${a}-${b}`;
+  return graphState.directed ? `${a}->${b}` : (a < b ? `${a}-${b}` : `${b}-${a}`);
 }
-function edgeKey(a, b) { return a < b ? `${a}-${b}` : `${b}-${a}`; }
-function addEdge(a, b, w = 1) {
-  if (graphState.adj.get(a)?.has(b)) return; // ignore duplicate
-  graphState.adj.get(a).add(b); graphState.adj.get(b).add(a);
-  if (w !== 1) graphState.weights.set(edgeKey(a, b), w);
+function addEdge(a, b, weight = 1, options = {}) {
+  if (!graphState) return false;
+  if (!graphState.adj.has(a) || !graphState.adj.has(b)) return false;
+  const directed = graphState.directed;
+  if (graphState.adj.get(a).has(b)) return false;
+  graphState.adj.get(a).add(b);
+  if (!directed) graphState.adj.get(b).add(a);
+
+  const weighted = !!options.weighted;
+  const key = edgeKey(a, b);
+  if (weighted) { graphState.weights.set(key, weight); }
+  else { graphState.weights.delete(key); }
+
   const canvas = document.getElementById('graph-canvas');
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.classList.add('edge');
+  const svg = document.createElementNS(SVG_NS, 'svg');
+  svg.classList.add('edge');
   Object.assign(svg.style, { left: '0', top: '0', width: '100%', height: '100%' });
-  const line = document.createElementNS('http://www.w3.org/2000/svg', 'line'); line.dataset.a = a; line.dataset.b = b; line.setAttribute('stroke', '#2a3142'); line.setAttribute('stroke-width', '2');
+  const line = document.createElementNS(SVG_NS, 'line');
+  line.dataset.a = a; line.dataset.b = b;
+  line.setAttribute('stroke', '#4cc9f0');
+  line.setAttribute('stroke-width', '2.4');
+  if (directed) {
+    const defs = document.createElementNS(SVG_NS, 'defs');
+    const marker = document.createElementNS(SVG_NS, 'marker');
+    const markerId = `arrow-${a}-${b}-${Math.random().toString(36).slice(2, 8)}`;
+    marker.setAttribute('id', markerId);
+    marker.setAttribute('markerWidth', '10');
+    marker.setAttribute('markerHeight', '10');
+    marker.setAttribute('refX', '8');
+    marker.setAttribute('refY', '3.5');
+    marker.setAttribute('orient', 'auto');
+    marker.setAttribute('markerUnits', 'strokeWidth');
+    const markerPath = document.createElementNS(SVG_NS, 'path');
+    markerPath.setAttribute('d', 'M0,0 L8,3.5 L0,7 Z');
+    markerPath.setAttribute('fill', '#4cc9f0');
+    marker.appendChild(markerPath);
+    defs.appendChild(marker);
+    svg.appendChild(defs);
+    line.setAttribute('marker-end', `url(#${markerId})`);
+  }
   svg.appendChild(line);
-  if (w !== 1) { const label = document.createElementNS('http://www.w3.org/2000/svg', 'text'); label.setAttribute('fill', '#4cc9f0'); label.setAttribute('font-size', '10'); label.dataset.type = 'weight'; svg.appendChild(label); }
-  canvas.appendChild(svg); graphState.edges.push({ a, b, el: svg }); updateEdgePositions();
+  if (weighted) {
+    const label = document.createElementNS(SVG_NS, 'text');
+    label.setAttribute('fill', '#f8fafc');
+    label.setAttribute('font-size', '11');
+    label.setAttribute('font-weight', '600');
+    label.dataset.type = 'weight';
+    svg.appendChild(label);
+  }
+  canvas.appendChild(svg);
+  graphState.edges.push({ a, b, el: svg, directed, weighted });
+  updateEdgePositions();
+  return true;
 }
 function updateEdgePositions() {
   if (!graphState) return;
@@ -118,7 +273,13 @@ function updateEdgePositions() {
     const x1 = va.left - canvasRect.left + 16, y1 = va.top - canvasRect.top + 16, x2 = vb.left - canvasRect.left + 16, y2 = vb.top - canvasRect.top + 16;
     line.setAttribute('x1', x1); line.setAttribute('y1', y1); line.setAttribute('x2', x2); line.setAttribute('y2', y2);
     const label = edge.el.querySelector('text[data-type="weight"]');
-    if (label) { label.setAttribute('x', (x1 + x2) / 2); label.setAttribute('y', (y1 + y2) / 2 - 4); label.textContent = graphState.weights.get(edgeKey(edge.a, edge.b)); }
+    if (label) {
+      const key = edgeKey(edge.a, edge.b);
+      const weightVal = graphState.weights.get(key);
+      label.setAttribute('x', (x1 + x2) / 2);
+      label.setAttribute('y', (y1 + y2) / 2 - 6);
+      label.textContent = weightVal != null ? weightVal : '';
+    }
   });
 }
 
@@ -188,12 +349,19 @@ function highlightShortestPath() {
   if (path[path.length - 1] !== start) { alert('No path'); return; }
   path.reverse(); document.querySelectorAll('.vertex').forEach(v => v.classList.remove('active')); path.forEach(id => activateVertex(id));
 }
-function generateRandomGraph() {
+function generateRandomGraph(weighted = false) {
   const canvas = document.getElementById('graph-canvas'); if (!canvas) return;
+  const directed = graphState?.directed ?? false;
+  const countStr = prompt('How many vertices?', '5');
+  let count = Number(countStr);
+  if (Number.isNaN(count) || count < 2) count = 5;
+  count = Math.min(Math.max(2, count), 12);
+  clearGraphHighlights();
   graphState.vertices.forEach(v => v.el.remove()); graphState.edges.forEach(e => e.el.remove());
-  graphState = { nextId: 0, vertices: [], edges: [], adj: new Map(), weights: new Map(), pendingEdge: null, lastDijkstra: null };
-  for (let i = 0; i < 5; i++) createVertex(); for (let i = 0; i < 6; i++) createRandomEdge();
-  graphState.edges.forEach(e => { if (Math.random() < 0.6) { const w = Math.floor(Math.random() * 9) + 1; graphState.weights.set(edgeKey(e.a, e.b), w); } });
+  graphState = { nextId: 0, vertices: [], edges: [], adj: new Map(), weights: new Map(), lastDijkstra: null, directed };
+  for (let i = 0; i < count; i++) createVertex();
+  const edgeTarget = Math.min(count * (count - 1) / (directed ? 1 : 2), count + 1);
+  for (let i = 0; i < edgeTarget; i++) createRandomEdge(weighted);
   updateEdgePositions();
 }
 
