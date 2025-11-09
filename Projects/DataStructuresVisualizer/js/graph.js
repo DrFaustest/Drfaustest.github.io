@@ -198,12 +198,19 @@ function startDragVertex(e) {
 }
 
 function createRandomEdge(weighted = false) {
-  if (graphState.vertices.length < 2) return;
+  if (graphState.vertices.length < 2) return false;
   const ids = graphState.vertices.map(v => v.id);
-  let a = ids[Math.floor(Math.random() * ids.length)], b = a;
-  while (b === a) b = ids[Math.floor(Math.random() * ids.length)];
-  const weight = weighted ? Math.floor(Math.random() * 8) + 2 : 1;
-  addEdge(a, b, weight, { weighted });
+  let attempts = 0;
+  const maxAttempts = ids.length * ids.length * 2;
+  while (attempts < maxAttempts) {
+    let a = ids[Math.floor(Math.random() * ids.length)];
+    let b = ids[Math.floor(Math.random() * ids.length)];
+    if (a === b) { attempts++; continue; }
+    const weight = weighted ? Math.floor(Math.random() * 8) + 2 : 1;
+    if (addEdge(a, b, weight, { weighted })) return true;
+    attempts++;
+  }
+  return false;
 }
 function edgeKey(a, b) {
   if (!graphState) return `${a}-${b}`;
@@ -360,8 +367,15 @@ function generateRandomGraph(weighted = false) {
   graphState.vertices.forEach(v => v.el.remove()); graphState.edges.forEach(e => e.el.remove());
   graphState = { nextId: 0, vertices: [], edges: [], adj: new Map(), weights: new Map(), lastDijkstra: null, directed };
   for (let i = 0; i < count; i++) createVertex();
-  const edgeTarget = Math.min(count * (count - 1) / (directed ? 1 : 2), count + 1);
-  for (let i = 0; i < edgeTarget; i++) createRandomEdge(weighted);
+  const maxEdges = directed ? count * (count - 1) : (count * (count - 1)) / 2;
+  const edgeTarget = Math.min(maxEdges, count + 2);
+  let created = 0;
+  let attempts = 0;
+  const maxAttempts = edgeTarget * 6;
+  while (created < edgeTarget && attempts < maxAttempts) {
+    if (createRandomEdge(weighted)) created++;
+    attempts++;
+  }
   updateEdgePositions();
 }
 
