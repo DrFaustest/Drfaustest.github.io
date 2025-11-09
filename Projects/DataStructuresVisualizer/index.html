@@ -26,42 +26,70 @@
         </div>
     </header>
     <main>
-        <div class="container">
-            <section id="about">
-                <h2>About This Tool</h2>
-                <p>This interactive visualizer helps students and enthusiasts explore the inner workings of data structures and algorithms. Select a topic below and interact with the visualization to see how updates, additions, deletions, and sorting work step-by-step.</p>
-            </section>
-            <section id="visualization">
-                <h2>Choose a Category</h2>
+        <section id="about" class="intro-section">
+            <div class="container intro-container">
+                <div class="intro-card">
+                    <h2>About This Visualizer</h2>
+                    <p class="section-lead">Discover interactive playgrounds for the most common data structures and algorithms.</p>
+                    <div class="feature-tags" aria-label="Highlights">
+                        <span class="feature-tag"><i class="fas fa-bolt" aria-hidden="true"></i> Real-time animations</span>
+                        <span class="feature-tag"><i class="fas fa-chalkboard-teacher" aria-hidden="true"></i> Guided pseudocode</span>
+                        <span class="feature-tag"><i class="fas fa-vial" aria-hidden="true"></i> Experiment-friendly</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="visualization" class="category-section">
+            <div class="container">
+                <div class="category-header">
+                    <h2>Choose a Category</h2>
+                    <p class="section-lead">Pick a starting point to launch the interactive explorer. You can always switch modules from within the app.</p>
+                </div>
                 <div class="category-grid">
                     <a href="linear-structures.html" class="category-card">
-                        <i class="fas fa-list" aria-hidden="true"></i>
-                        <h3>Linear Structures</h3>
-                        <p>Arrays, Linked Lists, Stacks, Queues</p>
+                        <span class="card-icon" aria-hidden="true"><i class="fas fa-list"></i></span>
+                        <div class="card-body">
+                            <h3>Linear Structures</h3>
+                            <p>Arrays, linked lists, stacks, and queues with visual walkthroughs.</p>
+                        </div>
+                        <span class="card-cta">Launch</span>
                     </a>
                     <a href="tree-structures.html" class="category-card">
-                        <i class="fas fa-tree" aria-hidden="true"></i>
-                        <h3>Tree Structures</h3>
-                        <p>Binary Trees, AVL Trees, Red-Black Trees</p>
+                        <span class="card-icon" aria-hidden="true"><i class="fas fa-tree"></i></span>
+                        <div class="card-body">
+                            <h3>Tree Structures</h3>
+                            <p>Binary, AVL, and Red-Black Trees with rotations and traversals.</p>
+                        </div>
+                        <span class="card-cta">Launch</span>
                     </a>
                     <a href="graph-structures.html" class="category-card">
-                        <i class="fas fa-project-diagram" aria-hidden="true"></i>
-                        <h3>Graph Structures</h3>
-                        <p>Graphs with BFS/DFS algorithms</p>
+                        <span class="card-icon" aria-hidden="true"><i class="fas fa-project-diagram"></i></span>
+                        <div class="card-body">
+                            <h3>Graph Structures</h3>
+                            <p>Build graphs and watch BFS, DFS, and weighted pathfinding in action.</p>
+                        </div>
+                        <span class="card-cta">Launch</span>
                     </a>
                     <a href="sorting-algorithms.html" class="category-card">
-                        <i class="fas fa-sort" aria-hidden="true"></i>
-                        <h3>Sorting Algorithms</h3>
-                        <p>Bubble, Insertion, Merge, Quick Sort</p>
+                        <span class="card-icon" aria-hidden="true"><i class="fas fa-sort"></i></span>
+                        <div class="card-body">
+                            <h3>Sorting Algorithms</h3>
+                            <p>Compare bubble, insertion, merge, and quick sort with synced pseudocode.</p>
+                        </div>
+                        <span class="card-cta">Launch</span>
                     </a>
                     <a href="hash-tables.html" class="category-card">
-                        <i class="fas fa-hashtag" aria-hidden="true"></i>
-                        <h3>Hash Tables</h3>
-                        <p>Hash table operations and collisions</p>
+                        <span class="card-icon" aria-hidden="true"><i class="fas fa-hashtag"></i></span>
+                        <div class="card-body">
+                            <h3>Hash Tables</h3>
+                            <p>Interact with chaining, probing, and rehashing strategies side-by-side.</p>
+                        </div>
+                        <span class="card-cta">Launch</span>
                     </a>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </main>
     <footer>
         <div class="container">
@@ -72,6 +100,7 @@
                 <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" title="Facebook" class="social-link"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
             </div>
         </div>
+    </footer>
     <script type="module" src="js/core.js"></script>
     <script type="module" src="js/router.js"></script>
 </body>

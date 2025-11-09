@@ -1,4 +1,4 @@
-import { el, setPseudocode, animSpeed, speed, wait, registerImplementations, highlightPseudo } from './core.js';
+import { el, setPseudocode, animSpeed, speed, wait, registerImplementations, highlightPseudo, setTeardown } from './core.js';
 // NOTE: Pure algorithm logic imported from lib/graph-algorithms.js so visualization reuses tested code.
 import { bfs as pureBFS, dfs as pureDFS, dijkstra as pureDijkstra } from './lib/graph-algorithms.js';
 
@@ -24,6 +24,12 @@ export function renderGraphVisualizer(visualArea, controlsArea) {
   controlsArea.append(el('h3', {}, 'Graph Controls'), controlsForm);
   graphState = { nextId: 0, vertices: [], edges: [], adj: new Map(), weights: new Map(), pendingEdge: null, lastDijkstra: null };
   showGraphBasePseudo();
+  const resizeHandler = () => updateEdgePositions();
+  window.addEventListener('resize', resizeHandler);
+  setTeardown(() => {
+    window.removeEventListener('resize', resizeHandler);
+    graphState = null;
+  });
 }
 
 function showGraphBasePseudo(){
@@ -103,6 +109,7 @@ function addEdge(a, b, w = 1) {
   canvas.appendChild(svg); graphState.edges.push({ a, b, el: svg }); updateEdgePositions();
 }
 function updateEdgePositions() {
+  if (!graphState) return;
   const canvasRect = document.getElementById('graph-canvas').getBoundingClientRect();
   graphState.edges.forEach(edge => {
     const va = graphState.vertices.find(v => v.id === edge.a).el.getBoundingClientRect();
@@ -114,7 +121,6 @@ function updateEdgePositions() {
     if (label) { label.setAttribute('x', (x1 + x2) / 2); label.setAttribute('y', (y1 + y2) / 2 - 4); label.textContent = graphState.weights.get(edgeKey(edge.a, edge.b)); }
   });
 }
-window.addEventListener('resize', () => updateEdgePositions());
 
 // --- Highlight & Distance UI ---
 function clearGraphHighlights() { document.querySelectorAll('.vertex').forEach(v => v.classList.remove('active')); document.querySelectorAll('#graph-canvas .distance-label').forEach(l => l.remove()); }

@@ -1,4 +1,4 @@
-import { el, highlightPseudo, setPseudocode, qs } from './core.js';
+import { el, highlightPseudo, setPseudocode, qs, setTeardown } from './core.js';
 
 // Basic BST node.
 class BSTNode { constructor(value) { this.v = value; this.l = null; this.r = null; } }
@@ -63,6 +63,12 @@ export function renderTreeVisualizer(visualArea, controlsArea) {
     { text: '    if x<root.v: return search(root.l,x)', id: 's4' },
     { text: '    return search(root.r,x)', id: 's5' }
   ]);
+  const resizeHandler = () => drawTree();
+  window.addEventListener('resize', resizeHandler);
+  setTeardown(() => {
+    window.removeEventListener('resize', resizeHandler);
+    bstInstance = null;
+  });
 }
 
 /** Collect tree nodes level-order (including null placeholders) per layer for simple grid rendering. */
@@ -85,6 +91,7 @@ function treeLevels(root) {
 
 /** Render the BST level by level into a simple matrix layout. */
 function drawTree() {
+  if (!bstInstance) return;
   const container = qs('#tree'); const svg = qs('#tree-lines');
   if (!container || !svg) return;
   container.innerHTML = ''; svg.innerHTML = '';
@@ -122,9 +129,6 @@ function drawTree() {
   // Resize SVG height based on depth
   svg.setAttribute('height', String(depth * verticalGap + 120));
 }
-
-// Redraw on window resize to keep layout centered.
-window.addEventListener('resize', () => drawTree());
 
 /** Highlight search path root->target. */
 function highlightSearchPath(targetValue) {
