@@ -1,4 +1,4 @@
-import { appState, resetStepEngine, setPseudocode, highlightPseudo, ensurePanels } from './core.js';
+import { appState, resetStepEngine, setPseudocode, highlightPseudo, ensurePanels, runTeardown } from './core.js';
 // Router: delegates to specific visualizer render functions.
 import { renderArrayVisualizer } from './array.js';
 import { renderLinkedListVisualizer } from './linkedlist.js';
@@ -15,9 +15,10 @@ export function loadVisualizer(type){
   try {
     console.debug('[router] loadVisualizer called with', type);
     appState.current=type; resetStepEngine();
-    const viz=document.getElementById('visualization-area');
-    const controls=document.getElementById('controls-area');
+  const viz=document.getElementById('visualization-area');
+  const controls=document.getElementById('controls-area');
     if(!viz||!controls){ console.error('[router] Missing visualization or controls area'); return; }
+  runTeardown();
     viz.innerHTML=''; controls.innerHTML='';
     ensurePanels();
     setPseudocode([{text:'Select a category...', id:'idle'}]); highlightPseudo('idle');

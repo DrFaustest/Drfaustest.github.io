@@ -3,7 +3,7 @@ import { el, setPseudocode, qs } from './core.js';
 // Separate chaining hash table (array of buckets).
 class HashTableChaining {
   constructor(size = 8) { this.size = size; this.buckets = Array.from({ length: size }, () => []); }
-  hash(key) { return key % this.size; }
+  hash(key) { return ((key % this.size) + this.size) % this.size; }
   insert(key) { const idx = this.hash(key); if (!this.buckets[idx].includes(key)) this.buckets[idx].push(key); }
   remove(key) { const idx = this.hash(key); const pos = this.buckets[idx].indexOf(key); if (pos > -1) this.buckets[idx].splice(pos, 1); }
 }
@@ -11,8 +11,21 @@ class HashTableChaining {
 // Open addressing hash table with linear probing ("*" denotes deleted/tombstone slot).
 class HashTableOpen {
   constructor(size = 11) { this.size = size; this.slots = Array(this.size).fill(null); }
-  hash(key) { return key % this.size; }
-  insert(key) { let i = this.hash(key), start = i; while (this.slots[i] != null) { if (this.slots[i] === key) return; i = (i + 1) % this.size; if (i === start) return; } this.slots[i] = key; }
+  hash(key) { return ((key % this.size) + this.size) % this.size; }
+  insert(key) {
+    let i = this.hash(key), start = i;
+    let tombstone = -1;
+    while (this.slots[i] != null) {
+      if (this.slots[i] === key) return;
+      if (this.slots[i] === '*' && tombstone === -1) tombstone = i;
+      i = (i + 1) % this.size;
+      if (i === start) {
+        if (tombstone !== -1) { this.slots[tombstone] = key; }
+        return;
+      }
+    }
+    if (tombstone !== -1) this.slots[tombstone] = key; else this.slots[i] = key;
+  }
   remove(key) { let i = this.hash(key), start = i; while (this.slots[i] != null) { if (this.slots[i] === key) { this.slots[i] = '*'; return; } i = (i + 1) % this.size; if (i === start) return; } }
 }
 

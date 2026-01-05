@@ -16,6 +16,13 @@ body {
     100% { background-position: 0% 50%; }
 }
 
+@media (prefers-reduced-motion: reduce) {
+    body {
+        animation: none;
+        background-position: 50% 50%;
+    }
+}
+
 h1, h2, h3 {
     font-family: 'Montserrat', 'Verdana', sans-serif;
     margin-bottom: 10px;
@@ -267,12 +274,21 @@ header nav ul li a:hover {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(5px);
+    text-decoration: none;
+    color: inherit;
 }
 
-#projects .project:hover {
+#projects .project:hover,
+#projects .project:focus-visible {
     transform: translateY(-10px);
     box-shadow: 0 20px 30px rgba(0, 0, 0, 0.8);
+}
+
+#projects .project:focus-visible {
+    outline: 3px solid #f39c12;
+    outline-offset: 6px;
 }
 
 .project-img {
@@ -285,7 +301,8 @@ header nav ul li a:hover {
     object-position: center top;
 }
 
-.project:hover .project-img {
+.project:hover .project-img,
+.project:focus-visible .project-img {
     transform: scale(1.05);
 }
 
@@ -326,7 +343,7 @@ header nav ul li a:hover {
     border-radius: 12px;
 }
 
-#projects a {
+.project-link {
     color: #fff;
     text-decoration: none;
     font-weight: 600;
@@ -341,7 +358,8 @@ header nav ul li a:hover {
     align-self: center;
 }
 
-#projects a:hover {
+.project:hover .project-link,
+.project:focus-visible .project-link {
     background: #e74c3c;
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
@@ -391,6 +409,7 @@ header nav ul li a:hover {
     padding: 30px;
     background: rgba(0, 0, 0, 0.3);
     border-radius: 15px;
+    -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.1);

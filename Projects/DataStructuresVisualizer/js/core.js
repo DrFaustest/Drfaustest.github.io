@@ -50,7 +50,8 @@ export const appState = {
   playLoop: null,               // interval handle
   stats: { comparisons: 0, swaps: 0, operations: 0 }, // cumulative counters
   pseudoLines: [],              // current pseudocode lines (for re-render on changes)
-  pseudoMap: new Map()          // id -> line index mapping for highlight lookups
+  pseudoMap: new Map(),         // id -> line index mapping for highlight lookups
+  teardown: null                // optional cleanup hook supplied by active visualizer
 };
 /** Reset step playback (used when generating a new set of sorting steps). */
 export function resetStepEngine() {
@@ -182,4 +183,21 @@ export function registerImplementations(api) {
   if (api.applyStepState) applyStepState = api.applyStepState;
   if (api.activateVertex) activateVertex = api.activateVertex;
   if (api.updateGraphDistance) updateGraphDistance = api.updateGraphDistance;
+}
+
+/** Allow modules to register a teardown callback invoked before loading another visualizer. */
+export function setTeardown(fn) {
+  appState.teardown = typeof fn === 'function' ? fn : null;
+}
+
+/** Execute and clear the currently registered teardown callback, if any. */
+export function runTeardown() {
+  if (typeof appState.teardown === 'function') {
+    try {
+      appState.teardown();
+    } catch (err) {
+      console.error('[core] teardown error', err);
+    }
+  }
+  appState.teardown = null;
 }
