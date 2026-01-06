@@ -1,142 +1,87 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <style>
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f9;
-    }
-
-    header {
-      background: #4CAF50;
-      color: white;
-      padding: 20px 0;
-      text-align: center;
-    }
-
-    nav {
-      background: #333;
-      overflow: hidden;
-    }
-
-    nav a {
-      float: left;
-      display: block;
-      color: white;
-      text-align: center;
-      padding: 14px 20px;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-
-    nav a:hover {
-      background: #575757;
-    }
-
-    .container {
-      max-width: 800px;
-      margin: 20px auto;
-      text-align: center;
-    }
-
-    canvas {
-      display: block;
-      margin: 20px auto;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      background: #fff;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    button {
-      font-size: 16px;
-      padding: 10px 15px;
-      margin: 10px;
-      border: none;
-      border-radius: 5px;
-      background: linear-gradient(to bottom, #4CAF50, #2E7D32);
-      color: white;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    button:hover {
-      background: linear-gradient(to bottom, #66BB6A, #388E3C);
-      transform: scale(1.05);
-    }
-
-    button:active {
-      background: #1B5E20;
-    }
-
-    footer {
-      background: #333;
-      color: white;
-      text-align: center;
-      padding: 10px 0;
-      margin-top: 20px;
-    }
-
-    .description {
-      margin: 20px auto;
-      max-width: 800px;
-      padding: 20px;
-      background: #fff;
-      border-radius: 5px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .description h2 {
-      color: #4CAF50;
-      margin-bottom: 10px;
-    }
-
-    .description p {
-      line-height: 1.6;
-      color: #333;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Ball Pit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link rel="stylesheet" href="../../../style.css">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>Interactive Ball Pit</h1>
+    <div class="container">
+      <h1>Interactive Ball Pit</h1>
+      <nav>
+        <ul>
+          <li><a href="../../../index.html">Home</a></li>
+          <li><a href="../../../Projects/DataStructuresVisualizer/index.html">Visualizer</a></li>
+          <li><a href="#playground" aria-current="page">Ball Pit</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <nav>
-    <a href="../../../index.html">Home</a>
-  </nav>
+  <main>
+    <section class="intro-section">
+      <div class="container intro-container">
+        <div class="intro-card">
+          <h2>Physics Playground</h2>
+          <p class="section-lead">A responsive, canvas-powered simulation where colorful particles bounce, collide, and react to your commands. Built with vanilla JavaScript and vector math to keep motion believable and performance smooth.</p>
+          <div class="feature-tags" aria-label="Highlights">
+            <span class="feature-tag"><i class="fas fa-rocket" aria-hidden="true"></i> Elastic collision engine</span>
+            <span class="feature-tag"><i class="fas fa-sliders-h" aria-hidden="true"></i> Real-time controls</span>
+            <span class="feature-tag"><i class="fas fa-mobile-alt" aria-hidden="true"></i> Auto-resizing canvas</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-  <div class="container">
-    <div class="description">
-      <h2>Project Highlights</h2>
-      <p>This interactive Ball Pit project showcases advanced collision detection and resolution between multiple objects using vector mathematics. The canvas dynamically resizes based on screen width for optimal viewing on any device. Balls respond to user interaction through various controls such as speed adjustment, size modification, and color randomization.</p>
-      <p>The code also demonstrates object-oriented programming by encapsulating ball properties and behavior within a class. Additionally, efficient use of the HTML5 Canvas API ensures smooth animations and accurate rendering.</p>
-    </div>
+    <section class="ballpit-section" id="playground">
+      <div class="container ballpit-grid">
+        <div class="canvas-card">
+          <div class="card-header">
+            <h2>Simulation Arena</h2>
+            <p>Launch the sim, tweak the parameters, and watch the kinetic choreography unfold.</p>
+          </div>
+          <div class="canvas-frame">
+            <canvas id="ballCanvas" aria-label="Ball pit simulation canvas"></canvas>
+          </div>
+        </div>
 
-    <canvas id="ballCanvas" width="550" height="400"></canvas>
-
-    <div class="buttons">
-      <button id="increaseSpeed">Increase Speed</button>
-      <button id="decreaseSpeed">Decrease Speed</button>
-      <button id="increaseSize">Increase Size</button>
-      <button id="decreaseSize">Decrease Size</button>
-      <button id="randomColor">Random Color</button>
-      <button id="addBall">Add Ball</button>
-    </div>
-  </div>
+        <aside class="control-card" aria-label="Simulation controls">
+          <h2>Controls</h2>
+          <p class="control-hint">Try stacking a few actions together—speed boosts plus random colors keep the pit lively.</p>
+          <div class="control-grid">
+            <button class="btn" id="increaseSpeed">Speed Up</button>
+            <button class="btn" id="decreaseSpeed">Slow Down</button>
+            <button class="btn" id="increaseSize">Grow Radius</button>
+            <button class="btn" id="decreaseSize">Shrink Radius</button>
+            <button class="btn" id="randomColor">Randomize Colors</button>
+            <button class="btn primary" id="addBall">Add Another Ball</button>
+          </div>
+          <ul class="tips-list">
+            <li>Collisions blend colors—fast movers tend to “paint” slower ones.</li>
+            <li>Canvas resizes with your viewport while keeping balls inside bounds.</li>
+            <li>Every new ball spawns with a unique vector so the system never stagnates.</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+  </main>
 
   <footer>
-    <p>&copy; 2025 Ball Pit Project | All Rights Reserved</p>
+    <div class="container">
+      <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+      <div class="social-links">
+        <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" title="GitHub" class="social-link"><i class="fab fa-github" aria-hidden="true"></i><span class="sr-only">GitHub</span></a>
+        <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" title="LinkedIn" class="social-link"><i class="fab fa-linkedin" aria-hidden="true"></i><span class="sr-only">LinkedIn</span></a>
+        <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" title="Facebook" class="social-link"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+      </div>
+    </div>
   </footer>
 
   <script src="script.js"></script>

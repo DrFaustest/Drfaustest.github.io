@@ -1,26 +1,33 @@
-const canvas = document.getElementById("ballCanvas");
-const ctx = canvas.getContext("2d");
-const increaseSpeedBtn = document.getElementById("increaseSpeed");
-const decreaseSpeedBtn = document.getElementById("decreaseSpeed");
-const increaseSizeBtn = document.getElementById("increaseSize");
-const decreaseSizeBtn = document.getElementById("decreaseSize");
-const randomColorBtn = document.getElementById("randomColor");
-const addBallBtn = document.getElementById("addBall");
+const canvas = document.getElementById('ballCanvas');
+const ctx = canvas.getContext('2d');
 
-function setCanvasSize() {
-  const maxWidth = 800; // Set the maximum canvas width
-  const margin = 20; // Set the margin on both sides
-  const screenWidth = window.innerWidth;
+const increaseSpeedBtn = document.getElementById('increaseSpeed');
+const decreaseSpeedBtn = document.getElementById('decreaseSpeed');
+const increaseSizeBtn = document.getElementById('increaseSize');
+const decreaseSizeBtn = document.getElementById('decreaseSize');
+const randomColorBtn = document.getElementById('randomColor');
+const addBallBtn = document.getElementById('addBall');
 
-  if (screenWidth <= maxWidth + 2 * margin) {
-    canvas.width = screenWidth - 2 * margin;
-  } else {
-    canvas.width = maxWidth;
-  }
-  canvas.height = 400; // Set the desired canvas height
+const MAX_CANVAS_WIDTH = 920;
+const MIN_CANVAS_WIDTH = 280;
+
+let balls = [];
+
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
 }
 
-setCanvasSize();
+function setCanvasSize() {
+  const wrapper = canvas.parentElement;
+  const availableWidth = wrapper ? wrapper.clientWidth : window.innerWidth - 48;
+  const width = clamp(availableWidth, MIN_CANVAS_WIDTH, MAX_CANVAS_WIDTH);
+  canvas.width = width;
+  canvas.height = Math.round(width * 0.6);
+  balls.forEach(ball => {
+    ball.x = clamp(ball.x, ball.radius, canvas.width - ball.radius);
+    ball.y = clamp(ball.y, ball.radius, canvas.height - ball.radius);
+  });
+}
 
 class Ball {
   constructor(x, y, radius, color, dx, dy) {
@@ -43,25 +50,13 @@ class Ball {
   update() {
     this.x += this.dx;
     this.y += this.dy;
-    if (
-      this.x + this.dx > canvas.width - this.radius ||
-      this.x + this.dx < this.radius
-    ) {
+    if (this.x + this.dx > canvas.width - this.radius || this.x + this.dx < this.radius) {
       this.dx = -this.dx;
-      this.x = Math.max(
-        this.radius,
-        Math.min(canvas.width - this.radius, this.x)
-      );
+      this.x = clamp(this.x, this.radius, canvas.width - this.radius);
     }
-    if (
-      this.y + this.dy > canvas.height - this.radius ||
-      this.y + this.dy < this.radius
-    ) {
+    if (this.y + this.dy > canvas.height - this.radius || this.y + this.dy < this.radius) {
       this.dy = -this.dy;
-      this.y = Math.max(
-        this.radius,
-        Math.min(canvas.height - this.radius, this.y)
-      );
+      this.y = clamp(this.y, this.radius, canvas.height - this.radius);
     }
   }
 
@@ -95,12 +90,10 @@ class Ball {
     const relativeVelocityX = this.dx - ball.dx;
     const relativeVelocityY = this.dy - ball.dy;
 
-    const dotProduct =
-      relativeVelocityX * normalX + relativeVelocityY * normalY;
+    const dotProduct = relativeVelocityX * normalX + relativeVelocityY * normalY;
 
     const bounceFactor = 1;
-    const impulse =
-      (2 * ball.radius * dotProduct) / (this.radius + ball.radius);
+    const impulse = (2 * ball.radius * dotProduct) / (this.radius + ball.radius);
 
     this.dx -= impulse * normalX * bounceFactor;
     this.dy -= impulse * normalY * bounceFactor;
@@ -108,8 +101,8 @@ class Ball {
     ball.dy += impulse * normalY * bounceFactor;
 
     // Calculate the speeds of both balls
-    const thisSpeed = Math.sqrt(this.dx * this.dx + this.dy * this.dy);
-    const ballSpeed = Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy);
+    const thisSpeed = Math.hypot(this.dx, this.dy);
+    const ballSpeed = Math.hypot(ball.dx, ball.dy);
     // Limit the maximum speed
     const maxSpeed = 100;
     if (thisSpeed > maxSpeed) {
@@ -131,8 +124,16 @@ class Ball {
   }
 }
 
-let balls = [
-  new Ball(canvas.width / 2, canvas.height / 2, 10, "#0095DD", 2, -2),
+setCanvasSize();
+balls = [
+  new Ball(
+    canvas.width * 0.5,
+    canvas.height * 0.45,
+    12,
+    '#4cc9f0',
+    2.2,
+    -2.4
+  )
 ];
 
 function increaseSpeed() {
@@ -151,14 +152,18 @@ function decreaseSpeed() {
 
 function increaseSize() {
   for (const ball of balls) {
-    ball.radius += 2;
+    ball.radius = Math.min(ball.radius + 2, canvas.height / 4);
+    ball.x = clamp(ball.x, ball.radius, canvas.width - ball.radius);
+    ball.y = clamp(ball.y, ball.radius, canvas.height - ball.radius);
   }
 }
 
 function decreaseSize() {
   for (const ball of balls) {
-    if (ball.radius > 2) {
+    if (ball.radius > 4) {
       ball.radius -= 2;
+      ball.x = clamp(ball.x, ball.radius, canvas.width - ball.radius);
+      ball.y = clamp(ball.y, ball.radius, canvas.height - ball.radius);
     }
   }
 }
@@ -171,14 +176,15 @@ function randomColor() {
 }
 
 function addBall() {
-  const randomPos = () => Math.floor(Math.random() * (canvas.width - 30)) + 15;
-  const randomColor = () => Math.floor(Math.random() * 256);
-  const randomVelocity = () => Math.random() * 4 - 2;
+  const randomX = () => Math.random() * (canvas.width - 40) + 20;
+  const randomY = () => Math.random() * (canvas.height - 40) + 20;
+  const randomChannel = () => Math.floor(Math.random() * 256);
+  const randomVelocity = () => (Math.random() * 2 + 0.6) * (Math.random() > 0.5 ? 1 : -1);
   const newBall = new Ball(
-    randomPos(),
-    randomPos(),
+    randomX(),
+    randomY(),
     10,
-    `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`,
+    `rgb(${randomChannel()}, ${randomChannel()}, ${randomChannel()})`,
     randomVelocity(),
     randomVelocity()
   );
@@ -190,7 +196,7 @@ decreaseSpeedBtn.addEventListener("click", decreaseSpeed);
 increaseSizeBtn.addEventListener("click", increaseSize);
 decreaseSizeBtn.addEventListener("click", decreaseSize);
 randomColorBtn.addEventListener("click", randomColor);
-addBallBtn.addEventListener("click", addBall);
+addBallBtn.addEventListener('click', addBall);
 window.addEventListener('resize', setCanvasSize);
 
 function updateBalls() {
@@ -207,4 +213,9 @@ function updateBalls() {
   }
 }
 
-setInterval(updateBalls, 10);
+function animate() {
+  updateBalls();
+  requestAnimationFrame(animate);
+}
+
+animate();

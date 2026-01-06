@@ -1,4 +1,31 @@
-import { el, highlightPseudo, setPseudocode, qs } from './core.js';
+import { el, highlightPseudo, setPseudocode, qs, setTeardown } from './core.js';
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function appendGlowFilter(svg){
+  if (!svg) return;
+  if (svg.querySelector('#tree-glow')) return;
+  const defs = document.createElementNS(SVG_NS, 'defs');
+  const filter = document.createElementNS(SVG_NS, 'filter');
+  filter.setAttribute('id', 'tree-glow');
+  filter.setAttribute('x', '-50%');
+  filter.setAttribute('y', '-50%');
+  filter.setAttribute('width', '200%');
+  filter.setAttribute('height', '200%');
+  const blur = document.createElementNS(SVG_NS, 'feGaussianBlur');
+  blur.setAttribute('in', 'SourceGraphic');
+  blur.setAttribute('stdDeviation', '2.5');
+  blur.setAttribute('result', 'blur');
+  const merge = document.createElementNS(SVG_NS, 'feMerge');
+  const mergeNode1 = document.createElementNS(SVG_NS, 'feMergeNode');
+  mergeNode1.setAttribute('in', 'blur');
+  const mergeNode2 = document.createElementNS(SVG_NS, 'feMergeNode');
+  mergeNode2.setAttribute('in', 'SourceGraphic');
+  merge.append(mergeNode1, mergeNode2);
+  filter.append(blur, merge);
+  defs.append(filter);
+  svg.append(defs);
+}
 
 // Basic BST node.
 class BSTNode { constructor(value) { this.v = value; this.l = null; this.r = null; } }
@@ -63,6 +90,12 @@ export function renderTreeVisualizer(visualArea, controlsArea) {
     { text: '    if x<root.v: return search(root.l,x)', id: 's4' },
     { text: '    return search(root.r,x)', id: 's5' }
   ]);
+  const resizeHandler = () => drawTree();
+  window.addEventListener('resize', resizeHandler);
+  setTeardown(() => {
+    window.removeEventListener('resize', resizeHandler);
+    bstInstance = null;
+  });
 }
 
 /** Collect tree nodes level-order (including null placeholders) per layer for simple grid rendering. */
@@ -85,9 +118,11 @@ function treeLevels(root) {
 
 /** Render the BST level by level into a simple matrix layout. */
 function drawTree() {
+  if (!bstInstance) return;
   const container = qs('#tree'); const svg = qs('#tree-lines');
   if (!container || !svg) return;
   container.innerHTML = ''; svg.innerHTML = '';
+  appendGlowFilter(svg);
   const levels = treeLevels(bstInstance.root);
   const depth = levels.length;
   const nodeSize = 42; const verticalGap = 80; // spacing
@@ -107,11 +142,29 @@ function drawTree() {
   positions.forEach((pos, node) => {
     if (node.l && positions.has(node.l)) {
       const c1 = pos; const c2 = positions.get(node.l);
-      svg.append(el('line', { x1: c1.x + nodeSize/2, y1: c1.y + nodeSize/2, x2: c2.x + nodeSize/2, y2: c2.y + nodeSize/2, stroke: '#2a3142', 'stroke-width': 2 }));
+      svg.append(el('line', {
+        x1: c1.x + nodeSize/2,
+        y1: c1.y + nodeSize/2,
+        x2: c2.x + nodeSize/2,
+        y2: c2.y + nodeSize/2,
+        stroke: '#4cc9f0',
+        'stroke-width': 4,
+        'stroke-linecap': 'round',
+        'filter': 'url(#tree-glow)'
+      }));
     }
     if (node.r && positions.has(node.r)) {
       const c1 = pos; const c2 = positions.get(node.r);
-      svg.append(el('line', { x1: c1.x + nodeSize/2, y1: c1.y + nodeSize/2, x2: c2.x + nodeSize/2, y2: c2.y + nodeSize/2, stroke: '#2a3142', 'stroke-width': 2 }));
+      svg.append(el('line', {
+        x1: c1.x + nodeSize/2,
+        y1: c1.y + nodeSize/2,
+        x2: c2.x + nodeSize/2,
+        y2: c2.y + nodeSize/2,
+        stroke: '#4cc9f0',
+        'stroke-width': 4,
+        'stroke-linecap': 'round',
+        'filter': 'url(#tree-glow)'
+      }));
     }
   });
   // Draw nodes
@@ -122,9 +175,6 @@ function drawTree() {
   // Resize SVG height based on depth
   svg.setAttribute('height', String(depth * verticalGap + 120));
 }
-
-// Redraw on window resize to keep layout centered.
-window.addEventListener('resize', () => drawTree());
 
 /** Highlight search path root->target. */
 function highlightSearchPath(targetValue) {
