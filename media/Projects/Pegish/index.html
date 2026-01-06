@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pegish - Pinball Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="ui-top">
+            <button id="darkModeToggle" class="dark-mode-toggle" aria-label="Toggle dark mode">🌙</button>
+            <div class="score-display">
+                <span class="label" data-i18n="score">Score:</span>
+                <span class="value" id="score">0</span>
+            </div>
+            <div class="level-display">
+                <span class="label" data-i18n="level">Level:</span>
+                <span class="value" id="level">1</span>
+            </div>
+            <div class="balls-display">
+                <span class="label" data-i18n="balls">Balls:</span>
+                <span class="value" id="balls">10</span>
+            </div>
+            <button id="langToggle" class="lang-toggle" aria-label="Toggle language">🌐</button>
+        </div>
+
+        <canvas id="gameCanvas"></canvas>
+
+        <div class="ui-bottom">
+            <div class="controls">
+                <p data-i18n="controls1">Use ← → Arrow Keys or A/D to rotate cannon</p>
+                <p data-i18n="controls2">SPACE to fire</p>
+                <button id="resetBtn" data-i18n="reset">Reset Game</button>
+            </div>
+            <div class="mobile-controls" aria-label="Touch controls">
+                <button class="mobile-btn" id="btnLeft" aria-label="Rotate left">⟵</button>
+                <button class="mobile-btn mobile-fire" id="btnFire" data-i18n="fire">Fire</button>
+                <button class="mobile-btn" id="btnRight" aria-label="Rotate right">⟶</button>
+            </div>
+            <div class="info" id="gameInfo"></div>
+            <div class="dedication" data-i18n="dedication">献给我的妻子</div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
