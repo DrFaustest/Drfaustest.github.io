@@ -3,34 +3,64 @@
 ## Section 1 – Issues by Severity
 
 ### Critical
-- `index.html`: Profile photo `img` uses backslashes in the `src` attribute (`media\img\Profile.JPGcropped.JPG`), which GitHub Pages serves literally. The request becomes `media%5Cimg%5C...`, so the headshot 404s in production and the hero layout collapses around the missing asset.
-- `index.html`: Contact form submission always reports failure. Formspree responds with a 303 redirect when JSON is posted without an `Accept: application/json` header, so `response.ok` is false and the UI shows "Failed to send message" even when the message is delivered.
-- `Projects/DataStructuresVisualizer/index.html`: `<footer>` is never closed. Browsers auto-correct by hoisting the closing tags, which can drop the footer styling and accidentally wrap the module `<script>` tags inside the footer, breaking layout in Safari and some mobile browsers.
+✅ **RESOLVED** - `index.html`: Profile photo now uses forward slashes (`media/img/Profile Pic.png`). All project images properly use forward slashes.
+✅ **RESOLVED** - `index.html`: Contact form now includes `Accept: application/json` header in fetch request, correctly handling Formspree's 303 redirect.
+✅ **RESOLVED** - `Projects/DataStructuresVisualizer/index.html`: Footer is now properly closed with proper script module imports after footer.
 
 ### High
-- `Projects/DataStructuresVisualizer/js/graph.js`: Every navigation back to the graph visualizer attaches a new `resize` handler without removing prior listeners. After a few toggles the handler fires N-times per resize and causes noticeable lag on laptops.
-- `Projects/DataStructuresVisualizer/js/bst.js`: Adds a global `resize` listener on each render and never cleans it up. Switching visualizers repeatedly produces stacked listeners that keep referencing detached DOM nodes.
+✅ **RESOLVED** - `Projects/DataStructuresVisualizer/js/graph.js`: Now properly implements `setTeardown()` to remove resize listeners when switching visualizers.
+✅ **RESOLVED** - `Projects/DataStructuresVisualizer/js/bst.js`: Now uses `setTeardown()` pattern to clean up resize listeners.
+✅ **RESOLVED** - `Projects/DataStructuresVisualizer/js/avl.js`: Implements proper teardown for resize listeners.
+✅ **RESOLVED** - `Projects/DataStructuresVisualizer/js/rbt.js`: Implements proper teardown for resize listeners.
+✅ **RESOLVED** - `Projects/DataStructuresVisualizer/js/sorting.js`: Now implements `setTeardown()` to clean up ResizeObserver and resize event listener, preventing memory leaks.
 
 ### Medium
-- `index.html`: Project cards use `div` with `onclick` only, making them unreachable via keyboard/screen readers and causing double navigation because a nested `<a>` also exists.
-- Global styling (`style.css`) animates the background gradient indefinitely. Combined with long text blocks this fails WCAG 2.3.3 (animation from interactions) unless a pause toggle or reduced-motion handling is added.
+✅ **RESOLVED** - `index.html`: Project cards now use semantic `<a>` tags without nested onclick divs, making them accessible via keyboard/screen readers.
+✅ **RESOLVED** - Global styling (`style.css`): Now includes `@media (prefers-reduced-motion: reduce)` to disable gradient animation for users with motion sensitivity.
 
 ### Low
-- Legacy `Projects/DataStructuresVisualizer/script.js` is still checked in at ~1,100 lines but unused; keeping it bloats the repo and confuses contributors.
-- Several visualizer buttons rely on bare `prompt()` dialogs (e.g., weighted edges, hash-table rehash) which blocks the UI and is inconsistent with the polished design elsewhere.
+✅ **RESOLVED** - Legacy `Projects/DataStructuresVisualizer/script.js` has been removed from the repository.
+⚠️ **STILL PRESENT** - `Projects/DataStructuresVisualizer/js/graph.js`: Uses blocking `prompt()` dialogs for target vertex selection (line 353) and random graph generation (line 362). Should be replaced with modals or in-panel inputs for consistency with polished design.
 
-## Section 2 – Improvement Process Timeline
-- **Week 1 – Critical fixes**
-  - Correct profile image pathing and close the orphaned footer tag.
-  - Patch the Formspree fetch headers and verify 200 response handling.
-  - Regression-test the landing page on desktop and mobile after fixes.
-- **Week 2 – High-severity cleanup**
-  - Refactor graph/BST visualizers to register/unregister `resize` handlers via an initialization/dispose pattern.
-  - Add automated smoke tests for switching between visualizers to prevent listener leaks.
-- **Week 3 – Accessibility & UX polish**
-  - Convert project tiles to semantic anchors/buttons with focus styles.
-  - Honor `prefers-reduced-motion` in `style.css` and/or add animation toggles.
-  - Replace blocking prompts with modal or in-panel inputs for edge weights and hash operations.
-- **Week 4 – Repository hygiene**
-  - Remove or archive the legacy monolithic `script.js` file.
-  - Update documentation to reflect module-based architecture and new UX flows.
+## Section 2 – Remaining Tasks
+
+### Medium Priority
+1. **Replace prompt() dialogs in graph.js**: Convert blocking prompts to modal dialogs or in-panel inputs
+   - Line 353: Target vertex selection for path finding
+   - Line 362: Random graph vertex count input
+   - Should match the polished design of the edge weight modal
+
+### Low Priority  
+2. **Add automated tests**: Create smoke tests for switching between visualizers to catch memory leak regressions
+
+## Section 3 – Completed Improvements ✅
+
+### Critical Fixes (All Resolved)
+- ✅ Fixed all image paths to use forward slashes for GitHub Pages compatibility
+- ✅ Added `Accept: application/json` header to contact form submission
+- ✅ Closed unclosed footer tag in DataStructuresVisualizer/index.html
+
+### Memory Leak Fixes (All Resolved)
+- ✅ Implemented `setTeardown()` cleanup pattern in graph.js, bst.js, avl.js, rbt.js, sorting.js
+- ✅ All visualizers now properly remove resize event listeners and observers
+- ✅ sorting.js now cleans up ResizeObserver and fallback resize listener
+
+### Sorting Visualizer Complete Rework (January 2026)
+- ✅ **Fixed Reset button**: Now properly resets stats and clears all visual states
+- ✅ **Fixed Shuffle button**: Creates new random array and resets all states
+- ✅ **Added originalArray tracking**: Stores the original unsorted array so "Generate Steps" always works from the same starting point
+- ✅ **Fixed step generation**: Array is properly restored to original state before generating new steps
+- ✅ **Improved state management**: Created `resetPlayback()` and `clearTransientVisuals()` helper functions
+- ✅ **Better error handling**: Added null checks and guards throughout drawBars and applyStepState
+- ✅ **Fixed highlighting**: Bars are properly highlighted and unhighlighted during step execution
+- ✅ **Fixed resize handling**: Properly stores and cleans up resize handlers in teardown
+- ✅ **Algorithm switching**: Changing algorithms now properly resets playback state
+- ✅ **Size changing**: Changing array size properly resets all state and creates new random array
+- ✅ **Consistent state**: All buttons now maintain consistent state across operations
+
+### Accessibility Improvements (All Resolved)
+- ✅ Converted project cards from `<div onclick>` to semantic `<a>` tags
+- ✅ Added `prefers-reduced-motion` media query to disable gradient animation for motion-sensitive users
+
+### Repository Hygiene (Completed)
+- ✅ Removed legacy monolithic `script.js` file (~1,100 lines, unused)

@@ -26,14 +26,87 @@
     </header>
     <main>
         <div class="container">
-            <section id="about">
-                <h2>About Sorting Algorithms</h2>
-                <p>Explore various sorting algorithms including bubble sort, insertion sort, merge sort, and quick sort. See how they compare and perform step-by-step.</p>
+            <section class="intro-section">
+                <div class="intro-container">
+                    <div class="intro-card">
+                        <h2>Sorting Algorithms</h2>
+                        <p class="section-lead">
+                            Explore interactive visualizations of fundamental sorting algorithms. Each algorithm has its own dedicated page with detailed explanations, step-by-step visualization, and pseudocode walkthroughs.
+                        </p>
+                    </div>
+                </div>
             </section>
-            <section id="visualization">
-                <div class="viz-split">
-                    <section id="visualization-area" aria-live="polite"></section>
-                    <aside id="controls-area" aria-label="Controls"></aside>
+            
+            <section class="category-section">
+                <div class="category-header">
+                    <h2>Choose an Algorithm</h2>
+                </div>
+                <div class="category-grid">
+                    <a href="bubble-sort.html" class="category-card">
+                        <div class="card-icon">
+                            <i class="fas fa-circle-notch"></i>
+                        </div>
+                        <div class="card-body">
+                            <h3>Bubble Sort</h3>
+                            <p>Simple comparison-based algorithm that repeatedly steps through the list, comparing adjacent elements and swapping them if needed.</p>
+                        </div>
+                        <span class="card-cta">Visualize</span>
+                    </a>
+                    
+                    <a href="insertion-sort.html" class="category-card">
+                        <div class="card-icon">
+                            <i class="fas fa-arrow-right"></i>
+                        </div>
+                        <div class="card-body">
+                            <h3>Insertion Sort</h3>
+                            <p>Builds the sorted array one item at a time by inserting each element into its correct position among previously sorted elements.</p>
+                        </div>
+                        <span class="card-cta">Visualize</span>
+                    </a>
+                    
+                    <a href="selection-sort.html" class="category-card">
+                        <div class="card-icon">
+                            <i class="fas fa-hand-pointer"></i>
+                        </div>
+                        <div class="card-body">
+                            <h3>Selection Sort</h3>
+                            <p>Repeatedly finds the minimum element and places it at the beginning. Makes fewer swaps than other simple sorts, efficient when writes are expensive.</p>
+                        </div>
+                        <span class="card-cta">Visualize</span>
+                    </a>
+                    
+                    <a href="merge-sort.html" class="category-card">
+                        <div class="card-icon">
+                            <i class="fas fa-code-branch"></i>
+                        </div>
+                        <div class="card-body">
+                            <h3>Merge Sort</h3>
+                            <p>Efficient divide-and-conquer algorithm that splits the array into halves, recursively sorts them, and merges the results.</p>
+                        </div>
+                        <span class="card-cta">Visualize</span>
+                    </a>
+                    
+                    <a href="quick-sort.html" class="category-card">
+                        <div class="card-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="card-body">
+                            <h3>Quick Sort</h3>
+                            <p>Fast partition-based algorithm that selects a pivot element and partitions the array around it, recursively sorting subarrays.</p>
+                        </div>
+                        <span class="card-cta">Visualize</span>
+                    </a>
+                    
+                    <a href="heap-sort.html" class="category-card">
+                        <div class="card-icon">
+                            <i class="fas fa-sitemap"></i>
+                        </div>
+                        <div class="card-body">
+                            <h3>Heap Sort</h3>
+                            <p>Efficient heap-based algorithm guaranteed O(n log n) performance. Builds a max heap, then repeatedly extracts the maximum element.</p>
+                        </div>
+                        <span class="card-cta">Visualize</span>
+                    </a>
                 </div>
             </section>
         </div>
@@ -48,24 +121,6 @@
             </div>
         </div>
     </footer>
-    <script type="module" src="js/core.js"></script>
-    <script type="module">
-        import { renderSortingVisualizer } from './js/sorting.js';
-        import { ensurePanels, appState, resetStepEngine } from './js/core.js';
-        
-        function initSorting() {
-            appState.current = 'sorting';
-            resetStepEngine();
-            const viz = document.getElementById('visualization-area');
-            const controls = document.getElementById('controls-area');
-            if (viz && controls) {
-                ensurePanels();
-                renderSortingVisualizer(viz, controls);
-            }
-        }
-        
-        initSorting();
-    </script>
 </body>
 </html></content>
 <parameter name="filePath">c:\Users\scott\OneDrive\Documents\Programming\websites\Portfolio\Drfaustest.github.io\Projects\DataStructuresVisualizer\sorting-algorithms.html

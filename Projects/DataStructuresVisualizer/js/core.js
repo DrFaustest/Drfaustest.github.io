@@ -38,7 +38,7 @@ export const el = (tag, props = {}, ...children) => {
 export const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 /** Named animation speed presets (ms between steps). */
-export const animSpeed = { ultra: 60, fast: 120, normal: 260, slow: 520 };
+export const animSpeed = { instant: 15, ultra: 60, fast: 120, normal: 260, slow: 520 };
 export let speed = 'normal'; // current selected speed key
 
 /** Central mutable state for the active visualizer. */
@@ -164,6 +164,11 @@ export function step(dir) {
 }
 /** Re-render base visualization and re-apply steps up to targetIndex (rewind). */
 export function renderCurrentAgain(targetIndex = 0) {
+  // Reset stats when going back to start
+  if (targetIndex === 0) {
+    appState.stats = { comparisons: 0, swaps: 0, operations: 0 };
+    updateStats();
+  }
   if (appState.current === 'sorting') { drawBars(true); for (let i = 0; i < targetIndex; i++) applyStepState(appState.steps[i], true); }
   highlightPseudo(null);
 }

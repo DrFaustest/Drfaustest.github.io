@@ -275,6 +275,60 @@ footer { background: #0e121a; border-top: 1px solid #242a38; color: var(--muted)
 .social-link { color: var(--muted); }
 .social-link:hover { color: var(--accent); }
 
+/* Algorithm sub-navigation */
+.algo-nav { background: rgba(18, 23, 36, 0.72); border-bottom: 1px solid #242a38; padding: 0; }
+.algo-list { list-style: none; margin: 0; padding: 0; display: flex; gap: 0; justify-content: center; flex-wrap: wrap; }
+.algo-list li { margin: 0; }
+.algo-list a {
+  display: block;
+  padding: .9rem 1.4rem;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 3px solid transparent;
+  transition: all .25s ease;
+  font-weight: 500;
+  font-size: .88rem;
+  letter-spacing: .02em;
+}
+.algo-list a:hover { color: var(--accent); background: rgba(76, 201, 240, .06); }
+.algo-list a.active { color: var(--accent); border-bottom-color: var(--accent); background: rgba(76, 201, 240, .08); }
+
+/* Algorithm about section */
+.algo-about { padding: 2.5rem 1.5rem; max-width: 900px; margin: 0 auto; }
+.algo-about h2 {
+  margin: 0 0 1rem;
+  color: var(--accent);
+  font-size: 1.75rem;
+  letter-spacing: .08em;
+}
+.algo-about p { color: var(--muted); line-height: 1.7; margin-bottom: 1.25rem; }
+.algo-about h3 {
+  margin: 1.75rem 0 .85rem;
+  color: var(--fg);
+  font-size: 1.15rem;
+  letter-spacing: .05em;
+}
+.algo-about ul { color: var(--muted); line-height: 1.7; padding-left: 1.5rem; }
+.algo-about li { margin-bottom: .5rem; }
+
+/* Visualization section */
+.visualization-section { padding: 1.5rem; background: var(--card); margin: 0 1.5rem; border-radius: 12px; border: 1px solid #232938; }
+.viz-display { display: flex; align-items: flex-end; justify-content: center; gap: 2px; height: 320px; padding: .75rem; background: #121724; border-radius: 8px; overflow-x: auto; overflow-y: hidden; }
+
+/* Control section */
+.control-section { padding: 2rem 1.5rem 3rem; max-width: 1200px; margin: 0 auto; }
+.control-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+.pseudocode-panel { display: flex; flex-direction: column; gap: 1rem; }
+.controls-panel { display: flex; flex-direction: column; gap: 1rem; }
+.control-group { display: grid; gap: .6rem; }
+.control-row { display: flex; gap: .5rem; flex-wrap: wrap; }
+.btn-block { width: 100%; }
+.btn-sm { padding: .4rem .7rem; font-size: .82rem; }
+.btn-secondary { background: #232938; border-color: #2a3142; }
+.btn-secondary:hover { background: #2a3142; border-color: #323d52; }
+.btn-danger { background: #b91c1c; border-color: #991b1b; }
+.btn-danger:hover { background: #dc2626; border-color: #b91c1c; }
+
 /* A11y helpers */
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,1px,1px); white-space: nowrap; border: 0; }
 
@@ -288,10 +342,15 @@ footer { background: #0e121a; border-top: 1px solid #242a38; color: var(--muted)
   .intro-card { padding: 2rem; }
   .feature-tags { gap: 0.6rem; }
   .category-grid { gap: 1.4rem; }
+  .control-grid { grid-template-columns: 1fr; gap: 1.5rem; }
 }
 
 @media (max-width: 690px) {
   .category-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .algo-about { padding: 2rem 1.25rem; }
+  .visualization-section { margin: 0 1rem; padding: 0.75rem; }
+  .viz-display { height: 260px; padding: 0.5rem; }
+  .control-section { padding: 1.5rem 1rem 2.5rem; }
 }
 
 @media (max-width: 580px) {
@@ -301,6 +360,8 @@ footer { background: #0e121a; border-top: 1px solid #242a38; color: var(--muted)
   .section-lead { font-size: 0.95rem; }
   .feature-tag { font-size: 0.78rem; }
   .category-card { padding: 1.6rem 1.4rem; }
+  .algo-list a { padding: .75rem 1rem; font-size: .82rem; }
+  .algo-about h2 { font-size: 1.45rem; }
 }
 
 @media (max-width: 520px) {
@@ -309,4 +370,9 @@ footer { background: #0e121a; border-top: 1px solid #242a38; color: var(--muted)
   .viz-toolbar select, .viz-toolbar .btn { width:100%; }
   .playback-controls { width:100%; }
   .bar-container { gap:3px; }
+  .visualization-section { padding: 0.5rem; margin: 0 0.5rem; }
+  .viz-display { height: 240px; padding: 0.4rem; gap: 1px; }
+  .algo-list { flex-direction: column; }
+  .algo-list a { text-align: center; border-bottom: none; border-left: 3px solid transparent; }
+  .algo-list a.active { border-left-color: var(--accent); border-bottom-color: transparent; }
 }

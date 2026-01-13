@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertion Sort Visualizer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Insertion Sort Visualizer</h1>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html">Home</a></li>
+                    <li><a href="index.html">All Categories</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <nav class="algo-nav">
+        <div class="container">
+            <ul class="algo-list">
+                <li><a href="bubble-sort.html">Bubble Sort</a></li>
+                <li><a href="insertion-sort.html" class="active">Insertion Sort</a></li>
+                <li><a href="selection-sort.html">Selection Sort</a></li>
+                <li><a href="merge-sort.html">Merge Sort</a></li>
+                <li><a href="quick-sort.html">Quick Sort</a></li>
+                <li><a href="heap-sort.html">Heap Sort</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <main>
+        <div class="container">
+            <section class="algo-about">
+                <h2>About Insertion Sort</h2>
+                <p>Insertion Sort builds the final sorted array one item at a time. It's much less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort, but it has several advantages for small datasets or partially sorted data.</p>
+                
+                <h3>Core Concepts</h3>
+                <ul>
+                    <li><strong>Adaptive:</strong> Efficient for data that is already substantially sorted</li>
+                    <li><strong>In-place:</strong> Requires O(1) additional space</li>
+                    <li><strong>Stable:</strong> Maintains relative order of equal elements</li>
+                    <li><strong>Time Complexity:</strong> O(n²) in worst case, O(n) for nearly sorted data</li>
+                    <li><strong>Best for:</strong> Small datasets or when new items are frequently added</li>
+                </ul>
+                
+                <p>Think of insertion sort like sorting playing cards in your hands. You pick up one card at a time and insert it into its correct position among the cards you're already holding.</p>
+            </section>
+            
+            <section class="visualization-section">
+                <h2 class="section-title">Visualization</h2>
+                <div id="visualization-area" class="viz-display" aria-live="polite"></div>
+                <div id="merge-buffer" class="merge-buffer"></div>
+            </section>
+            
+            <section class="control-section">
+                <div class="control-grid">
+                    <div class="pseudocode-panel">
+                        <h3>Pseudocode</h3>
+                        <div id="panel-pseudocode" class="panel">
+                            <pre id="pseudo-code" class="code"></pre>
+                        </div>
+                        <div id="panel-stats" class="panel">
+                            <h4>Statistics</h4>
+                            <ul id="stats-list" class="stats-list"></ul>
+                        </div>
+                    </div>
+                    
+                    <div class="controls-panel">
+                        <h3>Controls</h3>
+                        <div class="control-group">
+                            <button id="btn-shuffle" class="btn btn-secondary">
+                                <i class="fas fa-random"></i> Shuffle
+                            </button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <h4>Playback</h4>
+                            <div class="playback-controls">
+                                <button id="step-prev" class="btn btn-sm">
+                                    <i class="fas fa-step-backward"></i> Prev
+                                </button>
+                                <button id="step-play" class="btn btn-sm btn-primary">
+                                    <i class="fas fa-play"></i> Play
+                                </button>
+                                <button id="step-stop" class="btn btn-sm btn-danger">
+                                    <i class="fas fa-stop"></i> Stop
+                                </button>
+                                <button id="step-next" class="btn btn-sm">
+                                    <i class="fas fa-step-forward"></i> Next
+                                </button>
+                            </div>
+                            <button id="step-reset" class="btn btn-secondary btn-block">
+                                <i class="fas fa-redo"></i> Reset & Shuffle
+                            </button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label for="speed-select">Animation Speed:</label>
+                            <select id="speed-select" class="form-select">
+                                <option value="instant">Instant</option>
+                                <option value="ultra">Ultra</option>
+                                <option value="fast">Fast</option>
+                                <option value="normal" selected>Normal</option>
+                                <option value="slow">Slow</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+            <div class="social-links">
+                <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" title="GitHub" class="social-link"><i class="fab fa-github" aria-hidden="true"></i><span class="sr-only">GitHub</span></a>
+                <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" title="LinkedIn" class="social-link"><i class="fab fa-linkedin" aria-hidden="true"></i><span class="sr-only">LinkedIn</span></a>
+                <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" title="Facebook" class="social-link"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
+            </div>
+        </div>
+    </footer>
+    
+    <script type="module" src="js/core.js"></script>
+    <script type="module">
+        import { initSingleAlgorithm } from './js/sorting-single.js';
+        initSingleAlgorithm('insertion');
+    </script>
+</body>
+</html>
