@@ -239,8 +239,6 @@ async function decisionPartitionExponentialAsync(values, k, progressCallback) {
   let checked = 0;
   const start = performance.now();
   const chunkSize = 10000;
-  
-  cancelRequested = false;
 
   for (let mask = 0; mask < totalPartitions; mask += 1) {
     if (cancelRequested) {
@@ -340,8 +338,6 @@ async function exactOptimizationExponentialAsync(values, progressCallback) {
   let checked = 0;
   const start = performance.now();
   const chunkSize = 10000;
-  
-  cancelRequested = false;
 
   for (let mask = 0; mask < totalPartitions; mask += 1) {
     if (cancelRequested) {
@@ -429,6 +425,7 @@ async function handleRunDecision() {
     const n = values.length;
     const total = Math.pow(2, n);
     
+    cancelRequested = false;
     updateSummary(values);
     runningAlgorithm = 'decision';
     renderDecisionProgress(0, total, 0, 0);
@@ -475,6 +472,7 @@ async function handleRunExact() {
     const n = values.length;
     const total = Math.pow(2, n);
     
+    cancelRequested = false;
     updateSummary(values);
     runningAlgorithm = 'exact';
     renderExactProgress(0, total, 0, 0, '?');
