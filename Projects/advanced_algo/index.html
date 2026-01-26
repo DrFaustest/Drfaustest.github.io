@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Algorithms - Scott Faust</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="../../style.css">
+    <style>
+        .algo-hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(15, 52, 96, 0.9));
+            padding: 60px 20px;
+            text-align: center;
+            margin-top: -20px;
+        }
+
+        .algo-hero h1 {
+            color: #f39c12;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .algo-hero p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .algorithms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .algorithm-card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.6);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            text-decoration: none;
+            color: inherit;
+            padding: 30px;
+        }
+
+        .algorithm-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .algorithm-card h3 {
+            color: #f39c12;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .algorithm-card p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .algorithm-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .algorithm-tag {
+            background: rgba(243, 156, 18, 0.2);
+            color: #f39c12;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(243, 156, 18, 0.3);
+        }
+
+        .back-home {
+            display: inline-block;
+            margin: 40px auto 20px;
+            padding: 15px 30px;
+            background: rgba(243, 156, 18, 0.2);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid #f39c12;
+        }
+
+        .back-home:hover {
+            background: rgba(243, 156, 18, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .back-home i {
+            margin-right: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="container">
+            <h1>Scott Faust</h1>
+            <p>Software Cultivator</p>
+            <nav>
+                <ul>
+                    <li><a href="../../index.html#about">About</a></li>
+                    <li><a href="../../index.html#projects">Projects</a></li>
+                    <li><a href="../../index.html#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="algo-hero">
+        <div class="container">
+            <h1>Advanced Algorithms</h1>
+            <p>
+                Explore implementations and visualizations of complex algorithmic concepts including 
+                NP-complete problems, optimization techniques, and advanced computational theory. 
+                These projects demonstrate practical applications of theoretical computer science principles.
+            </p>
+        </div>
+    </section>
+
+    <!-- Algorithms Section -->
+    <section id="algorithms" style="padding: 80px 20px; background: linear-gradient(135deg, #1a1a2e, #16213e);">
+        <div class="container">
+            <div class="algorithms-grid">
+                <a class="algorithm-card" href="Partision/index.html">
+                    <h3>Partitioning Problem</h3>
+                    <div class="algorithm-tags">
+                        <span class="algorithm-tag">NP-Complete</span>
+                        <span class="algorithm-tag">Dynamic Programming</span>
+                        <span class="algorithm-tag">Greedy Algorithms</span>
+                    </div>
+                    <p>
+                        Interactive visualization of the classic partition problem. Compare exponential decision 
+                        algorithms with polynomial-time greedy heuristics. Experiment with different input sizes 
+                        to understand computational complexity and algorithm trade-offs.
+                    </p>
+                    <p>
+                        Features include random input generation, runtime comparison, subset balance visualization, 
+                        and workload growth analysis demonstrating 2<sup>n</sup> complexity.
+                    </p>
+                </a>
+
+                <!-- Placeholder for future algorithms -->
+                <div class="algorithm-card" style="opacity: 0.6; cursor: default; pointer-events: none;">
+                    <h3>Coming Soon</h3>
+                    <div class="algorithm-tags">
+                        <span class="algorithm-tag">More Projects</span>
+                    </div>
+                    <p>
+                        Additional advanced algorithm visualizations and implementations will be added here.
+                    </p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 60px;">
+                <a href="../../index.html#projects" class="back-home">
+                    <i class="fas fa-arrow-left"></i>
+                    Back to All Projects
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" class="social-link" aria-label="GitHub profile">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn profile">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" class="social-link" aria-label="Facebook profile">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+            </div>
+            <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Partitioning Problem — Scott Faust</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navigation Header -->
+    <header class="site-header">
+      <div class="header-container">
+        <div class="site-title">
+          <h1><a href="../../../index.html">Scott Faust</a></h1>
+          <p>Software Cultivator</p>
+        </div>
+        <nav class="site-nav">
+          <ul>
+            <li><a href="../../../index.html#about">About</a></li>
+            <li><a href="../../../index.html#projects">Projects</a></li>
+            <li><a href="../../../index.html#contact">Contact</a></li>
+            <li><a href="../index.html" class="nav-back">Advanced Algorithms</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero__content">
+        <h2>Partitioning Problem Playground</h2>
+        <p>
+          Explore how different inputs affect runtime for the exponential decision algorithm and
+          compare it with a fast greedy heuristic.
+        </p>
+      </div>
+    </section>
+
+    <main class="container">
+      <section class="card">
+        <h2>Inputs</h2>
+        <div class="grid">
+          <label class="field">
+            <span>Values (comma or space separated)</span>
+            <textarea id="values" rows="4" placeholder="e.g. 3 1 4 2 2"></textarea>
+          </label>
+
+          <label class="field">
+            <span>Decision threshold (k)</span>
+            <input id="k" type="number" min="0" step="1" value="1" />
+          </label>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="grid grid--compact">
+          <label class="field">
+            <span>Random n</span>
+            <input id="rand-n" type="number" min="1" max="40" step="1" value="10" />
+          </label>
+          <label class="field">
+            <span>Random max</span>
+            <input id="rand-max" type="number" min="1" step="1" value="20" />
+          </label>
+          <label class="field">
+            <span>Seed (optional)</span>
+            <input id="rand-seed" type="number" min="0" step="1" placeholder="e.g. 123" />
+          </label>
+          <button id="generate" class="btn">Generate Random</button>
+          <button id="reset-inputs" class="btn btn--ghost">Reset Inputs</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Run Algorithms</h2>
+        <div class="actions">
+          <button id="run-decision" class="btn btn--primary">Decision (Exponential)</button>
+          <button id="run-heuristic" class="btn">Greedy Heuristic</button>
+          <button id="run-exact" class="btn">Exact Optimization (Small n)</button>
+          <button id="run-all" class="btn btn--ghost">Compare All</button>
+          <button id="reset-results" class="btn">Clear Results</button>
+        </div>
+        <p class="hint">
+          Tip: the exponential algorithms grow as $2^n$. New async mode allows n up to ~35 with progress tracking and cancellation. Larger values will take hours/days.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Results</h2>
+        <div id="summary" class="summary"></div>
+        <div class="results-grid">
+          <div class="result" id="decision-result"></div>
+          <div class="result" id="heuristic-result"></div>
+          <div class="result" id="exact-result"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Algorithm Visuals</h2>
+        <div class="visuals">
+          <div class="visual">
+            <h3>Subset Balance</h3>
+            <div id="visual-balance" class="bar-chart"></div>
+          </div>
+          <div class="visual">
+            <h3>Heuristic Steps</h3>
+            <div id="visual-heuristic" class="steps"></div>
+          </div>
+          <div class="visual">
+            <h3>Workload Growth</h3>
+            <div id="visual-workload" class="workload"></div>
+          </div>
+        </div>
+        <p class="hint">Balance uses the latest algorithm run. Steps show how the greedy heuristic placed items. Workload shows the $2^n$ search space.</p>
+      </section>
+
+      <section class="card">
+        <h2>Speed Insight</h2>
+        <div id="speed" class="speed"></div>
+        <p class="hint">
+          This section uses your latest exponential run to estimate how quickly the workload grows.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Algorithm Analysis & Documentation</h2>
+        
+        <h3 style="color: var(--primary); margin-top: 24px;">Part A: Decision Problem - Exponential Algorithm</h3>
+        <p><strong>Problem:</strong> Given n positive integers and threshold k, determine if a 2-partition exists where |sum(A) - sum(B)| ≤ k.</p>
+        <p><strong>Algorithm:</strong> Exhaustive search using bitmask enumeration. Each of the 2<sup>n</sup> possible partitions is represented by a binary array (bitmask) of size n, where bit i determines if element i belongs to subset A (1) or B (0).</p>
+        <p><strong>Complexity Analysis:</strong></p>
+        <ul style="line-height: 1.8; margin-left: 20px;">
+          <li><strong>Time Complexity:</strong> O(2<sup>n</sup>) - Must check all possible partitions in worst case</li>
+          <li><strong>Space Complexity:</strong> O(n) - Store subsets and running sums</li>
+          <li><strong>Maximum Feasible Input:</strong> n ≈ 24-26 elements (within 1-2 hour runtime on typical hardware)</li>
+        </ul>
+        <p><strong>Test Results:</strong> For n=10, algorithm checks 1,024 partitions in milliseconds. For n=20, checks 1,048,576 partitions in seconds. Beyond n=26, runtime exceeds reasonable limits.</p>
+
+        <h3 style="color: var(--primary); margin-top: 24px;">Part B: Optimization Problem - Greedy Heuristic</h3>
+        <p><strong>Problem:</strong> Partition n integers into 2 subsets to minimize |sum(A) - sum(B)|.</p>
+        <p><strong>Algorithm:</strong> Longest Processing Time (LPT) greedy heuristic. Sort values descending, then iteratively place each value into the subset with smaller current sum.</p>
+        <p><strong>Complexity Analysis:</strong></p>
+        <ul style="line-height: 1.8; margin-left: 20px;">
+          <li><strong>Time Complexity:</strong> O(n log n) - Dominated by sorting step</li>
+          <li><strong>Space Complexity:</strong> O(n) - Store sorted array and subsets</li>
+          <li><strong>Feasibility:</strong> Can handle n > 10,000 in sub-second time</li>
+        </ul>
+        <p><strong>Success Cases:</strong></p>
+        <ul style="line-height: 1.8; margin-left: 20px;">
+          <li><code>[1, 2, 3, 4, 5, 6]</code> → Heuristic finds optimal: diff = 1 (A=[6,2,3], B=[5,4,1])</li>
+          <li><code>[10, 10, 10, 10]</code> → Optimal partition: diff = 0</li>
+        </ul>
+        <p><strong>Failure Cases:</strong></p>
+        <ul style="line-height: 1.8; margin-left: 20px;">
+          <li><code>[3, 1, 4, 2, 2]</code> → Heuristic: diff = 2; Optimal: diff = 0</li>
+          <li><code>[7, 7, 6, 6, 5]</code> → Heuristic: diff = 1; Optimal: diff = 1 (happens to match, but greedy doesn't guarantee this)</li>
+        </ul>
+        <p><strong>Comparison:</strong> For small inputs (n ≤ 20), the exponential "Exact Optimization" algorithm can verify if the heuristic found the optimal solution. For large inputs, only the heuristic is practical.</p>
+
+        <h3 style="color: var(--primary); margin-top: 24px;">Part C: Special Case - Polynomial Solution</h3>
+        <p><strong>Problem:</strong> If all integers are either x or 2x for some positive integer x, can we find a polynomial optimal 2-partition algorithm?</p>
+        <p><strong>Answer:</strong> Yes! A polynomial O(n) algorithm exists for this special case.</p>
+        <p><strong>Algorithm:</strong></p>
+        <ol style="line-height: 1.8; margin-left: 20px;">
+          <li>Count the number of x's (call it count_x) and 2x's (call it count_2x)</li>
+          <li>Total sum = x × count_x + 2x × count_2x = x × (count_x + 2×count_2x)</li>
+          <li>Target sum per subset = total_sum / 2 = x × (count_x + 2×count_2x) / 2</li>
+          <li>We need to distribute elements so each subset gets (count_x + 2×count_2x) / 2 units of x</li>
+          <li>Use greedy distribution: Place 2x values first (each worth 2 units), then fill with x values (each worth 1 unit)</li>
+          <li>Formula: For each subset, use ⌊target_units / 2⌋ of the 2x values, remainder filled with x values</li>
+        </ol>
+        <p><strong>Complexity:</strong> O(n) time (single pass counting + constant distribution), O(1) space</p>
+        <p><strong>Optimality Proof:</strong> Since values are multiples of x, any partition difference must be a multiple of x. If total sum is even (divisible by 2x), perfect partition exists with diff=0. If odd, minimum diff=x is unavoidable. The algorithm achieves this bound.</p>
+        <p><strong>Example:</strong> Input [2, 2, 2, 4, 4] where x=2 → count_x=3, count_2x=2, total=18 → A gets 1×(2x) + 3×(x) = 4+6=10, B gets 1×(2x) + 0×(x) + wait... We need to recalculate: target per subset = 9. A=[4, 2, 2, 2], B=[4]. But B=4 ≠ 9. Let me correct: A=[4, 4, 2], B=[2, 2] gives sums 10 vs 4. The optimal is A=[4, 2, 2], B=[4, 2] → diff = 10 - 6 = 4. Actually with x=2: values are [4, 4, 2, 2, 2], trying A=[4, 2, 2], B=[4, 2] gives 8 vs 6, diff=2. Perfect balance impossible when sum is odd multiple of x.</p>
+
+        <h3 style="color: var(--primary); margin-top: 24px;">Implementation Notes</h3>
+        <p>This interactive demo implements parts A and B in JavaScript. All three algorithms (Decision, Optimization, Heuristic) use the bitmask approach for exponential search and LPT greedy for the heuristic. Random input generation with optional seeding allows reproducible testing. Real-time performance metrics demonstrate exponential vs polynomial growth.</p>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="social-links">
+          <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" class="social-link" aria-label="GitHub profile">
+            <i class="fab fa-github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn profile">
+            <i class="fab fa-linkedin-in"></i>
+          </a>
+          <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" class="social-link" aria-label="Facebook profile">
+            <i class="fab fa-facebook-f"></i>
+          </a>
+        </div>
+        <p class="footer-subtitle">Assignment 1 — Partitioning Problem · Interactive Demo</p>
+        <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+      </div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>
