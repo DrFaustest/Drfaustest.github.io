@@ -78,7 +78,7 @@
 .banner{margin-bottom:18px}
 .banner-top,.banner-bottom{height:6px;background:#f39c12;box-shadow:0 6px 14px rgba(0,0,0,0.6)}
 .banner-inner{display:flex;flex-direction:column;align-items:center;gap:8px;padding:28px 0;background:linear-gradient(135deg, rgba(0,0,0,0.6), rgba(15,52,96,0.6));border-top:1px solid rgba(255,255,255,0.03);border-bottom:1px solid rgba(255,255,255,0.02)}
-.banner-title{color:#f39c12;font-size:3.2rem;margin:0;text-shadow:3px 3px 8px rgba(0,0,0,0.6);font-family:Montserrat, sans-serif}
+.banner-title{color:#f39c12;font-size:3.2rem;margin:0;text-shadow:3px 3px 8px rgba(0,0,0,0.6);font-family:"Inter", Arial, sans-serif}
 .banner .subtitle{color:#fff;opacity:0.9}
 .banner .home-btn{position:relative;top:0;margin-bottom:6px}
 
@@ -130,3 +130,139 @@
 .cell .fixed .value{font-weight:700}
 .cell .candidates{z-index:1}
 .hidden-candidates{display:none}
+
+/* Portfolio theme alignment */
+body{
+	background:#f5f7f4;
+	color:#37413f;
+	font-family:"Inter", Arial, sans-serif;
+}
+
+.banner{
+	margin-bottom:24px;
+	background:#fff;
+	border-bottom:1px solid #dce3de;
+}
+
+.banner-top,
+.banner-bottom{
+	display:none;
+}
+
+.banner-inner{
+	align-items:flex-start;
+	padding:30px 0;
+	background:transparent;
+	border:0;
+}
+
+.banner-title{
+	color:#18201f;
+	font-family:"Inter", Arial, sans-serif;
+	font-size:clamp(2.2rem, 5vw, 4rem);
+	text-shadow:none;
+}
+
+.banner .subtitle{
+	color:#66716e;
+}
+
+.home-btn{
+	background:#e9f2ee;
+	color:#0b4f42;
+	border:1px solid #cfe0d9;
+	border-radius:6px;
+}
+
+.controls{
+	margin:0 0 24px;
+}
+
+.controls-inner,
+.algo-desc,
+.dev-panel{
+	background:#fff;
+	border:1px solid #dce3de;
+	border-radius:8px;
+	box-shadow:0 10px 28px rgba(24,32,31,0.06);
+}
+
+.controls-inner{
+	padding:18px;
+}
+
+.controls label,
+.controls select{
+	color:#18201f;
+}
+
+.controls select{
+	background:#fff;
+	border:1px solid #cfd8d3;
+	color:#18201f;
+}
+
+.playback button,
+.dev-tabs .tab.active{
+	background:#126c5a;
+	color:#fff;
+	border-radius:6px;
+}
+
+.playback button.danger{
+	background:#a4472c;
+}
+
+.sudoku-board{
+	background:#fff;
+	border:1px solid #dce3de;
+	border-radius:8px;
+	box-shadow:0 18px 45px rgba(24,32,31,0.12);
+}
+
+.cell input{
+	background:#fff;
+	color:#18201f;
+	border-color:#cfd8d3;
+}
+
+.cell input:focus{
+	outline:3px solid rgba(18,108,90,0.16);
+	border-color:#126c5a;
+}
+
+.cell.fixed input{
+	background:#e9f2ee;
+	color:#18201f;
+}
+
+.message,
+.algo-desc,
+.dev-tab-content,
+.stack-log .stack-frame,
+.cand{
+	color:#66716e;
+}
+
+.algo-desc h3{
+	color:#18201f;
+}
+
+.dev-panel{
+	box-shadow:0 18px 45px rgba(24,32,31,0.12);
+}
+
+.dev-tabs .tab{
+	background:#f5f7f4;
+	border:1px solid #dce3de;
+	color:#37413f;
+}
+
+.dev-content{
+	background:#f5f7f4;
+}
+
+.stack-log{
+	border-top:1px dashed #cfd8d3;
+}
+

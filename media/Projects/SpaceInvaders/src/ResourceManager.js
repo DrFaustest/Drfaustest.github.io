@@ -23,6 +23,10 @@ export class ResourceManager {
     async loadAllImages() {
       const promises = Object.entries(this.images).map(([name, img]) => {
         return new Promise((resolve, reject) => {
+          if (img.complete && img.naturalWidth > 0) {
+            resolve(name);
+            return;
+          }
           img.onload = () => resolve(name);
           img.onerror = () => {
             console.error(`Failed to load image: ${name}`);

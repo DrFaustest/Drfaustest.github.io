@@ -64,15 +64,21 @@ class Graph {
             this.addNode(destination);
         }
         
-        // Add edge to adjacency list
+        const existingEdge = this.edges.find(edge =>
+            edge.source === source && edge.destination === destination
+        );
+
+        if (existingEdge) {
+            existingEdge.weight = weight;
+            const adjacencyEdge = this.adjacencyList[source].find(edge => edge.node === destination);
+            if (adjacencyEdge) {
+                adjacencyEdge.weight = weight;
+            }
+            return this;
+        }
+
         this.adjacencyList[source].push({ node: destination, weight });
-        
-        // Store the edge for visualization
-        this.edges.push({
-            source,
-            destination,
-            weight
-        });
+        this.edges.push({ source, destination, weight });
         
         return this;
     }
@@ -173,6 +179,39 @@ class Graph {
         }
     }
 
+    getEdge(source, destination) {
+        return this.edges.find(edge =>
+            edge.source === source && edge.destination === destination
+        ) || null;
+    }
+
+    renameNode(oldName, newName) {
+        const normalizedName = String(newName || '').trim().toUpperCase();
+        if (!this.hasNode(oldName) || !normalizedName || this.hasNode(normalizedName)) {
+            return false;
+        }
+
+        this.adjacencyList[normalizedName] = this.adjacencyList[oldName];
+        delete this.adjacencyList[oldName];
+        this.nodes[normalizedName] = this.nodes[oldName];
+        delete this.nodes[oldName];
+
+        for (const node of Object.keys(this.adjacencyList)) {
+            this.adjacencyList[node] = this.adjacencyList[node].map(edge => ({
+                node: edge.node === oldName ? normalizedName : edge.node,
+                weight: edge.weight
+            }));
+        }
+
+        this.edges = this.edges.map(edge => ({
+            source: edge.source === oldName ? normalizedName : edge.source,
+            destination: edge.destination === oldName ? normalizedName : edge.destination,
+            weight: edge.weight
+        }));
+
+        return true;
+    }
+
     /**
      * Clear the graph - remove all nodes and edges
      */
@@ -180,6 +219,44 @@ class Graph {
         this.adjacencyList = {};
         this.nodes = {};
         this.edges = [];
+    }
+
+    toJSON() {
+        return {
+            nodes: this.nodes,
+            edges: this.edges
+        };
+    }
+
+    fromJSON(data) {
+        this.clear();
+        if (!data || typeof data !== 'object') {
+            return this;
+        }
+
+        const nodes = data.nodes || {};
+        for (const [node, position] of Object.entries(nodes)) {
+            if (position && typeof position.x === 'number' && typeof position.y === 'number') {
+                this.addNode(node, { x: position.x, y: position.y });
+            }
+        }
+
+        const edges = Array.isArray(data.edges) ? data.edges : [];
+        for (const edge of edges) {
+            if (edge && edge.source && edge.destination && typeof edge.weight === 'number') {
+                this.addEdge(edge.source, edge.destination, edge.weight);
+            }
+        }
+
+        return this;
+    }
+
+    getStats() {
+        return {
+            nodes: this.getNodes().length,
+            edges: this.edges.length,
+            negativeEdges: this.edges.filter(edge => edge.weight < 0).length
+        };
     }
 
     /**

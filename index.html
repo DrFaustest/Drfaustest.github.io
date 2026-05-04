@@ -4,302 +4,385 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <meta name="description" content="Scott Faust portfolio: AI research, temporal graph knowledge tracing, NLP, data engineering, accessibility tools, algorithm visualization, and software engineering projects.">
+    <title>Scott Faust | Computer Science Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <!-- Header Section -->
-    <header>
-        <div class="container">
-            <h1>Scott Faust</h1>
-            <p>Software Cultivator</p>
-            <nav>
+    <header class="site-header">
+        <div class="container nav-shell">
+            <a class="brand" href="#top">Scott Faust</a>
+            <nav aria-label="Primary navigation">
                 <ul>
-                    <li><a href="#about">About</a></li>
+                    <li><a href="#profile">Profile</a></li>
+                    <li><a href="#education">Education</a></li>
+                    <li><a href="#research">Research</a></li>
                     <li><a href="#projects">Projects</a></li>
+                    <li><a href="#repositories">GitHub</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
         </div>
     </header>
 
-    <!-- About Section -->
-    <section id="about">
-        <div class="container">
-            <h2>About Me</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Hello! I'm Scott, a dedicated and detail-oriented Computer Science student with a concentration in Software Engineering at the University of Nebraska at Omaha. With a 3.961 GPA and a background in applied science and information technology, I bring a strong foundation in programming and a passion for artificial intelligence.</p>
-                    
-                    <p>Prior to pursuing my degree, I served in the United States Air Force as an aircraft mechanic, working on B-1B and KC-135 airframes. This experience not only honed my technical skills but also instilled in me a deep sense of discipline and problem-solving. My career shift to computer science is driven by a desire to innovate and contribute to the rapidly evolving tech industry.</p>
+    <main id="top">
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <p class="eyebrow">Computer Science | Artificial Intelligence | Research</p>
+                    <h1 id="hero-title">Building explainable, interactive software for complex technical systems.</h1>
+                    <p class="hero-summary">I am a computer scientist, AI graduate researcher, doctoral student, and U.S. Air Force veteran building research prototypes and applied systems across personalization, knowledge tracing, NLP, data engineering, accessibility, and algorithm visualization.</p>
+                    <div class="hero-actions" aria-label="Portfolio actions">
+                        <a class="button primary" href="#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> View Work</a>
+                        <a class="button secondary" href="#research"><i class="fa-solid fa-microscope" aria-hidden="true"></i> Research Focus</a>
+                    </div>
                 </div>
-                <div class="about-image">
-                    <img src="media/img/Profile Pic.png" alt="Profile Picture" class="profile-picture">
-                </div>
+                <aside class="hero-panel" aria-label="Academic snapshot">
+                    <img src="media/img/Profile Pic.png" alt="Scott Faust" class="profile-photo">
+                    <div>
+                        <h2>Academic Snapshot</h2>
+                        <dl class="quick-facts">
+                            <div>
+                                <dt>B.S. Computer Science</dt>
+                                <dd>Magna Cum Laude, GPA 3.824</dd>
+                            </div>
+                            <div>
+                                <dt>Master's Program</dt>
+                                <dd>Computer Science, AI Concentration</dd>
+                            </div>
+                            <div>
+                                <dt>Doctoral Program</dt>
+                                <dd>Computing &amp; Information Science</dd>
+                            </div>
+                        </dl>
+                    </div>
+                </aside>
             </div>
-            
-            <div class="skills-container">
-                <h3>Technical Skills</h3>
-                <div class="skills-grid">
-                    <span class="skill-badge">JavaScript</span>
-                    <span class="skill-badge">HTML/CSS</span>
-                    <span class="skill-badge">Python</span>
-                    <span class="skill-badge">Java</span>
-                    <span class="skill-badge">C++</span>
-                    <span class="skill-badge">SQL</span>
-                    <span class="skill-badge">Node.js</span>
-                    <span class="skill-badge">Next.js</span>
-                    <span class="skill-badge">React</span>
-                    <span class="skill-badge">Supabase</span>
-                    <span class="skill-badge">Vercel</span>
-                    <span class="skill-badge">Data Structures</span>
-                    <span class="skill-badge">Algorithms</span>
-                    <span class="skill-badge">Object-Oriented Design</span>
-                    <span class="skill-badge">Canvas API</span>
-                    <span class="skill-badge">Git</span>
-                    <span class="skill-badge">Agile Methodology</span>
-                </div>
-            </div>
+        </section>
 
-            <div class="skills-container">
-                <h3>Transferable Skills</h3>
-                <div class="skills-grid">
-                    <span class="skill-badge">Advanced Troubleshooting</span>
-                    <span class="skill-badge">Systems Integration</span>
-                    <span class="skill-badge">Preventative Maintenance</span>
-                    <span class="skill-badge">Quality Assurance</span>
-                    <span class="skill-badge">Process Optimization</span>
-                    <span class="skill-badge">Technical Documentation</span>
-                    <span class="skill-badge">Root Cause Analysis</span>
-                    <span class="skill-badge">Performance Testing</span>
-                    <span class="skill-badge">Critical Thinking</span>
-                    <span class="skill-badge">Attention to Detail</span>
-                    <span class="skill-badge">Team Leadership</span>
-                    <span class="skill-badge">High-Pressure Operations</span>
+        <section id="profile" class="section">
+            <div class="container two-column">
+                <div>
+                    <p class="section-kicker">Profile</p>
+                    <h2>Technical foundation with operational discipline.</h2>
+                </div>
+                <div class="body-copy">
+                    <p>I bring together computer science training, graduate-level AI study, and years of high-consequence technical work maintaining B-1B and KC-135 airframes in the United States Air Force. That background shapes how I write software: systems-first, evidence-driven, and attentive to reliability.</p>
+                    <p>My public work now spans temporal heterogeneous graph knowledge tracing, biomedical NLP, persistent personalization for AI assistants, temporal subset ANN search, accessibility-focused HCI, cloud developer tooling, data engineering pipelines, and interactive algorithm education.</p>
                 </div>
             </div>
-            
-            <div class="skills-container">
-                <h3>Global Experience</h3>
-                <div class="skills-grid">
-                    <span class="skill-badge">Travel Adaptability</span>
-                    <span class="skill-badge">Cross-Cultural Communication</span>
-                    <span class="skill-badge">Geographic Mobility</span>
-                    <span class="skill-badge">International Deployments</span>
-                    <span class="skill-badge">Linguistic Navigation</span>
-                    <span class="skill-badge">Remote Work Capability</span>
-                    <span class="skill-badge">Global Time Zone Flexibility</span>
-                    <span class="skill-badge">Situational Awareness</span>
-                    <span class="skill-badge">Cultural Adaptability</span>
-                    <span class="skill-badge">Location Independence</span>
-                    <span class="skill-badge">Relocation Readiness</span>
-                    <span class="skill-badge">Global Perspective</span>
+        </section>
+
+        <section id="education" class="section muted">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="section-kicker">Education</p>
+                    <h2>Degrees and Current Graduate Study</h2>
+                </div>
+                <div class="timeline">
+                    <article class="timeline-item">
+                        <div class="timeline-date">Conferred Dec. 19, 2025</div>
+                        <div>
+                            <h3>Bachelor of Science in Computer Science</h3>
+                            <p>Computer Science major. Degree GPA: 3.824. Honors: Magna Cum Laude.</p>
+                        </div>
+                    </article>
+                    <article class="timeline-item">
+                        <div class="timeline-date">Active since Sept. 4, 2025</div>
+                        <div>
+                            <h3>Master's Program in Computer Science</h3>
+                            <p>Artificial Intelligence concentration with graduate study aligned to machine learning, intelligent systems, and applied computing research.</p>
+                        </div>
+                    </article>
+                    <article class="timeline-item">
+                        <div class="timeline-date">Active since Apr. 22, 2026</div>
+                        <div>
+                            <h3>Doctoral Program in Computing &amp; Information Science</h3>
+                            <p>Doctoral work in computing and information science, positioned around research contributions, technical communication, and advanced computing systems.</p>
+                        </div>
+                    </article>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="container">
-            <h2>Projects</h2>
-            <div class="projects-grid">
-                <a class="project" href="Projects/DataStructuresVisualizer/index.html">
-                    <img src="media/img/DSV.png" alt="Data Structures & Algorithms Visualizer" class="project-img">
-                    <div class="project-content">
-                        <h3>Data Structures & Algorithms Visualizer</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">JavaScript</span>
-                            <span class="project-tag">Visualization</span>
-                            <span class="project-tag">Educational</span>
-                        </div>
-                        <p>Interactively explore and visualize basic, sorting, and advanced data structures and algorithms. Add, update, delete, and sort elements to see how algorithms work step-by-step.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="media/Projects/Graphs/index.html">
-                    <img src="media/img/Graphs.png" alt="Graph Algorithms Visualizer" class="project-img">
-                    <div class="project-content">
-                        <h3>Graph Algorithms Visualizer</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">JavaScript</span>
-                            <span class="project-tag">Algorithms</span>
-                            <span class="project-tag">Interactive</span>
-                        </div>
-                        <p>An interactive tool for visualizing graph algorithms like Dijkstra's and Bellman-Ford. This application allows users to create custom graphs and watch step-by-step how shortest path algorithms work.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="media/Projects/Ball%20Pit/index.html">
-                    <img src="media/img/Ball_Pit_screenshot.png" alt="Ball Pit" class="project-img">
-                    <div class="project-content">
-                        <h3>Ball Pit</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">Canvas API</span>
-                            <span class="project-tag">Physics</span>
-                            <span class="project-tag">Animation</span>
-                        </div>
-                        <p>Experience the Interactive Ball Pit, a visually engaging project that demonstrates advanced collision detection, responsive design, and smooth animations.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="media/Projects/Battleship/SudoBattleship.html">
-                    <img src="media/img/Battleship.png" alt="Battleship" class="project-img">
-                    <div class="project-content">
-                        <h3>Battleship</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">JavaScript</span>
-                            <span class="project-tag">Game</span>
-                            <span class="project-tag">Interactive</span>
-                        </div>
-                        <p>This project is a dynamic and interactive battleship game where players guess the location of a hidden target on a grid with intuitive visual hints.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="Projects/advanced_algo/index.html">
-                    <img src="media/img/advanced-algo.png" alt="Advanced Algorithms" class="project-img" onerror="this.style.background='linear-gradient(135deg, #f39c12, #e67e22)';this.style.display='flex';this.style.alignItems='center';this.style.justifyContent='center';this.innerHTML='<span style=\'font-size:3rem;color:#fff;\'>∑</span>';">
-                    <div class="project-content">
-                        <h3>Advanced Algorithms</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">Algorithms</span>
-                            <span class="project-tag">Complexity Theory</span>
-                            <span class="project-tag">Optimization</span>
-                        </div>
-                        <p>A collection of advanced algorithmic implementations including NP-complete problems, dynamic programming solutions, and computational complexity demonstrations. Explore partitioning problems and greedy heuristics with interactive visualizations.</p>
-                        <span class="project-link">View Projects</span>
-                    </div>
-                </a>
-                <a class="project" href="Projects/Sudoku/index.html">
-                    <img src="media/img/Sudoku.png" alt="Sudoku" class="project-img">
-                    <div class="project-content">
-                        <h3>Sudoku</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">JavaScript</span>
-                            <span class="project-tag">Algorithms</span>
-                            <span class="project-tag">Puzzle</span>
-                        </div>
-                        <p>Classic 9×9 Sudoku with generator, solver, and an interactive developer view that visualizes propagation and search.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="media/Projects/Job%20Scheduling/SoloProject2.html">
-                    <img src="media/img/Job-Scheduling.png" alt="Job Scheduling Optimizer" class="project-img">
-                    <div class="project-content">
-                        <h3>Job Scheduling Optimizer</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">Algorithms</span>
-                            <span class="project-tag">Optimization</span>
-                            <span class="project-tag">UI/UX</span>
-                        </div>
-                        <p>This interactive application demonstrates a greedy algorithm for job scheduling with profits and deadlines, featuring visual timeline representation.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="media/Projects/SpaceInvaders/src/index.html">
-                    <img src="media/img/Space-rangers.png" alt="Space Rangers" class="project-img">
-                    <div class="project-content">
-                        <h3>Space Rangers</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">Game Dev</span>
-                            <span class="project-tag">Canvas</span>
-                            <span class="project-tag">OOP</span>
-                        </div>
-                        <p>Space Rangers is a fast-paced 2D browser-based arcade shooter built with JavaScript and HTML5 Canvas, featuring responsive controls and dynamic enemy AI.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="media/Projects/AVLTree/index.html">
-                    <img src="media/img/AVLtree.png" alt="AVL Tree Leaderboard" class="project-img">
-                    <div class="project-content">
-                        <h3>AVL Tree Leaderboard</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">Data Structures</span>
-                            <span class="project-tag">Visualization</span>
-                            <span class="project-tag">Educational</span>
-                        </div>
-                        <p>An implementation of an AVL tree incorporated into an interactive leaderboard, demonstrating self-balancing operations in real-time.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="Projects/HeapVis/index.html">
-                    <img src="media/img/HeapVis.png" alt="Heap Visualizer" class="project-img">
-                    <div class="project-content">
-                        <h3>Heap Visualizer</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">Data Structures</span>
-                            <span class="project-tag">Algorithms</span>
-                            <span class="project-tag">Educational</span>
-                        </div>
-                        <p>Interactive Min/Max binary heap with animated insert, extract, delete, and update operations, plus array representation and explanations.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
-                <a class="project" href="media/Projects/Pegish/index.html">
-                    <img src="media/img/peggish.png" alt="Pegish - Pinball Game" class="project-img">
-                    <div class="project-content">
-                        <h3>Pegish</h3>
-                        <div class="project-tags">
-                            <span class="project-tag">Game Dev</span>
-                            <span class="project-tag">Physics</span>
-                            <span class="project-tag">Mobile-Friendly</span>
-                        </div>
-                        <p>A fast-paced pinball-style game where players control a cannon to destroy pins and catch bouncing balls in the bucket. Features responsive design, dark mode, Chinese language support, and smooth physics-based gameplay.</p>
-                        <span class="project-link">View Project</span>
-                    </div>
-                </a>
+        <section id="research" class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="section-kicker">Research &amp; Contributions</p>
+                    <h2>Research prototypes and open technical artifacts with a clear applied-computing thread.</h2>
+                </div>
+                <div class="research-grid">
+                    <article class="research-card">
+                        <i class="fa-solid fa-brain" aria-hidden="true"></i>
+                        <h3>AI Personalization &amp; Memory</h3>
+                        <p>FastAPI prototype for persistent assistant personalization using compact user models instead of replaying raw conversation history.</p>
+                    </article>
+                    <article class="research-card">
+                        <i class="fa-solid fa-network-wired" aria-hidden="true"></i>
+                        <h3>Temporal Graph Learning</h3>
+                        <p>Knowledge tracing work combining student interactions, temporal structure, graph neural networks, and interpretable baseline modeling.</p>
+                    </article>
+                    <article class="research-card">
+                        <i class="fa-solid fa-dna" aria-hidden="true"></i>
+                        <h3>Biomedical NLP</h3>
+                        <p>Named entity recognition work using CRAFT full-text biomedical articles and Gene Ontology annotations for biological concepts.</p>
+                    </article>
+                    <article class="research-card">
+                        <i class="fa-solid fa-database" aria-hidden="true"></i>
+                        <h3>Data Engineering</h3>
+                        <p>Customer analytics pipeline integrating relational and NoSQL data into warehouse-style reporting and predictive analytics workflows.</p>
+                    </article>
+                    <article class="research-card">
+                        <i class="fa-solid fa-universal-access" aria-hidden="true"></i>
+                        <h3>Accessibility &amp; HCI</h3>
+                        <p>Voice-controlled mouse navigation prototype for users with fine-motor challenges, built around practical interaction support.</p>
+                    </article>
+                    <article class="research-card">
+                        <i class="fa-solid fa-file-code" aria-hidden="true"></i>
+                        <h3>Developer Tools</h3>
+                        <p>TypeScript VS Code extension concept for local AWS development through mocked services and intercepted API calls.</p>
+                    </article>
+                </div>
+                <div class="contribution-strip" aria-label="Contribution types">
+                    <span>Temporal graph KT</span>
+                    <span>Biomedical NER</span>
+                    <span>AI memory systems</span>
+                    <span>Temporal ANN search</span>
+                    <span>Accessibility tooling</span>
+                    <span>Data pipelines</span>
+                    <span>Algorithm education</span>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="container">
-            <h2>Contact</h2>
-            <p>Feel free to reach out to me using the form below:</p>
-            <form id="contactForm">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" required>
+        <section id="skills" class="section muted">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="section-kicker">Skills</p>
+                    <h2>Core Technical Strengths</h2>
+                </div>
+                <div class="skill-groups">
+                    <section aria-labelledby="languages-title">
+                        <h3 id="languages-title">Languages &amp; Web</h3>
+                        <div class="skills-grid">
+                            <span>JavaScript</span>
+                            <span>Python</span>
+                            <span>Java</span>
+                            <span>C++</span>
+                            <span>SQL</span>
+                            <span>HTML</span>
+                            <span>CSS</span>
+                        </div>
+                    </section>
+                    <section aria-labelledby="systems-title">
+                        <h3 id="systems-title">Systems &amp; Methods</h3>
+                        <div class="skills-grid">
+                            <span>Data Structures</span>
+                            <span>Algorithms</span>
+                            <span>Object-Oriented Design</span>
+                            <span>Testing</span>
+                            <span>Git</span>
+                            <span>Technical Documentation</span>
+                            <span>Root Cause Analysis</span>
+                        </div>
+                    </section>
+                    <section aria-labelledby="platforms-title">
+                        <h3 id="platforms-title">Frameworks &amp; Tools</h3>
+                        <div class="skills-grid">
+                            <span>React</span>
+                            <span>Next.js</span>
+                            <span>Node.js</span>
+                            <span>Canvas API</span>
+                            <span>Supabase</span>
+                            <span>Vercel</span>
+                            <span>Jest</span>
+                        </div>
+                    </section>
+                    <section aria-labelledby="research-tools-title">
+                        <h3 id="research-tools-title">Research &amp; Data</h3>
+                        <div class="skills-grid">
+                            <span>FastAPI</span>
+                            <span>NLP</span>
+                            <span>Knowledge Tracing</span>
+                            <span>Graph Neural Networks</span>
+                            <span>ANN Search</span>
+                            <span>ETL</span>
+                            <span>SQL Server</span>
+                            <span>MongoDB</span>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </section>
 
-                <label for="email">Email:</label>
-                <input type="email" id="email" name="email" required>
+        <section id="projects" class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="section-kicker">Selected Work</p>
+                    <h2>Projects that demonstrate implementation, testing, and explanation.</h2>
+                </div>
+                <div class="projects-grid">
+                    <a class="project" href="Projects/DataStructuresVisualizer/index.html">
+                        <img src="media/img/DSV.png" alt="Data Structures and Algorithms Visualizer interface">
+                        <div class="project-content">
+                            <h3>Data Structures &amp; Algorithms Visualizer</h3>
+                            <p>Interactive educational platform for sorting, trees, hashes, graphs, and linear data structures with step-by-step state changes.</p>
+                            <div class="project-tags"><span>JavaScript</span><span>Algorithms</span><span>Testing</span></div>
+                        </div>
+                    </a>
+                    <a class="project" href="media/Projects/Graphs/index.html">
+                        <img src="media/img/Graphs.png" alt="Graph algorithms visualizer interface">
+                        <div class="project-content">
+                            <h3>Graph Algorithms Visualizer</h3>
+                            <p>Custom graph builder with shortest-path visualizations for Dijkstra and Bellman-Ford style algorithm exploration.</p>
+                            <div class="project-tags"><span>Graphs</span><span>Visualization</span><span>UI</span></div>
+                        </div>
+                    </a>
+                    <a class="project" href="Projects/HeapVis/index.html">
+                        <img src="media/img/HeapVis.png" alt="Heap visualizer interface">
+                        <div class="project-content">
+                            <h3>Heap Visualizer</h3>
+                            <p>Min and max heap tool with animated insert, extract, delete, update, and array representation workflows.</p>
+                            <div class="project-tags"><span>Data Structures</span><span>Animation</span><span>Education</span></div>
+                        </div>
+                    </a>
+                    <a class="project" href="Projects/Sudoku/index.html">
+                        <img src="media/img/Sudoku.png" alt="Sudoku solver interface">
+                        <div class="project-content">
+                            <h3>Sudoku Solver</h3>
+                            <p>Classic Sudoku with generator, solver, and developer visualization for propagation and search behavior.</p>
+                            <div class="project-tags"><span>Search</span><span>Constraint Solving</span><span>JavaScript</span></div>
+                        </div>
+                    </a>
+                    <a class="project" href="Projects/advanced_algo/index.html">
+                        <div class="project-image-fallback" aria-hidden="true"><i class="fa-solid fa-square-root-variable"></i></div>
+                        <div class="project-content">
+                            <h3>Advanced Algorithms</h3>
+                            <p>Algorithm demonstrations for optimization, complexity, partitioning, and heuristic problem-solving.</p>
+                            <div class="project-tags"><span>Complexity</span><span>Optimization</span><span>Analysis</span></div>
+                        </div>
+                    </a>
+                    <a class="project" href="media/Projects/SpaceInvaders/src/index.html">
+                        <img src="media/img/Space-rangers.png" alt="Space Rangers game screenshot">
+                        <div class="project-content">
+                            <h3>Space Rangers</h3>
+                            <p>Browser-based arcade shooter built with JavaScript, HTML5 Canvas, object-oriented structure, and responsive controls.</p>
+                            <div class="project-tags"><span>Canvas</span><span>Game Dev</span><span>OOP</span></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="5" required></textarea>
+        <section id="repositories" class="section muted">
+            <div class="container">
+                <div class="section-heading">
+                    <p class="section-kicker">GitHub Repositories</p>
+                    <h2>Additional research, engineering, and applied computing work from public GitHub repositories.</h2>
+                </div>
+                <div class="repo-grid">
+                    <a class="repo-card" href="https://github.com/DrFaustest/holistic_user_map_starter" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>Python</span><span>AI Systems</span></div>
+                        <h3>Holistic User Map Starter</h3>
+                        <p>FastAPI reference implementation for persistent personalization in AI assistants using compact, continuously updated user models.</p>
+                    </a>
+                    <a class="repo-card" href="https://github.com/DrFaustest/temporal-heterogeneous-graph-kt" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>Python</span><span>Research</span></div>
+                        <h3>Temporal Heterogeneous Graph KT</h3>
+                        <p>Knowledge tracing research prototype using temporal heterogeneous graph neural networks for concept dependency modeling.</p>
+                    </a>
+                    <a class="repo-card" href="https://github.com/DrFaustest/THG-final-project" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>Python</span><span>ANN Search</span></div>
+                        <h3>Temporal Subset ANN</h3>
+                        <p>Research prototype for interval-valid temporal subset approximate nearest neighbor search with scalar and category filtering.</p>
+                    </a>
+                    <a class="repo-card" href="https://github.com/DrFaustest/NLP-Assignment" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>Python</span><span>NLP</span></div>
+                        <h3>Biomedical NER with CRAFT</h3>
+                        <p>Biomedical named entity recognition work using the CRAFT corpus and Gene Ontology annotations from full-text research articles.</p>
+                    </a>
+                    <a class="repo-card" href="https://github.com/DrFaustest/Click-to-Talk" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>Python</span><span>Accessibility</span></div>
+                        <h3>Click-to-Talk</h3>
+                        <p>HCI accessibility application that maps voice commands to mouse movement and clicks for users with fine-motor challenges.</p>
+                    </a>
+                    <a class="repo-card" href="https://github.com/DrFaustest/AWS-Walled-Guarden" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>TypeScript</span><span>Developer Tools</span></div>
+                        <h3>AWS Walled Garden</h3>
+                        <p>VS Code extension concept for local AWS development through mocked services and intercepted API calls.</p>
+                    </a>
+                    <a class="repo-card" href="https://github.com/DrFaustest/Data_Engineering_Project" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>Jupyter</span><span>Data Engineering</span></div>
+                        <h3>Customer Data Pipeline</h3>
+                        <p>Data integration and analytics pipeline combining relational and NoSQL sources, ETL, warehouse modeling, and orchestration.</p>
+                    </a>
+                    <a class="repo-card" href="https://github.com/DrFaustest/DBMS_Project" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>Python</span><span>Databases</span></div>
+                        <h3>HR Portal DBMS</h3>
+                        <p>Database-backed human resources portal model for employees, teams, payroll, performance, training, and reporting workflows.</p>
+                    </a>
+                    <a class="repo-card" href="https://github.com/DrFaustest/StreamingOverlayTwitch" target="_blank" rel="noopener">
+                        <div class="repo-meta"><span>JavaScript</span><span>Interactive UI</span></div>
+                        <h3>Streaming Overlay Twitch</h3>
+                        <p>Customizable Twitch overlay and chatbot for displaying live chat, follows, subscriptions, raids, and stream events.</p>
+                    </a>
+                </div>
+                <div class="repo-footer">
+                    <a class="button secondary" href="https://github.com/DrFaustest?tab=repositories" target="_blank" rel="noopener">
+                        <i class="fab fa-github" aria-hidden="true"></i> View All Repositories
+                    </a>
+                </div>
+            </div>
+        </section>
 
-                <button type="submit">Send</button>
-            </form>
-            <p id="formStatus"></p> <!-- Placeholder for form submission status -->
-        </div>
-    </section>
+        <section id="contact" class="section contact-section">
+            <div class="container two-column">
+                <div>
+                    <p class="section-kicker">Contact</p>
+                    <h2>Connect about research, software, or collaboration.</h2>
+                    <p class="contact-copy">Use the form or reach out through GitHub and LinkedIn. I am interested in AI research, software engineering, algorithm education, and applied computing projects.</p>
+                    <div class="contact-links">
+                        <a href="https://github.com/DrFaustest" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
+                        <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener"><i class="fab fa-linkedin-in" aria-hidden="true"></i> LinkedIn</a>
+                    </div>
+                </div>
+                <form id="contactForm">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" autocomplete="name" required>
 
-    <!-- Footer -->
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" autocomplete="email" required>
+
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button type="submit"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Send Message</button>
+                    <p id="formStatus" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
     <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" class="social-link" aria-label="GitHub profile">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn profile">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" class="social-link" aria-label="Facebook profile">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-            </div>
-            <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+        <div class="container footer-content">
+            <p>&copy; 2026 Scott Faust. All rights reserved.</p>
+            <a href="#top">Back to top</a>
         </div>
     </footer>
 
     <script>
         const form = document.getElementById('contactForm');
         const formStatus = document.getElementById('formStatus');
+
         form.addEventListener('submit', async (event) => {
             event.preventDefault();
+            formStatus.textContent = 'Sending...';
+
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
             const endpoint = 'https://formspree.io/f/xlddoevv';
@@ -315,13 +398,13 @@
                 });
 
                 if (response.ok) {
-                    formStatus.textContent = 'Message sent successfully!';
+                    formStatus.textContent = 'Message sent successfully.';
                     form.reset();
                 } else {
-                    formStatus.textContent = 'Failed to send message. Please try again.';
+                    formStatus.textContent = 'Message failed to send. Please try again.';
                 }
             } catch (error) {
-                formStatus.textContent = 'An error occurred. Please try again.';
+                formStatus.textContent = 'A network error occurred. Please try again.';
             }
         });
     </script>

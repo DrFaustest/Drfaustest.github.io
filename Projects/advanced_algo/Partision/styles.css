@@ -18,7 +18,7 @@
 /* Body and Animations */
 body {
   margin: 0;
-  font-family: 'Roboto', 'Open Sans', sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460, #53354a);
   background-size: 400% 400%;
   animation: gradientBG 15s ease infinite;
@@ -60,7 +60,7 @@ body {
 .site-title h1 {
   margin: 0;
   font-size: 2rem;
-  font-family: 'Montserrat', 'Verdana', sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   font-weight: 700;
 }
 
@@ -141,7 +141,7 @@ body {
 .hero h2 {
   margin: 0 0 12px;
   font-size: 2rem;
-  font-family: 'Montserrat', 'Verdana', sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   letter-spacing: 2px;
   text-transform: uppercase;
   text-shadow: 2px 2px 5px #000;
@@ -174,7 +174,7 @@ body {
 }
 
 .card h2 {
-  font-family: 'Montserrat', 'Verdana', sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   color: #f39c12;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -187,7 +187,7 @@ body {
   font-size: 1.3rem;
   margin-top: 20px;
   margin-bottom: 12px;
-  font-family: 'Montserrat', 'Verdana', sans-serif;
+  font-family: "Inter", Arial, sans-serif;
 }
 
 .card p {
@@ -412,7 +412,7 @@ body {
 }
 
 .visual h3 {
-  font-family: 'Montserrat', 'Verdana', sans-serif;
+  font-family: "Inter", Arial, sans-serif;
   color: #f39c12;
   font-size: 1.2rem;
   margin-top: 0;
@@ -569,6 +569,168 @@ body {
   margin: 10px 0;
 }
 
+/* Portfolio theme alignment */
+:root {
+  color-scheme: light;
+  --bg: #f5f7f4;
+  --card: #ffffff;
+  --text: #37413f;
+  --muted: #66716e;
+  --primary: #126c5a;
+  --primary-dark: #0b4f42;
+  --border: #dce3de;
+  --shadow: 0 10px 28px rgba(24, 32, 31, 0.06);
+}
+
+body {
+  background: #f5f7f4;
+  color: #37413f;
+  font-family: "Inter", Arial, sans-serif;
+  animation: none;
+}
+
+.site-header {
+  padding: 0;
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid #dce3de;
+  box-shadow: none;
+}
+
+.header-container {
+  min-height: 72px;
+}
+
+.site-title h1,
+.hero h2,
+.card h2,
+.card h3,
+.result-value,
+.chart-section h2 {
+  font-family: "Inter", Arial, sans-serif;
+  letter-spacing: 0;
+  text-shadow: none;
+}
+
+.site-title h1 a,
+.hero h2,
+.card h2,
+.chart-section h2 {
+  color: #18201f;
+}
+
+.site-title p {
+  display: none;
+}
+
+.site-nav ul li a,
+.site-nav ul li a.nav-back {
+  border: 0;
+  border-radius: 6px;
+  color: #66716e;
+  background: transparent;
+}
+
+.site-nav ul li a:hover,
+.site-nav ul li a:focus,
+.site-nav ul li a.nav-back:hover {
+  color: #0b4f42;
+  background: #e9f2ee;
+  box-shadow: none;
+  transform: none;
+}
+
+.hero {
+  padding: 54px 16px 34px;
+  background: #fff;
+  color: #37413f;
+  border-bottom: 1px solid #dce3de;
+}
+
+.hero p {
+  color: #66716e;
+}
+
+.container {
+  margin: 34px auto 64px;
+}
+
+.card,
+.chart-section,
+.results-panel,
+.comparison-panel {
+  background: #fff;
+  border: 1px solid #dce3de;
+  border-radius: 8px;
+  box-shadow: 0 10px 28px rgba(24, 32, 31, 0.06);
+  backdrop-filter: none;
+}
+
+.card code {
+  background: #e9f2ee;
+  color: #0b4f42;
+  border-color: #cfe0d9;
+}
+
+button,
+.button,
+.btn {
+  border-radius: 6px;
+}
+
+.site-footer {
+  background: #18201f;
+  border-top: 0;
+  box-shadow: none;
+  margin-top: 0;
+  padding: 30px 20px;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.site-footer p {
+  margin: 0;
+  color: rgba(238, 245, 241, 0.78);
+  font-style: normal;
+}
+
+.site-footer .social-links {
+  margin: 0;
+  gap: 14px;
+  order: 2;
+}
+
+.social-link {
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(238, 245, 241, 0.22);
+  border-radius: 6px;
+  background: transparent;
+}
+
+.social-link:hover,
+.social-link:focus {
+  background: rgba(238, 245, 241, 0.12);
+  box-shadow: none;
+  transform: none;
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .site-footer .social-links {
+    order: 2;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .header-container {
@@ -588,3 +750,4 @@ body {
     font-size: 1.5rem;
   }
 }
+

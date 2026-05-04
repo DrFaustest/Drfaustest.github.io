@@ -18,6 +18,8 @@
     body, html {
       margin: 0;
       padding: 0;
+      width: 100%;
+      height: 100%;
       overflow: hidden;
       background-color: black;
     }
@@ -45,17 +47,18 @@
     }
 
     @font-face {
-      font-family: 'BrunoAceSC', serif;
-      src: url(../fonts/Bruno_Ace_SC/BrunoAceSC-Regular.ttf);
+      font-family: 'BrunoAceSC';
+      src: url("../fonts/Bruno_Ace_SC/BrunoAceSC-Regular.ttf") format("truetype");
+      font-display: swap;
     }
   </style>
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
-<nav class="w3-bar w3-border w3-black w3-mobile">
-  <a href="../../../../index.html" class="w3-bar-item w3-button w3-mobile w3-white">Home</a>
-  <button id="muteButton" class="w3-button w3-black">Unmute</button>
-</nav>
 <body>
+  <nav class="w3-bar w3-border w3-black w3-mobile">
+    <a href="../../../../index.html" class="w3-bar-item w3-button w3-mobile w3-white">Home</a>
+    <button id="muteButton" class="w3-button w3-black">Unmute</button>
+  </nav>
   <div id="stack" style="position: relative; width: 100%; height: 100%;">
     <canvas id="gameCanvas"></canvas>
     <canvas id="background"></canvas>

@@ -1,0 +1,174 @@
+body {
+  background: #f5f7f4;
+  color: #37413f;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+.project-hero {
+  padding: 54px 0 34px;
+  background: #fff;
+  border-bottom: 1px solid #dce3de;
+}
+
+.project-hero h1 {
+  margin: 0 0 14px;
+  color: #18201f;
+  font-size: clamp(2.2rem, 5vw, 4rem);
+}
+
+.project-hero p:last-child {
+  max-width: 760px;
+  margin: 0;
+  color: #66716e;
+  font-size: 1.1rem;
+}
+
+main.container {
+  padding-top: 28px;
+  padding-bottom: 54px;
+}
+
+.controls,
+.visualization,
+.array-rep,
+.log {
+  margin-bottom: 22px;
+  padding: 22px;
+  border: 1px solid #dce3de;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(24, 32, 31, 0.06);
+}
+
+.control-row,
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.card {
+  padding: 18px;
+  border: 1px solid #dce3de;
+  border-radius: 8px;
+  background: #f5f7f4;
+}
+
+.card.wide {
+  grid-column: span 2;
+}
+
+.card h3,
+.array-rep h3,
+.log h3 {
+  margin: 0 0 12px;
+  color: #18201f;
+}
+
+label,
+.speed span,
+.muted {
+  color: #66716e;
+  font-weight: 700;
+}
+
+input {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #cfd8d3;
+  border-radius: 6px;
+  color: #18201f;
+  background: #fff;
+  font: inherit;
+}
+
+input:focus {
+  border-color: #126c5a;
+  outline: 3px solid rgba(18, 108, 90, 0.16);
+}
+
+button {
+  min-height: 40px;
+  padding: 8px 13px;
+  border: 1px solid #126c5a;
+  border-radius: 6px;
+  color: #fff;
+  background: #126c5a;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+button:hover,
+button:focus-visible {
+  background: #0b4f42;
+}
+
+button.danger {
+  border-color: #a4472c;
+  background: #a4472c;
+}
+
+.toggle {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.toggle-label::before {
+  content: attr(data-min);
+}
+
+#heapTypeToggle:checked + .toggle-label::before {
+  content: attr(data-max);
+}
+
+.visualization {
+  overflow-x: auto;
+}
+
+#heapSvg {
+  width: 100%;
+  min-height: 360px;
+}
+
+.array-bar,
+.log-panel {
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid #dce3de;
+  border-radius: 8px;
+  background: #f5f7f4;
+}
+
+.heap-tip {
+  width: min(1120px, calc(100% - 40px));
+  margin: 0 auto 40px;
+  color: #66716e;
+  font-weight: 700;
+}
+
+@media (max-width: 720px) {
+  .card.wide {
+    grid-column: auto;
+  }
+
+  .control-row,
+  .row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  input,
+  button {
+    width: 100%;
+  }
+}

@@ -11,10 +11,13 @@ class GraphVisualizer {
         this.graph = null;
         this.algorithm = null;
         this.selectedNode = null;
+        this.selectedEdge = null;
         this.firstSelectedNode = null; // For edge creation
         this.currentStepIndex = -1;
         this.steps = [];
         this.animationSpeed = 5; // Default animation speed (1-10)
+        this.addingEdge = false;
+        this.onGraphChanged = null;
     }
 
     /**
@@ -151,6 +154,12 @@ class GraphVisualizer {
             edgeElement.className = 'edge';
             edgeElement.dataset.source = source;
             edgeElement.dataset.destination = destination;
+
+            if (this.selectedEdge &&
+                this.selectedEdge.source === source &&
+                this.selectedEdge.destination === destination) {
+                edgeElement.classList.add('selected');
+            }
             
             // Highlight current path if we're visualizing steps
             if (this.currentStepIndex >= 0 && this.steps.length > this.currentStepIndex) {
@@ -172,11 +181,27 @@ class GraphVisualizer {
             const labelElement = document.createElement('div');
             labelElement.className = 'edge-label';
             labelElement.textContent = weight;
+            if (this.selectedEdge &&
+                this.selectedEdge.source === source &&
+                this.selectedEdge.destination === destination) {
+                labelElement.classList.add('selected');
+            }
             
             // Position label in the middle of the edge
             labelElement.style.left = `${sourcePos.x + dx/2 - 12}px`;
             labelElement.style.top = `${sourcePos.y + dy/2 - 12}px`;
             
+            const selectEdge = (event) => {
+                event.stopPropagation();
+                this.selectedEdge = { source, destination };
+                this.selectedNode = null;
+                this.firstSelectedNode = null;
+                this.render();
+            };
+
+            edgeElement.addEventListener('click', selectEdge);
+            labelElement.addEventListener('click', selectEdge);
+
             this.canvas.appendChild(edgeElement);
             this.canvas.appendChild(labelElement);
         }
@@ -204,8 +229,14 @@ class GraphVisualizer {
             if (!isDragging) return;
             
             const canvasRect = this.canvas.getBoundingClientRect();
-            const x = e.clientX - canvasRect.left - offsetX + 20; // 20 = half node width
-            const y = e.clientY - canvasRect.top - offsetY + 20;  // 20 = half node height
+            const x = Math.min(
+                Math.max(e.clientX - canvasRect.left - offsetX + 20, 24),
+                canvasRect.width - 24
+            );
+            const y = Math.min(
+                Math.max(e.clientY - canvasRect.top - offsetY + 20, 24),
+                canvasRect.height - 24
+            );
             
             // Update node position in the graph
             this.graph.setNodePosition(nodeName, { x, y });
@@ -244,6 +275,7 @@ class GraphVisualizer {
         } else {
             // Normal node selection
             this.selectedNode = (this.selectedNode === nodeName) ? null : nodeName;
+            this.selectedEdge = null;
             this.render();
         }
     }
@@ -269,6 +301,7 @@ class GraphVisualizer {
             if (!isNaN(weight)) {
                 this.graph.addEdge(source, destination, weight);
                 this.render();
+                this.notifyGraphChanged();
                 
                 // Reset the algorithm state if we have an active algorithm
                 // This ensures new edges will be included in future algorithm runs
@@ -312,6 +345,7 @@ class GraphVisualizer {
         this.addingEdge = adding;
         this.firstSelectedNode = null;
         this.selectedNode = null;
+        this.selectedEdge = null;
         this.render();
     }
 
@@ -352,6 +386,7 @@ class GraphVisualizer {
         
         this.graph.addNode(nodeName, { x, y });
         this.render();
+        this.notifyGraphChanged();
         
         // Reset the algorithm state if we have an active algorithm
         // This ensures new nodes will be included in future algorithm runs
@@ -364,11 +399,68 @@ class GraphVisualizer {
      * Delete selected node or edge
      */
     deleteSelected() {
-        if (!this.graph || !this.selectedNode) return;
+        if (!this.graph) return;
+
+        if (this.selectedEdge) {
+            this.graph.removeEdge(this.selectedEdge.source, this.selectedEdge.destination);
+            this.selectedEdge = null;
+            this.render();
+            this.notifyGraphChanged();
+            return;
+        }
+
+        if (!this.selectedNode) return;
         
         this.graph.removeNode(this.selectedNode);
         this.selectedNode = null;
         this.render();
+        this.notifyGraphChanged();
+    }
+
+    renameSelectedNode(newName) {
+        if (!this.graph || !this.selectedNode) return false;
+        const renamed = this.graph.renameNode(this.selectedNode, newName);
+        if (renamed) {
+            this.selectedNode = String(newName).trim().toUpperCase();
+            this.render();
+            this.notifyGraphChanged();
+        }
+        return renamed;
+    }
+
+    updateSelectedEdgeWeight(weight) {
+        if (!this.graph || !this.selectedEdge || Number.isNaN(weight)) return false;
+        this.graph.addEdge(this.selectedEdge.source, this.selectedEdge.destination, weight);
+        this.render();
+        this.notifyGraphChanged();
+        return true;
+    }
+
+    autoLayout() {
+        if (!this.graph) return;
+        const nodes = this.graph.getNodes();
+        const rect = this.canvas.getBoundingClientRect();
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const radius = Math.max(90, Math.min(rect.width, rect.height) * 0.36);
+
+        nodes.forEach((node, index) => {
+            const angle = (Math.PI * 2 * index) / Math.max(nodes.length, 1) - Math.PI / 2;
+            this.graph.setNodePosition(node, {
+                x: centerX + Math.cos(angle) * radius,
+                y: centerY + Math.sin(angle) * radius
+            });
+        });
+
+        this.render();
+        this.notifyGraphChanged();
+    }
+
+    notifyGraphChanged() {
+        this.currentStepIndex = -1;
+        if (typeof this.onGraphChanged === 'function') {
+            this.onGraphChanged();
+        }
     }
 
     /**
@@ -410,7 +502,7 @@ class GraphVisualizer {
             // Distance cell
             const distanceCell = document.createElement('td');
             const distance = data.distances[node];
-            distanceCell.textContent = distance === Infinity ? '∞' : distance;
+            distanceCell.textContent = distance === Infinity ? 'Infinity' : distance;
             row.appendChild(distanceCell);
             
             // Previous cell

@@ -7,31 +7,15 @@
     <link rel="icon" href="graph-algorithms-visualizer/assets/icons/favicon.svg">
     <link rel="stylesheet" href="graph-algorithms-visualizer/css/reset.css">
     <link rel="stylesheet" href="graph-algorithms-visualizer/css/style.css">
-    <style>
-        .nav-bar {
-            background-color: #333;
-            padding: 10px 20px;
-            text-align: left;
-        }
-        .nav-bar a {
-            color: white;
-            text-decoration: none;
-            font-size: 16px;
-            transition: color 0.3s;
-        }
-        .nav-bar a:hover {
-            color: #4CAF50;
-        }
-    </style>
 </head>
 <body>
     <div class="nav-bar">
-        <a href="../../../index.html">← Back to Portfolio</a>
+        <a href="../../../index.html">Back to Portfolio</a>
     </div>
-    
+
     <header>
         <h1>Graph Algorithms Visualizer</h1>
-        <p>Interactive visualization tool for Dijkstra's and Bellman-Ford shortest path algorithms</p>
+        <p>Build, edit, save, and step through shortest path algorithms with clear visual feedback.</p>
     </header>
 
     <main>
@@ -41,7 +25,7 @@
                 <button id="dijkstra-btn" class="algorithm-btn active">Dijkstra's Algorithm</button>
                 <button id="bellman-ford-btn" class="algorithm-btn">Bellman-Ford Algorithm</button>
             </div>
-            
+
             <div class="graph-controls">
                 <h2>Graph Controls</h2>
                 <div class="control-group">
@@ -51,15 +35,19 @@
                 </div>
                 <div class="control-group">
                     <button id="clear-btn">Clear Graph</button>
-                    <button id="example1-btn">Example 1 (Dijkstra)</button>
-                    <button id="example2-btn">Example 2 (Bellman-Ford)</button>
+                    <button id="example1-btn">Example 1</button>
+                    <button id="example2-btn">Negative Edge Example</button>
+                </div>
+                <div class="control-group">
+                    <button id="random-btn">Random Graph</button>
+                    <button id="layout-btn">Auto Layout</button>
                 </div>
             </div>
-            
+
             <div class="algorithm-controls">
                 <h2>Algorithm Controls</h2>
-                <div class="control-group">
-                    <label for="start-node">Start Node:</label>
+                <div class="control-group stacked">
+                    <label for="start-node">Start Node</label>
                     <select id="start-node"></select>
                 </div>
                 <div class="control-group">
@@ -68,14 +56,34 @@
                     <button id="reset-btn">Reset</button>
                 </div>
                 <div class="speed-control">
-                    <label for="animation-speed">Animation Speed:</label>
+                    <label for="animation-speed">Animation Speed</label>
                     <input type="range" id="animation-speed" min="1" max="10" value="5">
+                </div>
+            </div>
+
+            <div class="workspace-controls">
+                <h2>Workspace</h2>
+                <div id="mode-indicator" class="mode-indicator">Mode: Select and drag nodes</div>
+                <div id="graph-stats" class="graph-stats">Nodes: 0 | Edges: 0</div>
+                <div id="graph-warning" class="graph-warning" role="status"></div>
+                <div class="control-group">
+                    <button id="rename-node-btn">Rename Node</button>
+                    <button id="edit-edge-btn">Edit Edge Weight</button>
+                </div>
+                <div class="control-group">
+                    <button id="save-btn">Save Local</button>
+                    <button id="load-btn">Load Local</button>
+                    <button id="export-btn">Export JSON</button>
+                    <button id="import-btn">Import JSON</button>
                 </div>
             </div>
         </div>
 
         <div class="visualization-container">
-            <div id="graph-canvas"></div>
+            <div class="canvas-shell">
+                <div id="graph-canvas"></div>
+                <div class="canvas-hint">Click a mode, then use the canvas. Drag nodes anytime.</div>
+            </div>
             <div id="algorithm-info">
                 <div id="current-step">
                     <h3>Current Step</h3>
@@ -91,33 +99,37 @@
                                 <th>Previous</th>
                             </tr>
                         </thead>
-                        <tbody id="distance-table-body">
-                            <!-- Will be populated by JavaScript -->
-                        </tbody>
+                        <tbody id="distance-table-body"></tbody>
                     </table>
                 </div>
             </div>
+        </div>
+
+        <div class="workflow-strip" aria-label="Workflow hints">
+            <span>Click nodes to select.</span>
+            <span>Drag nodes to rearrange.</span>
+            <span>Click an edge line or label to edit/delete it.</span>
+            <span>Dijkstra requires non-negative edge weights.</span>
         </div>
 
         <div class="instructions-container">
             <h2>How to Use</h2>
             <div class="instruction-steps">
                 <div class="instruction-step">
-                    <h3>1. Create or Select a Graph</h3>
-                    <p>Add nodes by clicking "Add Node" and then clicking on the canvas. Connect nodes by selecting "Add Edge", clicking on a source node, then a target node, and entering the weight.</p>
-                    <p>Alternatively, load one of the example graphs.</p>
+                    <h3>1. Build or Load</h3>
+                    <p>Add nodes, connect directed weighted edges, load examples, generate a random graph, or restore a local save.</p>
                 </div>
                 <div class="instruction-step">
-                    <h3>2. Choose an Algorithm</h3>
-                    <p>Select either Dijkstra's or Bellman-Ford algorithm. Remember that Dijkstra's doesn't work with negative edges, while Bellman-Ford can handle them.</p>
+                    <h3>2. Edit Safely</h3>
+                    <p>Select nodes or edges to rename, update weights, or delete. Duplicate edges are updated instead of stacked.</p>
                 </div>
                 <div class="instruction-step">
-                    <h3>3. Set Start Node</h3>
-                    <p>Select your starting node from the dropdown.</p>
+                    <h3>3. Choose Algorithm</h3>
+                    <p>Dijkstra is fast for non-negative weights. Bellman-Ford handles negative weights and detects negative cycles.</p>
                 </div>
                 <div class="instruction-step">
-                    <h3>4. Run or Step Through</h3>
-                    <p>Press "Run" to see the full algorithm or "Step" to advance one step at a time.</p>
+                    <h3>4. Run or Step</h3>
+                    <p>Use Run for animation or Step to inspect each relaxation and distance table update.</p>
                 </div>
             </div>
         </div>
@@ -130,7 +142,7 @@
     <div id="edge-weight-modal" class="modal">
         <div class="modal-content">
             <h2>Enter Edge Weight</h2>
-            <input type="number" id="edge-weight-input" placeholder="Weight (can be negative for Bellman-Ford)">
+            <input type="number" id="edge-weight-input" placeholder="Weight (negative values require Bellman-Ford)">
             <div class="modal-buttons">
                 <button id="confirm-edge-btn">Add Edge</button>
                 <button id="cancel-edge-btn">Cancel</button>

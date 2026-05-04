@@ -3,25 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Heap Visualizer</title>
+    <title>Heap Visualizer | Scott Faust</title>
     <!-- Site-wide styles and icons to match portfolio -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Roboto:wght@300;400;500&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
     <link rel="stylesheet" href="../../style.css" />
     <!-- App-specific styles -->
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Global site header/nav -->
-    <header>
-      <div class="container">
-        <h1>Scott Faust</h1>
-        <p>Software Cultivator</p>
-        <nav>
+    <header class="site-header">
+      <div class="container nav-shell">
+        <a class="brand" href="../../index.html">Scott Faust</a>
+        <nav aria-label="Primary navigation">
           <ul>
-            <li><a href="../../index.html#about">About</a></li>
+            <li><a href="../../index.html#profile">Profile</a></li>
             <li><a href="../../index.html#projects">Projects</a></li>
             <li><a href="../../index.html#contact">Contact</a></li>
           </ul>
@@ -29,10 +27,13 @@
       </div>
     </header>
 
-    <header class="app-header">
-      <h1>Heap Visualizer</h1>
-      <div class="subtitle">Interactive Min/Max Binary Heap with animations</div>
-    </header>
+    <section class="project-hero">
+      <div class="container">
+        <p class="section-kicker">Interactive Algorithm Tool</p>
+        <h1>Heap Visualizer</h1>
+        <p>Interactive min and max binary heap operations with animation, array representation, and explanations.</p>
+      </div>
+    </section>
 
     <main class="container">
       <section class="controls" aria-label="Controls">
@@ -49,8 +50,8 @@
           </label>
 
           <div class="playback">
-            <button id="playPauseBtn" title="Play/Pause">▶️/⏸️</button>
-            <button id="stepBtn" title="Next Step">Step ▶</button>
+            <button id="playPauseBtn" title="Play/Pause">Play/Pause</button>
+            <button id="stepBtn" title="Next Step">Step</button>
             <button id="clearBtn" class="danger" title="Clear heap">Clear</button>
           </div>
         </div>
@@ -127,21 +128,10 @@
       <span>Tip: Indices start at 0 (root). Toggle Min/Max to switch ordering.</span>
     </div>
 
-    <!-- Global site footer -->
     <footer>
-      <div class="container">
-        <div class="social-links">
-          <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" class="social-link" aria-label="GitHub profile">
-            <i class="fab fa-github"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" class="social-link" aria-label="LinkedIn profile">
-            <i class="fab fa-linkedin-in"></i>
-          </a>
-          <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" class="social-link" aria-label="Facebook profile">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-        </div>
-        <p>&copy; 2025 Scott Faust. All rights reserved.</p>
+      <div class="container footer-content">
+        <p>&copy; 2026 Scott Faust. All rights reserved.</p>
+        <a href="../../index.html#projects">Back to projects</a>
       </div>
     </footer>
 

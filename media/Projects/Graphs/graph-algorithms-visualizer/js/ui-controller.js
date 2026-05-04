@@ -18,6 +18,7 @@ class UIController {
         this.stepResetDone = false; // Flag to track if reset has been done for stepping
         this.runResetDone = false; // Flag to track if reset has been done for running
         this.isResetting = false; // Flag to track if reset is in progress
+        this.localStorageKey = 'graph-visualizer-workspace';
         
         // Initialize UI
         this.initUI();
@@ -38,6 +39,8 @@ class UIController {
         this.clearBtn = document.getElementById('clear-btn');
         this.example1Btn = document.getElementById('example1-btn');
         this.example2Btn = document.getElementById('example2-btn');
+        this.randomBtn = document.getElementById('random-btn');
+        this.layoutBtn = document.getElementById('layout-btn');
         
         // Algorithm controls
         this.startNodeSelect = document.getElementById('start-node');
@@ -45,15 +48,26 @@ class UIController {
         this.stepBtn = document.getElementById('step-btn');
         this.resetBtn = document.getElementById('reset-btn');
         this.animationSpeedInput = document.getElementById('animation-speed');
+        this.modeIndicator = document.getElementById('mode-indicator');
+        this.graphStats = document.getElementById('graph-stats');
+        this.graphWarning = document.getElementById('graph-warning');
+        this.renameNodeBtn = document.getElementById('rename-node-btn');
+        this.editEdgeBtn = document.getElementById('edit-edge-btn');
+        this.saveBtn = document.getElementById('save-btn');
+        this.loadBtn = document.getElementById('load-btn');
+        this.exportBtn = document.getElementById('export-btn');
+        this.importBtn = document.getElementById('import-btn');
         
         // Canvas for graph visualization
         this.canvas = document.getElementById('graph-canvas');
         
         // Set up event listeners
         this.setupEventListeners();
+        this.visualizer.onGraphChanged = () => this.handleGraphChanged();
         
         // Update node dropdown
         this.updateStartNodeDropdown();
+        this.updateWorkspaceStatus();
     }
 
     /**
@@ -71,11 +85,19 @@ class UIController {
         this.clearBtn.addEventListener('click', () => this.clearGraph());
         this.example1Btn.addEventListener('click', () => this.loadExample(1));
         this.example2Btn.addEventListener('click', () => this.loadExample(2));
+        this.randomBtn.addEventListener('click', () => this.createRandomGraph());
+        this.layoutBtn.addEventListener('click', () => this.visualizer.autoLayout());
         
         // Algorithm controls
         this.runBtn.addEventListener('click', () => this.runAlgorithm());
         this.stepBtn.addEventListener('click', () => this.stepAlgorithm());
         this.resetBtn.addEventListener('click', () => this.resetAlgorithm());
+        this.renameNodeBtn.addEventListener('click', () => this.renameSelectedNode());
+        this.editEdgeBtn.addEventListener('click', () => this.editSelectedEdge());
+        this.saveBtn.addEventListener('click', () => this.saveLocalGraph());
+        this.loadBtn.addEventListener('click', () => this.loadLocalGraph());
+        this.exportBtn.addEventListener('click', () => this.exportGraph());
+        this.importBtn.addEventListener('click', () => this.importGraph());
         
         // Canvas click for adding nodes
         this.canvas.addEventListener('click', (e) => {
@@ -85,6 +107,7 @@ class UIController {
                 const y = e.clientY - rect.top;
                 this.visualizer.addNewNode(x, y);
                 this.updateStartNodeDropdown();
+                this.updateWorkspaceStatus('Node added. Drag it to adjust placement.');
             }
         });
         
@@ -122,6 +145,7 @@ class UIController {
         
         // Reset algorithm visuals
         this.resetAlgorithm();
+        this.updateWorkspaceStatus();
     }
 
     /**
@@ -134,8 +158,10 @@ class UIController {
             this.addNodeBtn.classList.add('active');
             this.addEdgeBtn.classList.remove('active');
             this.visualizer.setAddingEdge(false);
+            this.updateModeIndicator('Mode: Add Node - click the canvas to place a node');
         } else {
             this.addNodeBtn.classList.remove('active');
+            this.updateModeIndicator('Mode: Select and drag nodes');
         }
     }
 
@@ -149,8 +175,10 @@ class UIController {
             this.addEdgeBtn.classList.add('active');
             this.addNodeBtn.classList.remove('active');
             this.addingNode = false;
+            this.updateModeIndicator('Mode: Add Edge - click source node, then destination node');
         } else {
             this.addEdgeBtn.classList.remove('active');
+            this.updateModeIndicator('Mode: Select and drag nodes');
         }
     }
 
@@ -162,6 +190,7 @@ class UIController {
             this.graph.clear();
             this.visualizer.reset();
             this.updateStartNodeDropdown();
+            this.updateWorkspaceStatus('Graph cleared.');
         }
     }
 
@@ -188,6 +217,7 @@ class UIController {
         
         // Set default start node to A
         this.startNodeSelect.value = 'A';
+        this.updateWorkspaceStatus(`Loaded example ${exampleNumber}.`);
     }
 
     /**
@@ -321,6 +351,159 @@ class UIController {
         this.initializeAlgorithm();
         this.stepResetDone = false; // Reset the step flag
         // Don't reset runResetDone here as we need it to persist during async operations
+    }
+
+    handleGraphChanged() {
+        this.stepResetDone = false;
+        this.runResetDone = false;
+        this.updateStartNodeDropdown();
+        this.updateWorkspaceStatus('Graph updated. Algorithm state reset.');
+    }
+
+    updateModeIndicator(message) {
+        if (this.modeIndicator) {
+            this.modeIndicator.textContent = message;
+        }
+    }
+
+    updateWorkspaceStatus(message = '') {
+        const stats = this.graph.getStats ? this.graph.getStats() : { nodes: 0, edges: 0, negativeEdges: 0 };
+        if (this.graphStats) {
+            this.graphStats.textContent = `Nodes: ${stats.nodes} | Edges: ${stats.edges} | Negative Edges: ${stats.negativeEdges}`;
+        }
+
+        const warnings = [];
+        if (this.currentAlgorithm === 'dijkstra' && this.graph.hasNegativeEdge()) {
+            warnings.push("Dijkstra's algorithm does not support negative edge weights. Use Bellman-Ford or remove negative edges.");
+        }
+        if (stats.nodes === 0) {
+            warnings.push('Add nodes or load an example to begin.');
+        } else if (stats.edges === 0) {
+            warnings.push('Add edges to make the graph meaningful.');
+        }
+
+        if (this.graphWarning) {
+            this.graphWarning.textContent = message || warnings.join(' ');
+            this.graphWarning.classList.toggle('warning-active', warnings.length > 0 && !message);
+        }
+    }
+
+    renameSelectedNode() {
+        if (!this.visualizer.selectedNode) {
+            this.updateWorkspaceStatus('Select a node first.');
+            return;
+        }
+
+        const nextName = prompt('Rename selected node:', this.visualizer.selectedNode);
+        if (!nextName) return;
+
+        if (!this.visualizer.renameSelectedNode(nextName)) {
+            this.updateWorkspaceStatus('Rename failed. Use a unique node name.');
+            return;
+        }
+
+        this.updateStartNodeDropdown();
+        this.updateWorkspaceStatus('Node renamed.');
+    }
+
+    editSelectedEdge() {
+        if (!this.visualizer.selectedEdge) {
+            this.updateWorkspaceStatus('Select an edge line or weight label first.');
+            return;
+        }
+
+        const edge = this.graph.getEdge(this.visualizer.selectedEdge.source, this.visualizer.selectedEdge.destination);
+        if (!edge) return;
+
+        const nextWeight = parseFloat(prompt('Update edge weight:', edge.weight));
+        if (Number.isNaN(nextWeight)) {
+            this.updateWorkspaceStatus('Edge weight was not changed.');
+            return;
+        }
+
+        this.visualizer.updateSelectedEdgeWeight(nextWeight);
+        this.updateWorkspaceStatus('Edge weight updated.');
+    }
+
+    createRandomGraph() {
+        this.graph.clear();
+        const nodeCount = 7;
+        const rect = this.canvas.getBoundingClientRect();
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const radius = Math.max(90, Math.min(rect.width, rect.height) * 0.34);
+
+        for (let i = 0; i < nodeCount; i++) {
+            const name = String.fromCharCode(65 + i);
+            const angle = (Math.PI * 2 * i) / nodeCount - Math.PI / 2;
+            this.graph.addNode(name, {
+                x: centerX + Math.cos(angle) * radius,
+                y: centerY + Math.sin(angle) * radius
+            });
+        }
+
+        const nodes = this.graph.getNodes();
+        for (let i = 0; i < nodes.length; i++) {
+            const next = nodes[(i + 1) % nodes.length];
+            this.graph.addEdge(nodes[i], next, Math.floor(Math.random() * 9) + 1);
+            if (i % 2 === 0) {
+                const jump = nodes[(i + 3) % nodes.length];
+                this.graph.addEdge(nodes[i], jump, Math.floor(Math.random() * 12) + 2);
+            }
+        }
+
+        this.visualizer.setGraph(this.graph);
+        this.updateStartNodeDropdown();
+        this.selectAlgorithm('dijkstra');
+        this.updateWorkspaceStatus('Random graph generated.');
+    }
+
+    saveLocalGraph() {
+        localStorage.setItem(this.localStorageKey, JSON.stringify(this.graph.toJSON()));
+        this.updateWorkspaceStatus('Graph saved locally in this browser.');
+    }
+
+    loadLocalGraph() {
+        const saved = localStorage.getItem(this.localStorageKey);
+        if (!saved) {
+            this.updateWorkspaceStatus('No local graph save found.');
+            return;
+        }
+
+        try {
+            this.graph.fromJSON(JSON.parse(saved));
+            this.visualizer.setGraph(this.graph);
+            this.updateStartNodeDropdown();
+            this.resetAlgorithm();
+            this.updateWorkspaceStatus('Local graph loaded.');
+        } catch (error) {
+            this.updateWorkspaceStatus('Saved graph could not be loaded.');
+        }
+    }
+
+    exportGraph() {
+        const json = JSON.stringify(this.graph.toJSON(), null, 2);
+        navigator.clipboard?.writeText(json)
+            .then(() => this.updateWorkspaceStatus('Graph JSON copied to clipboard.'))
+            .catch(() => {
+                prompt('Copy graph JSON:', json);
+                this.updateWorkspaceStatus('Copy the graph JSON from the prompt.');
+            });
+    }
+
+    importGraph() {
+        const json = prompt('Paste graph JSON:');
+        if (!json) return;
+
+        try {
+            this.graph.fromJSON(JSON.parse(json));
+            this.visualizer.setGraph(this.graph);
+            this.updateStartNodeDropdown();
+            this.resetAlgorithm();
+            this.updateWorkspaceStatus('Graph imported.');
+        } catch (error) {
+            this.updateWorkspaceStatus('Import failed. Check the JSON format.');
+        }
     }
 }
 

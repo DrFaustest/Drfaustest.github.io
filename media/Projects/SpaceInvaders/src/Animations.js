@@ -12,17 +12,28 @@ export class Explosion {
     this.currentFrameDuration = 0;
     this.isComplete = false;
     
+    const gameContainer = document.getElementById('stack');
+    const gameCanvas = document.getElementById('gameCanvas');
+    let offsetX = 0;
+    let offsetY = 0;
+
+    if (gameContainer && gameCanvas) {
+      const containerRect = gameContainer.getBoundingClientRect();
+      const canvasRect = gameCanvas.getBoundingClientRect();
+      offsetX = canvasRect.left - containerRect.left;
+      offsetY = canvasRect.top - containerRect.top;
+    }
+
     // Create DOM element for explosion
     this.element = document.createElement('div');
     this.element.className = 'explosion';
     this.element.style.position = 'absolute';
-    this.element.style.left = `${x}px`;
-    this.element.style.top = `${y}px`;
+    this.element.style.left = `${offsetX + x}px`;
+    this.element.style.top = `${offsetY + y}px`;
     this.element.style.width = `${this.width}px`;
     this.element.style.height = `${this.height}px`;
     
     // Add to game container - NOT the canvas itself
-    const gameContainer = document.getElementById('stack');
     if (gameContainer) {
       gameContainer.appendChild(this.element);
       // Start CSS animation

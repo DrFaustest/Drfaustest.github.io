@@ -114,11 +114,12 @@ export class LifePickup {
   
 export class Bullet {
   constructor(ship, scaleFactor, laserSound) {
+    resourceManager.playSound("laser");
     this.bulletImage = resourceManager.getImage("laser");
     this.x = ship.x + ship.width / 2 - 5 * scaleFactor;
     this.y = ship.y - 20 * scaleFactor;
-    this.width = 10 * scaleFactor;
-    this.height = 20 * scaleFactor;
+    this.width = 12 * scaleFactor;
+    this.height = 26 * scaleFactor;
     this.scaleFactor = scaleFactor;
   }
 
@@ -133,7 +134,7 @@ export class Bullet {
   }
 
   move() {
-    this.y -= 5 * this.scaleFactor;
+    this.y -= 6.5 * this.scaleFactor;
   }
 
   static spawn(ship, scaleFactor, laserSound) {

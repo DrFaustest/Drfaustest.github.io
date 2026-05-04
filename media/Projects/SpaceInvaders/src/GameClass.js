@@ -4,6 +4,10 @@ import { Enemy, EnemyManager } from "./EnemyClass.js";
 import resourceManager from "./ResourceManager.js";
 import { Explosion } from "./Animations.js";
 
+const LEADERBOARD_KEY = "space-rangers-leaderboard";
+const PLAYER_NAME_KEY = "space-rangers-player-name";
+const MAX_LEADERBOARD_ENTRIES = 10;
+
 class Game {
   constructor() {
     this.gameCanvas = document.getElementById("gameCanvas");
@@ -33,6 +37,8 @@ class Game {
     this.extraLivesDropped = 0;
     this.explosions = [];
     this.bullets = [];
+    this.enemyProjectiles = [];
+    this.frameCount = 0;
     this.waveTimer = 0;
     this.dropPoints = [];
     this.dropPointSpacing = this.gameCanvas.width * 0.05;
@@ -51,6 +57,8 @@ class Game {
     this.leftSpawnPoint;
     this.rightSpawnPoint;
     this.speedBuff = 500;
+    this.leaderboard = this.loadLeaderboard();
+    this.scoreSubmitted = false;
     this.enemyManager = new EnemyManager(this);
     this.setupEventListeners();
     this.gameLoop();
@@ -63,7 +71,7 @@ class Game {
       switch (this.gameState) {
         case 1:
           this.display.clearCanvas();
-          this.display.drawStartScreen();
+          this.display.drawStartScreen(this.leaderboard);
           console.log("gameState is StartScreen");
           this.lives = 3;
           await this.waitForStart();
@@ -73,16 +81,17 @@ class Game {
           this.startTime = Date.now();
           break;
         case 2:
-          this.display.drawHUD(this.lives, this.score, this.startTime);
           this.update();
           if (this.gameOver) {
+            this.enemyManager.clearTimers();
+            this.submitScore();
             this.gameState = 3;
             this.display.clearCanvas();
           }
           break;
         case 3:
           console.log("gameState is GameOverScreen");
-          this.display.drawGameOverScreen(this.score);
+          this.display.drawGameOverScreen(this.score, this.leaderboard);
           await this.waitForRestart();
           this.gameState = 1;
           this.display.clearCanvas();
@@ -107,6 +116,7 @@ class Game {
 
   restartGame() {
     console.log("restartGame called");
+    this.enemyManager.clearTimers();
     this.explosions.forEach(explosion => {
     if (explosion.element && explosion.element.parentNode) {
       explosion.element.parentNode.removeChild(explosion.element);
@@ -118,6 +128,7 @@ class Game {
     this.score = 0;
     this.enemyManager.enemies.length = 0;
     this.bullets.length = 0;
+    this.enemyProjectiles.length = 0;
     this.lifePickups.length = 0;
     this.extraLivesDropped = 0;
     this.ship = new Ship(this.gameCanvas, this.scaleFactor);
@@ -126,6 +137,9 @@ class Game {
     this.startTime = null;
     this.currentWave = 0;
     this.enemySpawnInterval = 800;
+    this.frameCount = 0;
+    this.scoreSubmitted = false;
+    this.enemyManager = new EnemyManager(this);
   }
 
   handleStartGame() {
@@ -144,11 +158,25 @@ class Game {
 
   update() {
     if (this.gameStarted) {
+      this.frameCount++;
       this.gameContext.clearRect(0,0,this.gameCanvas.width,this.gameCanvas.height);
-      this.display.drawHUD(this.lives, this.score, this.startTime);
+      this.display.drawHUD(this.lives, this.score, this.startTime, this.enemyManager.waveName);
       this.enemyManager.assetSpawn();
-      this.updateEntities(this.enemyManager.enemies, (enemy) => enemy.move(this.score), (enemy) => enemy.draw(this.gameContext));
+      this.enemyManager.enemies = this.enemyManager.enemies.filter((enemy) => {
+        const missed = enemy.move(this.score);
+        this.enemyProjectiles.push(...enemy.tryShoot(this.frameCount));
+        enemy.draw(this.gameContext);
+        if (missed) {
+          this.lives -= enemy.damage;
+        }
+        return !missed;
+      });
       this.updateEntities(this.bullets, (bullet) => bullet.move() || bullet.y < 0, (bullet) => bullet.draw(this.gameContext));
+      this.enemyProjectiles = this.enemyProjectiles.filter((projectile) => {
+        const expired = projectile.move();
+        projectile.draw(this.gameContext);
+        return !expired;
+      });
       this.updateEntities(this.lifePickups, (life) => life.move() || life.y > this.gameCanvas.height, (life) => life.draw(this.gameContext));
       this.explosions = this.explosions.filter(explosion => explosion.update());
       this.checkCollisions();
@@ -173,13 +201,6 @@ class Game {
   }
 
   checkCollisions() {
-  const bottomBoundary = {
-    x: 0,
-    y: this.gameCanvas.height,
-    width: this.gameCanvas.width,
-    height: 1, // Represents the bottom boundary
-  };
-
   // Handle enemies (iterate backwards for safe removal)
   for (let i = this.enemyManager.enemies.length - 1; i >= 0; i--) {
     const enemy = this.enemyManager.enemies[i];
@@ -194,10 +215,10 @@ class Game {
         enemy.hitPoints--;
         this.bullets.splice(j, 1); // Remove bullet
         if (enemy.hitPoints <= 0) {
-          this.score += enemy.type === 1 ? 1 : 5;
+          this.score += enemy.scoreValue;
           resourceManager.playSound("explosion");
           console.log("Enemy destroyed");
-          this.explosions.push(new Explosion(enemy.x, enemy.y, this.scaleFactor));
+          this.createExplosion(enemy);
           console.log("Enemy destroyed creating explosion");
           this.enemyManager.enemies.splice(i, 1); // Remove enemy
           break; // Stop checking other bullets for this enemy
@@ -209,19 +230,21 @@ class Game {
     if (this.enemyManager.enemies[i] && this.isColliding(this.ship, enemy)) {
       resourceManager.playSound("explosion");
       this.enemyManager.enemies.splice(i, 1); // Remove enemy
-      this.explosions.push(new Explosion(enemy.x, enemy.y, this.scaleFactor));
+      this.createExplosion(enemy);
       console.log("Ship collided with enemy");
-      this.lives--; // Reduce life by 1
+      this.lives -= enemy.damage; // Reduce life by enemy impact damage
       continue;
     }
-
-    // Check for collisions with the bottom boundary
-    if (this.enemyManager.enemies[i] && this.isColliding(enemy, bottomBoundary)) {
-      console.log("Enemy collided with bottom boundary");
-      this.enemyManager.enemies.splice(i, 1); // Remove enemy
-      this.lives--; // Reduce life for missed enemy
-    }
   }
+
+    for (let i = this.enemyProjectiles.length - 1; i >= 0; i--) {
+      const projectile = this.enemyProjectiles[i];
+      if (this.isColliding(this.ship, projectile)) {
+        this.enemyProjectiles.splice(i, 1);
+        this.lives -= projectile.damage;
+        this.createExplosion(projectile, 0.55);
+      }
+    }
   
     // Drop extra lives logic
     let livesToDrop = Math.floor(this.score / 30);
@@ -256,6 +279,64 @@ class Game {
       a.y < b.y + b.height &&
       a.y + a.height > b.y
     );
+  }
+
+  createExplosion(entity, sizeMultiplier = 1) {
+    const explosionScale = this.scaleFactor * sizeMultiplier;
+    const explosionSize = 40 * explosionScale;
+    const x = entity.x + entity.width / 2 - explosionSize / 2;
+    const y = entity.y + entity.height / 2 - explosionSize / 2;
+    this.explosions.push(new Explosion(x, y, explosionScale));
+  }
+
+  loadLeaderboard() {
+    try {
+      const savedScores = JSON.parse(localStorage.getItem(LEADERBOARD_KEY)) || [];
+      return savedScores
+        .filter((entry) => entry && typeof entry.score === "number" && entry.name)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, MAX_LEADERBOARD_ENTRIES);
+    } catch (error) {
+      console.warn("Unable to load leaderboard.", error);
+      return [];
+    }
+  }
+
+  saveLeaderboard() {
+    localStorage.setItem(LEADERBOARD_KEY, JSON.stringify(this.leaderboard));
+  }
+
+  submitScore() {
+    if (this.scoreSubmitted || this.score <= 0) {
+      return;
+    }
+
+    this.scoreSubmitted = true;
+    const lowestScore = this.leaderboard[MAX_LEADERBOARD_ENTRIES - 1]?.score ?? 0;
+    const qualifies = this.leaderboard.length < MAX_LEADERBOARD_ENTRIES || this.score > lowestScore;
+
+    if (!qualifies) {
+      return;
+    }
+
+    const savedName = localStorage.getItem(PLAYER_NAME_KEY) || "ACE";
+    const enteredName = prompt("New Space Rangers high score! Enter your callsign:", savedName);
+    const name = (enteredName || savedName || "ACE")
+      .toUpperCase()
+      .replace(/[^A-Z0-9 _-]/g, "")
+      .slice(0, 12)
+      .trim() || "ACE";
+
+    localStorage.setItem(PLAYER_NAME_KEY, name);
+    this.leaderboard.push({
+      name,
+      score: this.score,
+      date: new Date().toISOString(),
+    });
+    this.leaderboard = this.leaderboard
+      .sort((a, b) => b.score - a.score)
+      .slice(0, MAX_LEADERBOARD_ENTRIES);
+    this.saveLeaderboard();
   }
 
 
@@ -330,7 +411,7 @@ class Game {
 
     window.addEventListener("mousemove", (e) => {
       if (this.gameState === 2) {
-        this.ship.move(e.clientX);
+        this.ship.move(this.toCanvasX(e.clientX));
       }
     });
 
@@ -367,12 +448,13 @@ class Game {
 
     window.addEventListener("touchmove", (e) => {
       if (this.gameState === 2) {
-        this.ship.move(e.touches[0].clientX);
+        this.ship.move(this.toCanvasX(e.touches[0].clientX));
       }
     });
     document.addEventListener("keydown", (event) => {
       if (event.key === "m") { // 'M' key to toggle mute
         resourceManager.toggleMute();
+        const muteButton = document.getElementById("muteButton");
         muteButton.textContent = resourceManager.isMuted ? "Unmute" : "Mute";
       }
     });
@@ -382,5 +464,12 @@ class Game {
       muteButton.textContent = resourceManager.isMuted ? "Unmute" : "Mute";
     });
   }
+
+  toCanvasX(clientX) {
+    const rect = this.gameCanvas.getBoundingClientRect();
+    return clientX - rect.left - this.ship.width / 2;
+  }
 }
-const game = new Game();
+resourceManager.loadAllImages().then(() => {
+  new Game();
+});
