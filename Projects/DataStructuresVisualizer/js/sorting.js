@@ -1,4 +1,4 @@
-import { el, setPseudocode, highlightPseudo, appState, incStat, qs, registerImplementations, setTeardown, resetStepEngine, renderCurrentAgain } from './core.js';
+import { announce, configureExplorer, controlField, controlGroup, createExplorerControls, el, setPseudocode, highlightPseudo, appState, incStat, qs, registerImplementations, setTeardown, resetStepEngine, renderCurrentAgain } from './core.js';
 
 // Working array (not mutated during step generation; we clone for steps).
 let baseArray = [];
@@ -7,41 +7,34 @@ let resizeObserver;
 let originalArray = []; // Store original array to enable proper reset
 
 export function renderSortingVisualizer(visualArea, controlsArea) {
-  // Choose an initial size that fits current viewport (mobile-first).
-  const approxBarTargetWidth = 22; // px target width before responsive shrinking
-  const containerWidth = visualArea.clientWidth || window.innerWidth;
-  const estimatedCount = Math.max(8, Math.min(60, Math.floor((containerWidth - 40) / approxBarTargetWidth)));
+  // Keep the first example small enough that students can read every value.
+  const estimatedCount = (visualArea.clientWidth || window.innerWidth) < 560 ? 8 : 12;
   baseArray = Array.from({ length: estimatedCount }, () => Math.floor(Math.random() * 90) + 10);
   originalArray = [...baseArray]; // Store original for reset
   
   const title = el('h2', {}, 'Sorting Algorithms');
   const barsContainer = el('div', { id: 'bars', className: 'bar-container' });
-  const controlsForm = el('div', {},
-    el('button', { type: 'button', className: 'btn', onclick: shuffleBars }, 'Random example'),
-    el('label', { htmlFor: 'sort-size', style: { marginLeft: '.5rem' } }, 'Size'),
-    (() => {
-      const sizeInput = el('input', { id: 'sort-size', type: 'number', min: 4, max: 200, value: baseArray.length, style: { width: '90px' } });
-      sizeInput.addEventListener('change', () => {
-        let n = Number(sizeInput.value);
-        if (Number.isNaN(n) || n < 4) n = 18; 
-        if (n > 200) n = 200;
-        sizeInput.value = n;
-        baseArray = Array.from({ length: n }, () => Math.floor(Math.random() * 90) + 10);
-        originalArray = [...baseArray];
-        depthMap = new Map();
-        clearTransientVisuals();
-        drawBars();
-        resetPlayback();
-      });
-      return sizeInput;
-    })(),
-    el('select', { id: 'algo', 'aria-label': 'Sorting algorithm', onchange: () => { updateSortPseudocode(); resetPlayback(); } },
+  const sizeInput = el('input', { id: 'sort-size', type: 'number', min: 4, max: 40, value: baseArray.length });
+  sizeInput.addEventListener('change', handleSizeChange);
+  const algoSelect = el('select', { id: 'algo', onchange: handleAlgorithmChange },
       el('option', { value: 'bubble' }, 'Bubble'),
       el('option', { value: 'insertion' }, 'Insertion'),
       el('option', { value: 'merge' }, 'Merge'),
       el('option', { value: 'quick' }, 'Quick')
-    ),
-    el('button', { type: 'button', className: 'btn primary', onclick: startSort }, 'Generate steps')
+    );
+  const controlsForm = createExplorerControls({
+    title:'Sorting actions',
+    intro:'Each bar is one value. Build a timeline, then use Next step so comparisons and moves never blur together.',
+    fields:[controlField('Algorithm',algoSelect),controlField('Number of values (4–40)',sizeInput)],
+    groups:[controlGroup('Prepare and study','small examples are easier to trace',
+      el('button',{type:'button',className:'btn',onclick:shuffleBars},'New random values'),
+      el('button',{type:'button',className:'btn primary',onclick:startSort},'Build step timeline')
+    )]
+  });
+  const stateLegend = el('div', { className:'visual-legend' },
+    el('span',{className:'legend-item'},el('span',{className:'legend-swatch'}),'waiting'),
+    el('span',{className:'legend-item'},el('span',{className:'legend-swatch move'}),'compare / move'),
+    el('span',{className:'legend-item'},el('span',{className:'legend-swatch complete'}),'final position')
   );
   const legend = el('div', { id: 'depth-legend', className: 'depth-legend' },
     el('span', { className: 'swatch' }, el('span', { className: 'box' }), 'depth 0'),
@@ -51,8 +44,8 @@ export function renderSortingVisualizer(visualArea, controlsArea) {
     el('span', { className: 'swatch' }, el('span', { className: 'box d4' }), '4+')
   );
   const mergeBuffer = el('div', { id: 'merge-buffer', className: 'merge-buffer' });
-  visualArea.append(title, barsContainer, legend, mergeBuffer);
-  controlsArea.append(el('h3', {}, 'Sorting Controls'), controlsForm);
+  visualArea.append(title, stateLegend, barsContainer, legend, mergeBuffer);
+  controlsArea.prepend(controlsForm);
   const requestedAlgorithm = new URLSearchParams(window.location.search).get('algorithm');
   if (['bubble', 'insertion', 'merge', 'quick'].includes(requestedAlgorithm)) qs('#algo').value = requestedAlgorithm;
   drawBars();
@@ -67,6 +60,7 @@ export function renderSortingVisualizer(visualArea, controlsArea) {
     window.addEventListener('resize', resizeHandler);
   }
   updateSortPseudocode();
+  configureExplorer({ name:'Sorting algorithm', goal:'Build a timeline, then advance one step at a time while reading each bar value.', focus:'Rust-colored bars are being compared or moved; green bars are in final position.', change:'Compare steps read values; swap and write steps change their positions.', why:'The complete sequence shows how a local rule produces a globally sorted array.' });
   
   // Cleanup on visualizer switch
   setTeardown(() => {
@@ -145,11 +139,13 @@ function drawBars(reset) {
   baseArray.forEach((value, index) => {
     const height = (value / maxVal) * 240 + 10; // keep height scaling for now
     const depthClass = depthMap.get(index) != null ? ` depth-${depthMap.get(index)%5}` : '';
-    bars.append(el('div', { 
-      className: 'bar'+depthClass, 
-      style: { height: `${height}px`, width: `${barWidth}px` }, 
-      dataset: { i: index } 
-    }));
+    bars.append(el('div', {
+      className: 'bar'+depthClass,
+      style: { height: `${height}px`, width: `${barWidth}px` },
+      dataset: { i: index },
+      role: 'img',
+      'aria-label': `Value ${value} at position ${index}`
+    }, baseArray.length <= 32 ? el('span', { className: 'bar-value' }, value) : null));
   });
   
   // Only remove classes if not doing a reset (preserve styling during step execution)
@@ -162,13 +158,14 @@ function drawBars(reset) {
 
 function shuffleBars() {
   const sizeInput = qs('#sort-size');
-  const n = sizeInput ? Number(sizeInput.value) : 18;
+  const n = sizeInput ? Number(sizeInput.value) : 12;
   baseArray = Array.from({ length: n }, () => Math.floor(Math.random() * 90) + 10);
   originalArray = [...baseArray];
   depthMap = new Map();
   clearTransientVisuals();
   drawBars();
   resetPlayback();
+  announce(`Generated ${n} new values.`, { title:'Start with a fresh example', tone:'move', focus:'Read each value directly on its bar.', change:'The array changed and the old timeline was cleared.', why:'A new input lets you check whether the algorithm follows the same rule every time.' });
 }
 
 function clearTransientVisuals() {
@@ -227,7 +224,22 @@ function startSort() {
   
   // Enable playback controls now that steps are generated
   renderCurrentAgain(0);
+  const selected=qs('#algo').selectedOptions[0].textContent;
+  announce(`${selected} sort is ready with ${appState.steps.length} visible steps.`, { title:'Timeline ready', tone:'ready', focus:'Use Next step to highlight the first comparison or move.', change:'The values are reset to their starting order; no sort step has run yet.', why:'Separating generation from playback lets you study one deterministic state change at a time.' });
 }
+
+function handleSizeChange(){
+  const input=qs('#sort-size');
+  let count=Number(input.value);
+  if(Number.isNaN(count)||count<4)count=4;
+  if(count>40)count=40;
+  input.value=count;
+  baseArray=Array.from({length:count},()=>Math.floor(Math.random()*90)+10);
+  originalArray=[...baseArray]; depthMap=new Map(); clearTransientVisuals(); drawBars(); resetPlayback();
+  announce(`Created a new ${count}-value example.`, { title:'Resize the learning example', tone:'move', focus:'Each bar displays its numeric value.', change:`The working array now has ${count} positions.`, why:'Smaller arrays are easier to trace; larger arrays reveal broader performance patterns.' });
+}
+
+function handleAlgorithmChange(){ updateSortPseudocode(); resetPlayback(); const selected=qs('#algo').selectedOptions[0].textContent; announce(`Selected ${selected} sort. Build the timeline when you are ready.`, { title:'Choose the sorting strategy', tone:'inspect', focus:'The code panel now shows this algorithm.', change:'The values stayed the same; the previous timeline was cleared.', why:'Different algorithms can sort the same input using different comparisons and moves.' }); }
 
 // --- Step Generators ---
 function genBubbleSteps() {
@@ -235,10 +247,10 @@ function genBubbleSteps() {
   const n = arr.length;
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n - 1 - i; j++) {
-      appState.steps.push({ type: 'compare', i: j, j: j + 1, pc: 'cond_swap' });
+      appState.steps.push({ type: 'compare', i: j, j: j + 1, pc: 'cond_swap', message: `Compare ${arr[j]} and ${arr[j + 1]} at positions ${j} and ${j + 1}.` });
       if (arr[j] > arr[j + 1]) { 
         [arr[j], arr[j + 1]] = [arr[j + 1], arr[j]]; 
-        appState.steps.push({ type: 'swap', i: j, j: j + 1, pc: 'mark' }); 
+        appState.steps.push({ type: 'swap', i: j, j: j + 1, pc: 'mark', message: 'Swap the out-of-order pair so the larger value moves right.' });
       }
     }
     appState.steps.push({ type: 'mark-sorted', i: n - 1 - i, pc: 'loop_j' });
@@ -250,9 +262,9 @@ function genInsertionSteps() {
   for (let i = 1; i < arr.length; i++) {
     let key = arr[i], j = i - 1;
     while (j >= 0 && arr[j] > key) {
-      appState.steps.push({ type: 'compare', i: j, j: j + 1, pc: 'cond_swap' });
+      appState.steps.push({ type: 'compare', i: j, j: j + 1, pc: 'cond_swap', message: `Compare ${arr[j]} with the key ${key}.` });
       arr[j + 1] = arr[j];
-      appState.steps.push({ type: 'swap', i: j, j: j + 1, pc: 'mark' });
+      appState.steps.push({ type: 'swap', i: j, j: j + 1, pc: 'mark', message: `Shift ${arr[j]} one position right to make room for ${key}.` });
       j--;
     }
     arr[j + 1] = key;
@@ -281,7 +293,7 @@ function genMergeSteps() {
     let i = left, j = mid + 1;
     
     while (i <= mid && j <= right) {
-      appState.steps.push({ type: 'compare', i, j, pc: 'mg_cmp' });
+      appState.steps.push({ type: 'compare', i, j, pc: 'mg_cmp', message: `Compare the next left value ${arr[i]} with the next right value ${arr[j]}.` });
       if (arr[i] <= arr[j]) {
         temp.push(arr[i++]);
       } else {
@@ -302,7 +314,8 @@ function genMergeSteps() {
           value: newVal, 
           pc: 'mg_tail', 
           buf: temp.slice(), 
-          range: [left, right] 
+          range: [left, right],
+          message: `Write ${newVal} into position ${k} of the merged range.`
         }); 
       }
     }

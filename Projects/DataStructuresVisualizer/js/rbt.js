@@ -1,4 +1,4 @@
-import { el, setPseudocode, qs, setTeardown } from './core.js';
+import { announce, configureExplorer, controlField, controlGroup, createExplorerControls, el, setPseudocode, qs, setTeardown } from './core.js';
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
@@ -82,17 +82,13 @@ export function renderRBTVisualizer(visualArea, controlsArea) {
   const title = el('h2', {}, 'Red-Black Tree');
   const treeDiv = el('div', { id: 'rbt-tree', className: 'tree canvas-tree' });
   const svg = el('svg', { id: 'rbt-lines', className: 'tree-lines', width: '100%', height: '100%' });
-  const controlsForm = el('div', {},
-    el('input', { id: 'rbt-val', placeholder: 'Value', type: 'number' }),
-    el('button', { className: 'btn', onclick: () => { const value = Number(qs('#rbt-val').value); if (!Number.isNaN(value)) { rbtInstance.insert(value); drawRBT(); } } }, 'Insert'),
-  el('button', { className: 'btn', onclick: () => { rbtInstance = new RBT(); drawRBT(); } }, 'Reset'),
-  el('button', { className: 'btn', onclick: () => animateRBT('in') }, 'Inorder'),
-  el('button', { className: 'btn', onclick: () => animateRBT('pre') }, 'Preorder'),
-  el('button', { className: 'btn', onclick: () => animateRBT('post') }, 'Postorder'),
-  el('button', { className: 'btn', onclick: () => animateRBT('bfs') }, 'BFS')
-  );
-  visualArea.append(title, treeDiv, svg);
-  controlsArea.append(el('h3', {}, 'RBT Controls'), controlsForm);
+  const valueInput=el('input',{id:'rbt-val',placeholder:'e.g. 22',type:'number'});
+  const controlsForm=createExplorerControls({title:'Red-black-tree actions',intro:'Insert by BST order, then recolor or rotate to preserve the red-black rules. Node color is structural state, not decoration.',fields:[controlField('Value to insert',valueInput)],groups:[
+    controlGroup('Change the colored tree','watch recoloring and root movement',el('button',{className:'btn primary',onclick:handleRBTInsert},'Insert and repair'),el('button',{className:'btn',onclick:handleRBTReset},'Clear tree')),
+    controlGroup('Traverse every node','compare visit orders',el('button',{className:'btn',onclick:()=>animateRBT('in')},'Inorder'),el('button',{className:'btn',onclick:()=>animateRBT('pre')},'Preorder'),el('button',{className:'btn',onclick:()=>animateRBT('post')},'Postorder'),el('button',{className:'btn',onclick:()=>animateRBT('bfs')},'Level order (BFS)'))
+  ]});
+  visualArea.append(title,el('div',{className:'visual-legend'},el('span',{className:'legend-item'},el('span',{className:'legend-swatch active'}),'current visit'),el('span',{className:'legend-item'},'Red nodes cannot have red children')),treeDiv,svg);
+  controlsArea.prepend(controlsForm);
   drawRBT();
   setPseudocode([
   { text: 'def rb_insert(root,x): create red node', id: 'r1' },
@@ -101,6 +97,7 @@ export function renderRBTVisualizer(visualArea, controlsArea) {
   { text: '    else: rotations + recolor', id: 'r3b' },
   { text: 'root.color = black', id: 'r4' }
   ]);
+  configureExplorer({name:'Red-black tree',goal:'Insert a value and watch recoloring or rotations preserve the color rules.',focus:'Red and black fills encode node state; the root must always end black.',change:'Repair may recolor a parent and uncle or rotate a local three-node shape.',why:'The color rules bound the longest root-to-leaf path, keeping operations logarithmic.'});
   const resizeHandler = () => drawRBT();
   window.addEventListener('resize', resizeHandler);
   setTeardown(() => {
@@ -108,6 +105,10 @@ export function renderRBTVisualizer(visualArea, controlsArea) {
     rbtInstance = null;
   });
 }
+
+function rbtCount(node=rbtInstance?.root){return node?1+rbtCount(node.l)+rbtCount(node.r):0;}
+function handleRBTInsert(){const input=qs('#rbt-val');const value=Number(input?.value);if(!input||input.value===''||Number.isNaN(value)){announce('Enter a number to insert.',{tone:'error',change:'The tree did not change.',why:'Red-black insertion needs a value to compare.'});return;}const before=rbtCount();const oldRoot=rbtInstance.root?.v;rbtInstance.insert(value);drawRBT();announce(`Inserted ${value} as red, then repaired any color conflict.`,{title:oldRoot!==rbtInstance.root?.v?'Rotate and recolor':'Recolor if needed',tone:'move',focus:`The root is ${rbtInstance.root?.v} and is black.`,change:`Node count ${before} → ${rbtCount()}.`,why:'A new node begins red so black-height stays stable; repair prevents adjacent red nodes.'});}
+function handleRBTReset(){const before=rbtCount();rbtInstance=new RBT();drawRBT();announce(`Cleared ${before} node${before===1?'':'s'}.`,{title:'Reset the red-black tree',tone:'move',focus:'The tree is empty.',change:`Node count ${before} → 0.`,why:'An empty tree satisfies every red-black invariant.'});}
 
 function rbtLevels(root) {
   const levels = [];
@@ -173,5 +174,6 @@ function drawRBT() {
 function animateRBT(type){
   const order=[]; function inO(n){ if(!n) return; inO(n.l); order.push(n.v); inO(n.r);} function pre(n){ if(!n) return; order.push(n.v); pre(n.l); pre(n.r);} function post(n){ if(!n) return; post(n.l); post(n.r); order.push(n.v);} if(type==='in') inO(rbtInstance.root); else if(type==='pre') pre(rbtInstance.root); else if(type==='post') post(rbtInstance.root); else if(type==='bfs'){ const q=[]; if(rbtInstance.root) q.push(rbtInstance.root); while(q.length){ const n=q.shift(); order.push(n.v); if(n.l) q.push(n.l); if(n.r) q.push(n.r);} }
   const nodes=Array.from(document.querySelectorAll('#rbt-tree .tree-node'));
-  let i=0; function step(){ nodes.forEach(n=>n.classList.remove('active')); if(i>=order.length) return; const val=order[i++]; const nodeEl=nodes.find(n=>n.textContent==val); if(nodeEl) nodeEl.classList.add('active'); setTimeout(step,400);} step();
+  const names={in:'Inorder',pre:'Preorder',post:'Postorder',bfs:'Level order'};
+  let i=0; function step(){nodes.forEach(n=>n.classList.remove('active'));if(i>=order.length){announce(`${names[type]} traversal: ${order.join(' → ')}.`,{title:'Traversal complete',tone:'complete',focus:'The full visit order is shown here.',change:'The tree was read but not changed.',why:type==='in'?'Inorder produces sorted values in a search tree.':'The traversal rule determines when each node is visited.'});return;}const val=order[i++];const nodeEl=nodes.find(n=>n.textContent==val);if(nodeEl)nodeEl.classList.add('active');announce(`Visit ${val}. Order so far: ${order.slice(0,i).join(' → ')}.`,{title:`${names[type]} traversal`,tone:'inspect',focus:`Node ${val} is highlighted.`,change:'The visit cursor moved; the tree did not change.',why:'The traversal rule chooses the next node.',record:false});setTimeout(step,400);}step();
 }

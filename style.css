@@ -453,25 +453,24 @@ button.primary-action:hover {
 
 .portrait-card {
   position: relative;
-  max-width: 390px;
+  width: min(340px, 100%);
   justify-self: end;
   border: 1px solid var(--line-strong);
   border-radius: var(--radius-lg);
   background: var(--paper);
   box-shadow: var(--shadow-lg);
-  padding: 0.75rem;
-  rotate: 1.5deg;
-}
-
-.portrait-card picture {
-  display: block;
+  padding: 0.65rem;
+  rotate: 0.75deg;
 }
 
 .portrait-card img {
+  display: block;
   width: 100%;
-  aspect-ratio: 1;
+  height: auto;
+  aspect-ratio: 4 / 5;
   border-radius: calc(var(--radius-lg) - 7px);
   object-fit: cover;
+  object-position: center;
 }
 
 .portrait-note {
@@ -647,16 +646,18 @@ button.primary-action:hover {
 
 .project-media {
   position: relative;
+  aspect-ratio: 16 / 9;
   overflow: hidden;
   border-bottom: 1px solid var(--line);
   background: #e7ebe6;
 }
 
 .project-media img {
+  display: block;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  height: 100%;
   object-fit: cover;
-  object-position: top;
+  object-position: center;
   transition: scale 300ms ease;
 }
 
@@ -1148,8 +1149,8 @@ tr:last-child td {
   }
 
   .portrait-card {
-    width: min(390px, 100%);
-    justify-self: start;
+    width: min(320px, 86vw);
+    justify-self: center;
     rotate: 0deg;
   }
 
