@@ -2,12 +2,15 @@
   "name": "drfaustest-github-io",
   "version": "1.0.0",
   "private": true,
-  "description": "Data Structures & Algorithms Visualizer site with unit tests",
+  "description": "Scott Faust portfolio and interactive computer-science learning lab",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js"
+    "dev": "http-server . -c-1 -p 4173",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand",
+    "check": "npm test"
   },
   "devDependencies": {
+    "http-server": "^14.1.1",
     "jest": "^29.7.0"
   }
 }

@@ -1,4 +1,4 @@
-import { el, highlightPseudo, setPseudocode, qs } from './core.js';
+import { announce, el, highlightPseudo, setPseudocode, qs } from './core.js';
 
 // FIFO queue backing array (front at index 0).
 let queueData = [];
@@ -9,9 +9,9 @@ export function renderQueueVisualizer(visualArea, controlsArea) {
   const title = el('h2', {}, 'Queue');
   const queueRow = el('div', { id: 'queue-row', className: 'viz-row' });
   const controlsForm = el('div', {},
-    el('input', { id: 'queue-val', placeholder: 'Value', type: 'number' }),
+    el('input', { id: 'queue-val', placeholder: 'Value', type: 'number', 'aria-label': 'Queue value' }),
     el('button', { className: 'btn', onclick: () => { const value = Number(qs('#queue-val').value); if (!Number.isNaN(value)) { queueData.push(value); redrawQueue(); highlightPseudo('enq'); } } }, 'Enqueue'),
-    el('button', { className: 'btn', onclick: () => { queueData.shift(); redrawQueue(); highlightPseudo('deq'); } }, 'Dequeue'),
+    el('button', { className: 'btn', onclick: () => { if(!queueData.length){ announce('The queue is empty; dequeue is invalid.'); return; } const value=queueData.shift(); redrawQueue(); highlightPseudo('deq'); announce(`Dequeued ${value} from the front.`); } }, 'Dequeue'),
     el('button', { className: 'btn', onclick: handlePeek }, 'Peek'),
     el('button', { className: 'btn', onclick: () => { queueData = []; redrawQueue(); } }, 'Clear')
   );
@@ -35,5 +35,6 @@ function redrawQueue() {
 
 function handlePeek(){
   const first = document.querySelector('#queue-row .cell');
-  if(first){ first.classList.add('active'); highlightPseudo('peek'); setTimeout(()=>first.classList.remove('active'),600); }
+  if(first){ first.classList.add('active'); highlightPseudo('peek'); announce(`The front value is ${queueData[0]}.`); setTimeout(()=>first.classList.remove('active'),600); }
+  else announce('The queue is empty; there is no front value.');
 }

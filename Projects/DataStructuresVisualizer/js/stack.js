@@ -1,4 +1,4 @@
-import { el, highlightPseudo, setPseudocode, qs } from './core.js';
+import { announce, el, highlightPseudo, setPseudocode, qs } from './core.js';
 
 // Backing array modeling the stack (end of array = top of stack).
 let stackData = [];
@@ -9,7 +9,7 @@ export function renderStackVisualizer(visualArea, controlsArea) {
   const title = el('h2', {}, 'Stack');
   const stackColumn = el('div', { id: 'stack-col' });
   const controlsForm = el('div', {},
-    el('input', { id: 'stack-val', placeholder: 'Value', type: 'number' }),
+    el('input', { id: 'stack-val', placeholder: 'Value', type: 'number', 'aria-label': 'Stack value' }),
     el('button', {
       className: 'btn',
       onclick: () => {
@@ -19,7 +19,7 @@ export function renderStackVisualizer(visualArea, controlsArea) {
     }, 'Push'),
     el('button', {
       className: 'btn',
-      onclick: () => { stackData.pop(); redrawStack(); highlightPseudo('pop'); }
+      onclick: () => { if(!stackData.length){ announce('The stack is empty; pop is invalid.'); return; } const value=stackData.pop(); redrawStack(); highlightPseudo('pop'); announce(`Popped ${value} from the top.`); }
     }, 'Pop'),
   el('button', { className: 'btn', onclick: handlePeek }, 'Peek'),
   el('button', { className: 'btn', onclick: () => { stackData = []; redrawStack(); } }, 'Clear')
@@ -48,5 +48,6 @@ function redrawStack() {
 function handlePeek(){
   const column = qs('#stack-col');
   const firstCell = column.querySelector('.cell');
-  if(firstCell){ firstCell.classList.add('active'); highlightPseudo('peek'); setTimeout(()=>firstCell.classList.remove('active'),600); }
+  if(firstCell){ firstCell.classList.add('active'); highlightPseudo('peek'); announce(`The top value is ${stackData.at(-1)}.`); setTimeout(()=>firstCell.classList.remove('active'),600); }
+  else announce('The stack is empty; there is no top value.');
 }

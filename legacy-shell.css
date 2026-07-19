@@ -1,0 +1,51 @@
+.legacy-shell {
+  position: fixed;
+  z-index: 10000;
+  right: 1rem;
+  bottom: 1rem;
+  display: flex;
+  max-width: min(420px, calc(100vw - 2rem));
+  align-items: center;
+  gap: 0.75rem;
+  border: 1px solid #b8c3bc;
+  border-radius: 10px;
+  background: rgba(255, 253, 248, 0.97);
+  box-shadow: 0 16px 44px rgba(23, 32, 30, 0.2);
+  color: #35413e;
+  padding: 0.75rem 0.9rem;
+  font: 700 0.8rem/1.3 "Segoe UI", system-ui, sans-serif;
+}
+
+.legacy-shell span {
+  border-radius: 999px;
+  background: #f4e6dd;
+  color: #7d361e;
+  padding: 0.25rem 0.55rem;
+  white-space: nowrap;
+}
+
+.legacy-shell[data-status="Educational prototype"] span {
+  background: #e1edf3;
+  color: #285d78;
+}
+
+.legacy-shell a {
+  color: #074a40 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 0.15em;
+}
+
+.legacy-shell a:focus-visible {
+  outline: 3px solid #f2b84b;
+  outline-offset: 3px;
+}
+
+@media (max-width: 560px) {
+  .legacy-shell {
+    right: 0.5rem;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    max-width: none;
+    justify-content: space-between;
+  }
+}

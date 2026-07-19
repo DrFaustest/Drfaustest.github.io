@@ -1,4 +1,4 @@
-import { el, setPseudocode, animSpeed, speed, wait, registerImplementations, highlightPseudo, setTeardown } from './core.js';
+import { announce, el, setPseudocode, animSpeed, speed, wait, registerImplementations, highlightPseudo, setTeardown } from './core.js';
 // NOTE: Pure algorithm logic imported from lib/graph-algorithms.js so visualization reuses tested code.
 import { bfs as pureBFS, dfs as pureDFS, dijkstra as pureDijkstra } from './lib/graph-algorithms.js';
 
@@ -324,6 +324,8 @@ async function runDijkstra(){
   const start = Number(document.getElementById('start-vertex').value); if (Number.isNaN(start)) return;
   highlightPseudo('d0'); await wait(80);
   const adjObj = buildAdjObject();
+  const hasNegativeWeight = Object.values(adjObj).some(edges => edges.some(edge => edge.weight < 0));
+  if (hasNegativeWeight) { announce('Dijkstra requires non-negative edge weights. Remove the negative edge or use the shortest-path workspace with Bellman–Ford.'); return; }
   const {dist:distObj, prev:prevObj} = pureDijkstra(adjObj, String(start));
   const dist = new Map(), prev = new Map();
   Object.entries(distObj).forEach(([k,v])=>dist.set(Number(k), v));

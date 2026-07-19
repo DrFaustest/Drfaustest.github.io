@@ -1,4 +1,4 @@
-import { el, setPseudocode, highlightPseudo, appState, incStat, qs, registerImplementations, togglePlayButton, setTeardown, updateStats } from './core.js';
+import { el, setPseudocode, highlightPseudo, appState, incStat, qs, registerImplementations, setTeardown, resetStepEngine, renderCurrentAgain } from './core.js';
 
 // Working array (not mutated during step generation; we clone for steps).
 let baseArray = [];
@@ -17,10 +17,10 @@ export function renderSortingVisualizer(visualArea, controlsArea) {
   const title = el('h2', {}, 'Sorting Algorithms');
   const barsContainer = el('div', { id: 'bars', className: 'bar-container' });
   const controlsForm = el('div', {},
-    el('button', { className: 'btn', onclick: shuffleBars }, 'Shuffle'),
-    el('label', { style: { marginLeft: '.5rem' } }, 'Size:'),
+    el('button', { type: 'button', className: 'btn', onclick: shuffleBars }, 'Random example'),
+    el('label', { htmlFor: 'sort-size', style: { marginLeft: '.5rem' } }, 'Size'),
     (() => {
-      const sizeInput = el('input', { id: 'sort-size', type: 'number', min: 4, max: 200, value: baseArray.length, style: { width: '70px' } });
+      const sizeInput = el('input', { id: 'sort-size', type: 'number', min: 4, max: 200, value: baseArray.length, style: { width: '90px' } });
       sizeInput.addEventListener('change', () => {
         let n = Number(sizeInput.value);
         if (Number.isNaN(n) || n < 4) n = 18; 
@@ -35,13 +35,13 @@ export function renderSortingVisualizer(visualArea, controlsArea) {
       });
       return sizeInput;
     })(),
-    el('select', { id: 'algo', onchange: () => { updateSortPseudocode(); resetPlayback(); } },
+    el('select', { id: 'algo', 'aria-label': 'Sorting algorithm', onchange: () => { updateSortPseudocode(); resetPlayback(); } },
       el('option', { value: 'bubble' }, 'Bubble'),
       el('option', { value: 'insertion' }, 'Insertion'),
       el('option', { value: 'merge' }, 'Merge'),
       el('option', { value: 'quick' }, 'Quick')
     ),
-    el('button', { className: 'btn primary', onclick: startSort }, 'Generate Steps')
+    el('button', { type: 'button', className: 'btn primary', onclick: startSort }, 'Generate steps')
   );
   const legend = el('div', { id: 'depth-legend', className: 'depth-legend' },
     el('span', { className: 'swatch' }, el('span', { className: 'box' }), 'depth 0'),
@@ -53,6 +53,8 @@ export function renderSortingVisualizer(visualArea, controlsArea) {
   const mergeBuffer = el('div', { id: 'merge-buffer', className: 'merge-buffer' });
   visualArea.append(title, barsContainer, legend, mergeBuffer);
   controlsArea.append(el('h3', {}, 'Sorting Controls'), controlsForm);
+  const requestedAlgorithm = new URLSearchParams(window.location.search).get('algorithm');
+  if (['bubble', 'insertion', 'merge', 'quick'].includes(requestedAlgorithm)) qs('#algo').value = requestedAlgorithm;
   drawBars();
   
   // Redraw bars on resize (debounced via ResizeObserver for container width changes)
@@ -178,11 +180,7 @@ function clearTransientVisuals() {
 }
 
 function resetPlayback() {
-  appState.steps = []; 
-  appState.stepIndex = 0;
-  appState.stats = { comparisons: 0, swaps: 0, operations: 0 };
-  updateStats();
-  togglePlayButton(false, true);
+  resetStepEngine();
 }
 
 function highlightBars(i, j) {
@@ -228,7 +226,7 @@ function startSort() {
   highlightPseudo('loop_i');
   
   // Enable playback controls now that steps are generated
-  togglePlayButton(false, false);
+  renderCurrentAgain(0);
 }
 
 // --- Step Generators ---

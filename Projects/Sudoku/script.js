@@ -18,6 +18,7 @@ function makeBoard(){
     input.maxLength=1;
     input.dataset.index=i;
     input.inputMode='numeric';
+    input.setAttribute('aria-label', `Row ${Math.floor(i/9)+1}, column ${i%9+1}`);
     input.addEventListener('input',onInput);
     div.appendChild(input);
     boardEl.appendChild(div);
@@ -111,6 +112,7 @@ let devMode = false;
 let runningTrace = false;
 // Playback control state for dev trace
 const devPlaybackEl = document.getElementById('devPlayback');
+devPlaybackEl?.removeAttribute('hidden');
 const playBtn = document.getElementById('playBtn');
 const pauseBtn = document.getElementById('pauseBtn');
 const stepBtn = document.getElementById('stepBtn');

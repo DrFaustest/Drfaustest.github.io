@@ -399,7 +399,7 @@
 
   playPauseBtn.addEventListener('click', ()=>{
     isPlaying = !isPlaying;
-    playPauseBtn.textContent = isPlaying ? '⏸️' : '▶️';
+    playPauseBtn.textContent = isPlaying ? 'Pause' : 'Play';
     if(isPlaying){ awaitingStep=false; requestRun(); }
   });
   stepBtn.addEventListener('click', async ()=>{

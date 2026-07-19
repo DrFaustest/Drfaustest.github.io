@@ -1,413 +1,176 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Scott Faust portfolio: AI research, temporal graph knowledge tracing, NLP, data engineering, accessibility tools, algorithm visualization, and software engineering projects.">
-    <title>Scott Faust | Computer Science Portfolio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Scott Faust builds interactive software and research prototypes across AI, educational technology, knowledge modeling, visualization, and applied computer science.">
+  <meta name="theme-color" content="#17201e">
+  <title>Scott Faust — Computer Science &amp; AI</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+  <script src="site.js" defer></script>
 </head>
-
 <body>
-    <header class="site-header">
-        <div class="container nav-shell">
-            <a class="brand" href="#top">Scott Faust</a>
-            <nav aria-label="Primary navigation">
-                <ul>
-                    <li><a href="#profile">Profile</a></li>
-                    <li><a href="#education">Education</a></li>
-                    <li><a href="#research">Research</a></li>
-                    <li><a href="#projects">Projects</a></li>
-                    <li><a href="#repositories">GitHub</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </nav>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="container nav-shell">
+      <a class="brand" href="index.html" aria-label="Scott Faust, home">
+        <span class="brand-mark" aria-hidden="true">SF</span>
+        <span class="brand-copy"><span>Scott Faust</span><small>Computer Science + AI</small></span>
+      </a>
+      <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-button>Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav data-open="false">
+        <ul>
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="projects.html">Work</a></li>
+          <li><a href="research.html">Research</a></li>
+          <li><a href="Projects/DataStructuresVisualizer/index.html">Learning Lab</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="home-hero" aria-labelledby="hero-title">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Computer scientist · developing AI researcher</p>
+          <h1 id="hero-title">I build systems that make complex ideas inspectable.</h1>
+          <p class="hero-lead">My work connects artificial intelligence, educational technology, knowledge modeling, visualization, and applied software development—with an emphasis on tools people can question, explore, and understand.</p>
+          <div class="hero-actions" aria-label="Primary actions">
+            <a class="button primary" href="projects.html">Explore selected work</a>
+            <a class="button secondary" href="Projects/DataStructuresVisualizer/index.html">Open the Learning Lab</a>
+          </div>
         </div>
-    </header>
+        <figure class="portrait-card">
+          <picture>
+            <source type="image/webp" srcset="media/img/Profile-480.webp 480w, media/img/Profile-768.webp 768w" sizes="(max-width: 720px) calc(100vw - 3rem), 38vw">
+            <img src="media/img/Profile Pic.png" alt="Portrait of Scott Faust" width="1024" height="1024" fetchpriority="high">
+          </picture>
+          <figcaption class="portrait-note"><strong>Scott Faust</strong><span>Omaha, Nebraska</span></figcaption>
+        </figure>
+      </div>
+    </section>
 
-    <main id="top">
-        <section class="hero" aria-labelledby="hero-title">
-            <div class="container hero-grid">
-                <div class="hero-copy">
-                    <p class="eyebrow">Computer Science | Artificial Intelligence | Research</p>
-                    <h1 id="hero-title">Building explainable, interactive software for complex technical systems.</h1>
-                    <p class="hero-summary">I am a computer scientist, AI graduate researcher, doctoral student, and U.S. Air Force veteran building research prototypes and applied systems across personalization, knowledge tracing, NLP, data engineering, accessibility, and algorithm visualization.</p>
-                    <div class="hero-actions" aria-label="Portfolio actions">
-                        <a class="button primary" href="#projects"><i class="fa-solid fa-diagram-project" aria-hidden="true"></i> View Work</a>
-                        <a class="button secondary" href="#research"><i class="fa-solid fa-microscope" aria-hidden="true"></i> Research Focus</a>
-                    </div>
-                </div>
-                <aside class="hero-panel" aria-label="Academic snapshot">
-                    <img src="media/img/Profile Pic.png" alt="Scott Faust" class="profile-photo">
-                    <div>
-                        <h2>Academic Snapshot</h2>
-                        <dl class="quick-facts">
-                            <div>
-                                <dt>B.S. Computer Science</dt>
-                                <dd>Magna Cum Laude, GPA 3.824</dd>
-                            </div>
-                            <div>
-                                <dt>Master's Program</dt>
-                                <dd>Computer Science, AI Concentration</dd>
-                            </div>
-                            <div>
-                                <dt>Doctoral Program</dt>
-                                <dd>Computing &amp; Information Science</dd>
-                            </div>
-                        </dl>
-                    </div>
-                </aside>
-            </div>
-        </section>
+    <div class="signal-strip" aria-label="Professional snapshot">
+      <dl class="container signal-list">
+        <div><dt>Focus</dt><dd>Human-centered AI systems</dd></div>
+        <div><dt>Research</dt><dd>Knowledge and learner modeling</dd></div>
+        <div><dt>Practice</dt><dd>Interactive technical software</dd></div>
+        <div><dt>Foundation</dt><dd>Computer science + operations</dd></div>
+      </dl>
+    </div>
 
-        <section id="profile" class="section">
-            <div class="container two-column">
-                <div>
-                    <p class="section-kicker">Profile</p>
-                    <h2>Technical foundation with operational discipline.</h2>
-                </div>
-                <div class="body-copy">
-                    <p>I bring together computer science training, graduate-level AI study, and years of high-consequence technical work maintaining B-1B and KC-135 airframes in the United States Air Force. That background shapes how I write software: systems-first, evidence-driven, and attentive to reliability.</p>
-                    <p>My public work now spans temporal heterogeneous graph knowledge tracing, biomedical NLP, persistent personalization for AI assistants, temporal subset ANN search, accessibility-focused HCI, cloud developer tooling, data engineering pipelines, and interactive algorithm education.</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="education" class="section muted">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="section-kicker">Education</p>
-                    <h2>Degrees and Current Graduate Study</h2>
-                </div>
-                <div class="timeline">
-                    <article class="timeline-item">
-                        <div class="timeline-date">Conferred Dec. 19, 2025</div>
-                        <div>
-                            <h3>Bachelor of Science in Computer Science</h3>
-                            <p>Computer Science major. Degree GPA: 3.824. Honors: Magna Cum Laude.</p>
-                        </div>
-                    </article>
-                    <article class="timeline-item">
-                        <div class="timeline-date">Active since Sept. 4, 2025</div>
-                        <div>
-                            <h3>Master's Program in Computer Science</h3>
-                            <p>Artificial Intelligence concentration with graduate study aligned to machine learning, intelligent systems, and applied computing research.</p>
-                        </div>
-                    </article>
-                    <article class="timeline-item">
-                        <div class="timeline-date">Active since Apr. 22, 2026</div>
-                        <div>
-                            <h3>Doctoral Program in Computing &amp; Information Science</h3>
-                            <p>Doctoral work in computing and information science, positioned around research contributions, technical communication, and advanced computing systems.</p>
-                        </div>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section id="research" class="section">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="section-kicker">Research &amp; Contributions</p>
-                    <h2>Research prototypes and open technical artifacts with a clear applied-computing thread.</h2>
-                </div>
-                <div class="research-grid">
-                    <article class="research-card">
-                        <i class="fa-solid fa-brain" aria-hidden="true"></i>
-                        <h3>AI Personalization &amp; Memory</h3>
-                        <p>FastAPI prototype for persistent assistant personalization using compact user models instead of replaying raw conversation history.</p>
-                    </article>
-                    <article class="research-card">
-                        <i class="fa-solid fa-network-wired" aria-hidden="true"></i>
-                        <h3>Temporal Graph Learning</h3>
-                        <p>Knowledge tracing work combining student interactions, temporal structure, graph neural networks, and interpretable baseline modeling.</p>
-                    </article>
-                    <article class="research-card">
-                        <i class="fa-solid fa-dna" aria-hidden="true"></i>
-                        <h3>Biomedical NLP</h3>
-                        <p>Named entity recognition work using CRAFT full-text biomedical articles and Gene Ontology annotations for biological concepts.</p>
-                    </article>
-                    <article class="research-card">
-                        <i class="fa-solid fa-database" aria-hidden="true"></i>
-                        <h3>Data Engineering</h3>
-                        <p>Customer analytics pipeline integrating relational and NoSQL data into warehouse-style reporting and predictive analytics workflows.</p>
-                    </article>
-                    <article class="research-card">
-                        <i class="fa-solid fa-universal-access" aria-hidden="true"></i>
-                        <h3>Accessibility &amp; HCI</h3>
-                        <p>Voice-controlled mouse navigation prototype for users with fine-motor challenges, built around practical interaction support.</p>
-                    </article>
-                    <article class="research-card">
-                        <i class="fa-solid fa-file-code" aria-hidden="true"></i>
-                        <h3>Developer Tools</h3>
-                        <p>TypeScript VS Code extension concept for local AWS development through mocked services and intercepted API calls.</p>
-                    </article>
-                </div>
-                <div class="contribution-strip" aria-label="Contribution types">
-                    <span>Temporal graph KT</span>
-                    <span>Biomedical NER</span>
-                    <span>AI memory systems</span>
-                    <span>Temporal ANN search</span>
-                    <span>Accessibility tooling</span>
-                    <span>Data pipelines</span>
-                    <span>Algorithm education</span>
-                </div>
-            </div>
-        </section>
-
-        <section id="skills" class="section muted">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="section-kicker">Skills</p>
-                    <h2>Core Technical Strengths</h2>
-                </div>
-                <div class="skill-groups">
-                    <section aria-labelledby="languages-title">
-                        <h3 id="languages-title">Languages &amp; Web</h3>
-                        <div class="skills-grid">
-                            <span>JavaScript</span>
-                            <span>Python</span>
-                            <span>Java</span>
-                            <span>C++</span>
-                            <span>SQL</span>
-                            <span>HTML</span>
-                            <span>CSS</span>
-                        </div>
-                    </section>
-                    <section aria-labelledby="systems-title">
-                        <h3 id="systems-title">Systems &amp; Methods</h3>
-                        <div class="skills-grid">
-                            <span>Data Structures</span>
-                            <span>Algorithms</span>
-                            <span>Object-Oriented Design</span>
-                            <span>Testing</span>
-                            <span>Git</span>
-                            <span>Technical Documentation</span>
-                            <span>Root Cause Analysis</span>
-                        </div>
-                    </section>
-                    <section aria-labelledby="platforms-title">
-                        <h3 id="platforms-title">Frameworks &amp; Tools</h3>
-                        <div class="skills-grid">
-                            <span>React</span>
-                            <span>Next.js</span>
-                            <span>Node.js</span>
-                            <span>Canvas API</span>
-                            <span>Supabase</span>
-                            <span>Vercel</span>
-                            <span>Jest</span>
-                        </div>
-                    </section>
-                    <section aria-labelledby="research-tools-title">
-                        <h3 id="research-tools-title">Research &amp; Data</h3>
-                        <div class="skills-grid">
-                            <span>FastAPI</span>
-                            <span>NLP</span>
-                            <span>Knowledge Tracing</span>
-                            <span>Graph Neural Networks</span>
-                            <span>ANN Search</span>
-                            <span>ETL</span>
-                            <span>SQL Server</span>
-                            <span>MongoDB</span>
-                        </div>
-                    </section>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="section">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="section-kicker">Selected Work</p>
-                    <h2>Projects that demonstrate implementation, testing, and explanation.</h2>
-                </div>
-                <div class="projects-grid">
-                    <a class="project" href="Projects/DataStructuresVisualizer/index.html">
-                        <img src="media/img/DSV.png" alt="Data Structures and Algorithms Visualizer interface">
-                        <div class="project-content">
-                            <h3>Data Structures &amp; Algorithms Visualizer</h3>
-                            <p>Interactive educational platform for sorting, trees, hashes, graphs, and linear data structures with step-by-step state changes.</p>
-                            <div class="project-tags"><span>JavaScript</span><span>Algorithms</span><span>Testing</span></div>
-                        </div>
-                    </a>
-                    <a class="project" href="media/Projects/Graphs/index.html">
-                        <img src="media/img/Graphs.png" alt="Graph algorithms visualizer interface">
-                        <div class="project-content">
-                            <h3>Graph Algorithms Visualizer</h3>
-                            <p>Custom graph builder with shortest-path visualizations for Dijkstra and Bellman-Ford style algorithm exploration.</p>
-                            <div class="project-tags"><span>Graphs</span><span>Visualization</span><span>UI</span></div>
-                        </div>
-                    </a>
-                    <a class="project" href="Projects/HeapVis/index.html">
-                        <img src="media/img/HeapVis.png" alt="Heap visualizer interface">
-                        <div class="project-content">
-                            <h3>Heap Visualizer</h3>
-                            <p>Min and max heap tool with animated insert, extract, delete, update, and array representation workflows.</p>
-                            <div class="project-tags"><span>Data Structures</span><span>Animation</span><span>Education</span></div>
-                        </div>
-                    </a>
-                    <a class="project" href="Projects/Sudoku/index.html">
-                        <img src="media/img/Sudoku.png" alt="Sudoku solver interface">
-                        <div class="project-content">
-                            <h3>Sudoku Solver</h3>
-                            <p>Classic Sudoku with generator, solver, and developer visualization for propagation and search behavior.</p>
-                            <div class="project-tags"><span>Search</span><span>Constraint Solving</span><span>JavaScript</span></div>
-                        </div>
-                    </a>
-                    <a class="project" href="Projects/advanced_algo/index.html">
-                        <div class="project-image-fallback" aria-hidden="true"><i class="fa-solid fa-square-root-variable"></i></div>
-                        <div class="project-content">
-                            <h3>Advanced Algorithms</h3>
-                            <p>Algorithm demonstrations for optimization, complexity, partitioning, and heuristic problem-solving.</p>
-                            <div class="project-tags"><span>Complexity</span><span>Optimization</span><span>Analysis</span></div>
-                        </div>
-                    </a>
-                    <a class="project" href="media/Projects/SpaceInvaders/src/index.html">
-                        <img src="media/img/Space-rangers.png" alt="Space Rangers game screenshot">
-                        <div class="project-content">
-                            <h3>Space Rangers</h3>
-                            <p>Browser-based arcade shooter built with JavaScript, HTML5 Canvas, object-oriented structure, and responsive controls.</p>
-                            <div class="project-tags"><span>Canvas</span><span>Game Dev</span><span>OOP</span></div>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section id="repositories" class="section muted">
-            <div class="container">
-                <div class="section-heading">
-                    <p class="section-kicker">GitHub Repositories</p>
-                    <h2>Additional research, engineering, and applied computing work from public GitHub repositories.</h2>
-                </div>
-                <div class="repo-grid">
-                    <a class="repo-card" href="https://github.com/DrFaustest/holistic_user_map_starter" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>Python</span><span>AI Systems</span></div>
-                        <h3>Holistic User Map Starter</h3>
-                        <p>FastAPI reference implementation for persistent personalization in AI assistants using compact, continuously updated user models.</p>
-                    </a>
-                    <a class="repo-card" href="https://github.com/DrFaustest/temporal-heterogeneous-graph-kt" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>Python</span><span>Research</span></div>
-                        <h3>Temporal Heterogeneous Graph KT</h3>
-                        <p>Knowledge tracing research prototype using temporal heterogeneous graph neural networks for concept dependency modeling.</p>
-                    </a>
-                    <a class="repo-card" href="https://github.com/DrFaustest/THG-final-project" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>Python</span><span>ANN Search</span></div>
-                        <h3>Temporal Subset ANN</h3>
-                        <p>Research prototype for interval-valid temporal subset approximate nearest neighbor search with scalar and category filtering.</p>
-                    </a>
-                    <a class="repo-card" href="https://github.com/DrFaustest/NLP-Assignment" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>Python</span><span>NLP</span></div>
-                        <h3>Biomedical NER with CRAFT</h3>
-                        <p>Biomedical named entity recognition work using the CRAFT corpus and Gene Ontology annotations from full-text research articles.</p>
-                    </a>
-                    <a class="repo-card" href="https://github.com/DrFaustest/Click-to-Talk" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>Python</span><span>Accessibility</span></div>
-                        <h3>Click-to-Talk</h3>
-                        <p>HCI accessibility application that maps voice commands to mouse movement and clicks for users with fine-motor challenges.</p>
-                    </a>
-                    <a class="repo-card" href="https://github.com/DrFaustest/AWS-Walled-Guarden" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>TypeScript</span><span>Developer Tools</span></div>
-                        <h3>AWS Walled Garden</h3>
-                        <p>VS Code extension concept for local AWS development through mocked services and intercepted API calls.</p>
-                    </a>
-                    <a class="repo-card" href="https://github.com/DrFaustest/Data_Engineering_Project" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>Jupyter</span><span>Data Engineering</span></div>
-                        <h3>Customer Data Pipeline</h3>
-                        <p>Data integration and analytics pipeline combining relational and NoSQL sources, ETL, warehouse modeling, and orchestration.</p>
-                    </a>
-                    <a class="repo-card" href="https://github.com/DrFaustest/DBMS_Project" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>Python</span><span>Databases</span></div>
-                        <h3>HR Portal DBMS</h3>
-                        <p>Database-backed human resources portal model for employees, teams, payroll, performance, training, and reporting workflows.</p>
-                    </a>
-                    <a class="repo-card" href="https://github.com/DrFaustest/StreamingOverlayTwitch" target="_blank" rel="noopener">
-                        <div class="repo-meta"><span>JavaScript</span><span>Interactive UI</span></div>
-                        <h3>Streaming Overlay Twitch</h3>
-                        <p>Customizable Twitch overlay and chatbot for displaying live chat, follows, subscriptions, raids, and stream events.</p>
-                    </a>
-                </div>
-                <div class="repo-footer">
-                    <a class="button secondary" href="https://github.com/DrFaustest?tab=repositories" target="_blank" rel="noopener">
-                        <i class="fab fa-github" aria-hidden="true"></i> View All Repositories
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact" class="section contact-section">
-            <div class="container two-column">
-                <div>
-                    <p class="section-kicker">Contact</p>
-                    <h2>Connect about research, software, or collaboration.</h2>
-                    <p class="contact-copy">Use the form or reach out through GitHub and LinkedIn. I am interested in AI research, software engineering, algorithm education, and applied computing projects.</p>
-                    <div class="contact-links">
-                        <a href="https://github.com/DrFaustest" target="_blank" rel="noopener"><i class="fab fa-github" aria-hidden="true"></i> GitHub</a>
-                        <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener"><i class="fab fa-linkedin-in" aria-hidden="true"></i> LinkedIn</a>
-                    </div>
-                </div>
-                <form id="contactForm">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" autocomplete="name" required>
-
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" autocomplete="email" required>
-
-                    <label for="message">Message</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-
-                    <button type="submit"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Send Message</button>
-                    <p id="formStatus" role="status" aria-live="polite"></p>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container footer-content">
-            <p>&copy; 2026 Scott Faust. All rights reserved.</p>
-            <a href="#top">Back to top</a>
+    <section class="section" aria-labelledby="featured-title">
+      <div class="container">
+        <div class="section-intro">
+          <div>
+            <p class="section-kicker">Selected work</p>
+            <h2 id="featured-title">Built to explain, not merely display.</h2>
+          </div>
+          <p>These projects are the clearest expression of my current direction: accurate algorithms, transparent internal state, and interfaces that support investigation.</p>
         </div>
-    </footer>
+        <div class="card-grid">
+          <a class="project-card" href="Projects/DataStructuresVisualizer/index.html">
+            <div class="project-media"><img src="media/img/DSV.png" alt="Sorting visualizer with synchronized bars, pseudocode, and statistics" width="1366" height="619" loading="lazy"></div>
+            <div class="project-content">
+              <span class="status maintained">Actively maintained</span>
+              <h3>Data Structures Learning Lab</h3>
+              <p>Interactive tools for linear structures, trees, hashing, graphs, and sorting, organized around operations, invariants, and algorithm state.</p>
+              <div class="tag-list" aria-label="Technologies"><span>JavaScript</span><span>Algorithms</span><span>Jest</span></div>
+            </div>
+          </a>
+          <a class="project-card" href="media/Projects/Graphs/index.html">
+            <div class="project-media"><img src="media/img/Graphs.png" alt="Graph algorithm workspace with nodes, edges, and distance table" width="1300" height="677" loading="lazy"></div>
+            <div class="project-content">
+              <span class="status prototype">Educational prototype</span>
+              <h3>Graph Algorithms Workspace</h3>
+              <p>A direct-manipulation graph editor for stepping through Dijkstra and Bellman–Ford with distance and predecessor updates.</p>
+              <div class="tag-list" aria-label="Technologies"><span>Graphs</span><span>Shortest paths</span><span>Visualization</span></div>
+            </div>
+          </a>
+          <a class="project-card" href="Projects/Sudoku/index.html">
+            <div class="project-media"><img src="media/img/Sudoku.png" alt="Sudoku board with solver controls and developer view" width="1536" height="896" loading="lazy"></div>
+            <div class="project-content">
+              <span class="status maintained">Maintained demo</span>
+              <h3>Sudoku Constraint Solver</h3>
+              <p>A playable puzzle and inspectable solver using constraint propagation, minimum-remaining-values selection, and backtracking.</p>
+              <div class="tag-list" aria-label="Technologies"><span>Constraint solving</span><span>Search</span><span>JavaScript</span></div>
+            </div>
+          </a>
+        </div>
+        <p style="margin-top: 2rem"><a class="text-link" href="projects.html">See maintained tools and archived experiments</a></p>
+      </div>
+    </section>
 
-    <script>
-        const form = document.getElementById('contactForm');
-        const formStatus = document.getElementById('formStatus');
+    <section class="section tint" aria-labelledby="research-title">
+      <div class="container">
+        <div class="section-intro">
+          <div>
+            <p class="section-kicker">Research direction</p>
+            <h2 id="research-title">Models are more useful when their assumptions are visible.</h2>
+          </div>
+          <p>My research interests center on representations of people, knowledge, time, and context—especially where model behavior must remain understandable to learners, researchers, and practitioners.</p>
+        </div>
+        <div class="card-grid">
+          <article class="feature-card">
+            <span class="card-number">01 / Learning</span>
+            <h3>Adaptive assessment</h3>
+            <p>Knowledge tracing, concept dependencies, and assessment systems that distinguish prediction from evidence about learning.</p>
+          </article>
+          <article class="feature-card">
+            <span class="card-number">02 / Representation</span>
+            <h3>Knowledge modeling</h3>
+            <p>Temporal and heterogeneous structures for representing relationships, histories, and changing user or learner state.</p>
+          </article>
+          <article class="feature-card">
+            <span class="card-number">03 / Interaction</span>
+            <h3>Explainable interfaces</h3>
+            <p>Visual and interactive systems that expose decisions, state transitions, tradeoffs, and failure conditions.</p>
+          </article>
+        </div>
+        <p style="margin-top: 2rem"><a class="text-link" href="research.html">Review research interests and public prototypes</a></p>
+      </div>
+    </section>
 
-        form.addEventListener('submit', async (event) => {
-            event.preventDefault();
-            formStatus.textContent = 'Sending...';
+    <section class="section" aria-labelledby="approach-title">
+      <div class="container split-layout">
+        <div>
+          <p class="section-kicker">Approach</p>
+          <h2 id="approach-title">Operational discipline, applied to software.</h2>
+        </div>
+        <div class="principles-list">
+          <article class="principle">
+            <div class="detail-label">Evidence</div>
+            <div><h3>Make claims traceable.</h3><p>Separate working behavior from aspiration, test core logic directly, and document what a demonstration does not prove.</p></div>
+          </article>
+          <article class="principle">
+            <div class="detail-label">Systems</div>
+            <div><h3>Design around state and failure.</h3><p>Model transitions deliberately, account for invalid inputs, and treat reset, cancellation, and recovery as first-class interactions.</p></div>
+          </article>
+          <article class="principle">
+            <div class="detail-label">People</div>
+            <div><h3>Teach through the interface.</h3><p>Use precise language, accessible controls, and visual explanations that map back to the underlying representation.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-            const formData = new FormData(form);
-            const data = Object.fromEntries(formData.entries());
-            const endpoint = 'https://formspree.io/f/xlddoevv';
+    <section class="section dark" aria-labelledby="cta-title">
+      <div class="container split-layout">
+        <div><p class="section-kicker">Start a conversation</p><h2 id="cta-title">Interested in research, software, or learning tools?</h2></div>
+        <div><p>I welcome conversations about educational technology, AI research, applied software, and technical collaboration.</p><a class="button primary" href="contact.html">Contact Scott</a></div>
+      </div>
+    </section>
+  </main>
 
-            try {
-                const response = await fetch(endpoint, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-
-                if (response.ok) {
-                    formStatus.textContent = 'Message sent successfully.';
-                    form.reset();
-                } else {
-                    formStatus.textContent = 'Message failed to send. Please try again.';
-                }
-            } catch (error) {
-                formStatus.textContent = 'A network error occurred. Please try again.';
-            }
-        });
-    </script>
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div><p class="section-kicker">Scott Faust</p><h2>Computer science made inspectable.</h2><p>AI · educational technology · visualization · applied software</p></div>
+      <ul class="footer-links"><li><a href="projects.html">Work</a></li><li><a href="research.html">Research</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://github.com/DrFaustest" rel="me">GitHub</a></li></ul>
+    </div>
+    <div class="container footer-base"><p>© <span data-current-year>2026</span> Scott Faust.</p><a href="#main">Back to top</a></div>
+  </footer>
 </body>
-
 </html>

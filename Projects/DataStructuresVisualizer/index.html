@@ -1,108 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Structures & Algorithms Visualizer</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Correct path to parent/global stylesheet (was ../style.css which pointed to non-existent Projects/style.css) -->
-    <link rel="stylesheet" href="../../style.css">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive learning tools for data structures and algorithms, with operations, pseudocode, complexity, and internal state.">
+  <title>Data Structures Learning Lab — Scott Faust</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../style.css"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"><script src="../../site.js" defer></script>
 </head>
-<body>
-    <header>
-        <div class="container">
-            <h1>Data Structures & Algorithms Visualizer</h1>
-            <nav>
-                <ul>
-                    <li><a href="../../index.html">Home</a></li>
-                    <li><a href="#visualization">Visualizer</a></li>
-                    <li><a href="#about">About</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-    <main>
-        <section id="about" class="intro-section">
-            <div class="container intro-container">
-                <div class="intro-card">
-                    <h2>About This Visualizer</h2>
-                    <p class="section-lead">Discover interactive playgrounds for the most common data structures and algorithms.</p>
-                    <div class="feature-tags" aria-label="Highlights">
-                        <span class="feature-tag"><i class="fas fa-bolt" aria-hidden="true"></i> Real-time animations</span>
-                        <span class="feature-tag"><i class="fas fa-chalkboard-teacher" aria-hidden="true"></i> Guided pseudocode</span>
-                        <span class="feature-tag"><i class="fas fa-vial" aria-hidden="true"></i> Experiment-friendly</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="visualization" class="category-section">
-            <div class="container">
-                <div class="category-header">
-                    <h2>Choose a Category</h2>
-                    <p class="section-lead">Pick a starting point to launch the interactive explorer. You can always switch modules from within the app.</p>
-                </div>
-                <div class="category-grid">
-                    <a href="linear-structures.html" class="category-card">
-                        <span class="card-icon" aria-hidden="true"><i class="fas fa-list"></i></span>
-                        <div class="card-body">
-                            <h3>Linear Structures</h3>
-                            <p>Arrays, linked lists, stacks, and queues with visual walkthroughs.</p>
-                        </div>
-                        <span class="card-cta">Launch</span>
-                    </a>
-                    <a href="tree-structures.html" class="category-card">
-                        <span class="card-icon" aria-hidden="true"><i class="fas fa-tree"></i></span>
-                        <div class="card-body">
-                            <h3>Tree Structures</h3>
-                            <p>Binary, AVL, and Red-Black Trees with rotations and traversals.</p>
-                        </div>
-                        <span class="card-cta">Launch</span>
-                    </a>
-                    <a href="graph-structures.html" class="category-card">
-                        <span class="card-icon" aria-hidden="true"><i class="fas fa-project-diagram"></i></span>
-                        <div class="card-body">
-                            <h3>Graph Structures</h3>
-                            <p>Build graphs and watch BFS, DFS, and weighted pathfinding in action.</p>
-                        </div>
-                        <span class="card-cta">Launch</span>
-                    </a>
-                    <a href="sorting-algorithms.html" class="category-card">
-                        <span class="card-icon" aria-hidden="true"><i class="fas fa-sort"></i></span>
-                        <div class="card-body">
-                            <h3>Sorting Algorithms</h3>
-                            <p>Compare bubble, insertion, merge, and quick sort with synced pseudocode.</p>
-                        </div>
-                        <span class="card-cta">Launch</span>
-                    </a>
-                    <a href="hash-tables.html" class="category-card">
-                        <span class="card-icon" aria-hidden="true"><i class="fas fa-hashtag"></i></span>
-                        <div class="card-body">
-                            <h3>Hash Tables</h3>
-                            <p>Interact with chaining, probing, and rehashing strategies side-by-side.</p>
-                        </div>
-                        <span class="card-cta">Launch</span>
-                    </a>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 Scott Faust. All rights reserved.</p>
-            <div class="social-links">
-                <a href="https://github.com/DrFaustest" target="_blank" rel="noopener" title="GitHub" class="social-link"><i class="fab fa-github" aria-hidden="true"></i><span class="sr-only">GitHub</span></a>
-                <a href="https://www.linkedin.com/in/scott-faust-omaha/" target="_blank" rel="noopener" title="LinkedIn" class="social-link"><i class="fab fa-linkedin" aria-hidden="true"></i><span class="sr-only">LinkedIn</span></a>
-                <a href="https://www.facebook.com/scott.faust.79" target="_blank" rel="noopener" title="Facebook" class="social-link"><i class="fab fa-facebook" aria-hidden="true"></i><span class="sr-only">Facebook</span></a>
-            </div>
-        </div>
-    </footer>
-    <script type="module" src="js/core.js"></script>
-    <script type="module" src="js/router.js"></script>
-</body>
-</html>
-
+<body class="lab-site">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header"><div class="container nav-shell"><a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true">SF</span><span class="brand-copy"><span>Scott Faust</span><small>Computer Science + AI</small></span></a><button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-button>Menu</button><nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav data-open="false"><ul><li><a href="../../index.html">Home</a></li><li><a href="../../projects.html">Work</a></li><li><a href="../../research.html">Research</a></li><li><a href="index.html" aria-current="page">Learning Lab</a></li><li><a href="../../about.html">About</a></li><li><a href="../../contact.html">Contact</a></li></ul></nav></div></header>
+  <main id="main">
+    <header class="lab-hero"><div class="container lab-hero-grid"><div><p class="eyebrow">Interactive educational tools</p><h1>Data Structures Learning Lab</h1><p>Manipulate the representation, follow the algorithm, and connect each visual change to the rule that caused it.</p><div class="button-row"><a class="button primary" href="linear-structures.html">Start with linear structures</a><a class="button secondary" href="#catalog">Browse all tools</a></div></div><div class="lab-manifesto" aria-label="Learning model"><p><strong>Representation</strong><span>See the internal organization.</span></p><p><strong>Operation</strong><span>Control the state change.</span></p><p><strong>Explanation</strong><span>Connect action to invariant.</span></p></div></div></header>
+    <section class="lab-principles" aria-label="Lab capabilities"><div class="container"><ul><li><strong>Deterministic steps</strong><span>Sorting can be paused, replayed, and inspected.</span></li><li><strong>Structure-specific views</strong><span>Cells, pointers, trees, buckets, and graphs use different layouts.</span></li><li><strong>Honest scope</strong><span>Capabilities are labeled; unfinished structures are not advertised.</span></li></ul></div></section>
+    <section class="section" id="catalog" aria-labelledby="catalog-title"><div class="container"><div class="section-intro"><div><p class="section-kicker">Tool catalog</p><h2 id="catalog-title">Choose the representation you need to understand.</h2></div><p>The lab groups related structures without forcing them into one renderer. Each workspace includes complexity, use cases, tradeoffs, common mistakes, and a textual explanation of the visual mapping.</p></div><div class="lab-card-grid">
+      <a class="lab-card" href="linear-structures.html"><span class="lab-index">01</span><div><span class="status maintained">Interactive</span><h3>Linear structures</h3><p>Arrays, singly linked lists, stacks, and queues.</p><ul><li>Indexed cells</li><li>Pointer links</li><li>LIFO / FIFO ends</li></ul></div><span class="lab-card-action">Open workspace →</span></a>
+      <a class="lab-card" href="tree-structures.html"><span class="lab-index">02</span><div><span class="status maintained">Interactive</span><h3>Search &amp; balanced trees</h3><p>Binary search, AVL, and red-black trees.</p><ul><li>Hierarchical layout</li><li>Traversal paths</li><li>Balance invariants</li></ul></div><span class="lab-card-action">Open workspace →</span></a>
+      <a class="lab-card" href="hash-tables.html"><span class="lab-index">03</span><div><span class="status maintained">Interactive</span><h3>Hash tables</h3><p>Separate chaining and linear probing.</p><ul><li>Bucket mapping</li><li>Collisions</li><li>Load factor</li></ul></div><span class="lab-card-action">Open workspace →</span></a>
+      <a class="lab-card" href="graph-structures.html"><span class="lab-index">04</span><div><span class="status prototype">Prototype</span><h3>Graphs &amp; traversal</h3><p>Directed or undirected graph construction, BFS, DFS, and weighted paths.</p><ul><li>Node-link layout</li><li>Adjacency state</li><li>Traversal order</li></ul></div><span class="lab-card-action">Open workspace →</span></a>
+      <a class="lab-card lab-card-wide" href="sorting-algorithms.html"><span class="lab-index">05</span><div><span class="status maintained">Full playback</span><h3>Sorting algorithms</h3><p>Bubble, insertion, merge, and quick sort with generated algorithm steps.</p><ul><li>Previous / next</li><li>Play / pause / reset</li><li>Pseudocode and counters</li></ul></div><span class="lab-card-action">Open workspace →</span></a>
+      <a class="lab-card" href="../HeapVis/index.html"><span class="lab-index">06</span><div><span class="status maintained">Interactive</span><h3>Binary heaps</h3><p>Coordinated tree and array views for min and max heaps.</p><ul><li>Insert / extract</li><li>Update / delete</li><li>Heapify swaps</li></ul></div><span class="lab-card-action">Open explorer →</span></a>
+    </div></div></section>
+    <section class="section tint" aria-labelledby="capability-title"><div class="container"><div class="section-intro"><div><p class="section-kicker">Capability map</p><h2 id="capability-title">What each workspace supports</h2></div><p>“Direct” means the operation updates immediately. “Steps” means the operation is generated as replayable algorithm state.</p></div><div class="data-table-wrap"><table><thead><tr><th>Workspace</th><th>Operations</th><th>Playback</th><th>Explanation</th><th>Tested core</th></tr></thead><tbody>
+      <tr><td>Linear structures</td><td>Insert, remove, search, reset</td><td>Direct</td><td>Pseudocode + reference</td><td>Linked list</td></tr>
+      <tr><td>Trees</td><td>Insert, remove/search, traverse</td><td>Direct + traversal animation</td><td>Invariants + reference</td><td>BST, AVL, RBT</td></tr>
+      <tr><td>Hash tables</td><td>Insert, switch strategy, rehash</td><td>Direct</td><td>Load factor + reference</td><td>Collision behavior</td></tr>
+      <tr><td>Graphs</td><td>Create, connect, traverse, pathfind</td><td>Operation animation</td><td>Adjacency + reference</td><td>BFS, DFS, Dijkstra</td></tr>
+      <tr><td>Sorting</td><td>Generate, randomize, compare</td><td>Deterministic steps</td><td>Active line + counters</td><td>Four algorithms</td></tr>
+      <tr><td>Binary heap</td><td>Insert, extract, update, delete</td><td>Queued swaps</td><td>Tree + array + log</td><td>Browser verification</td></tr>
+    </tbody></table></div></div></section>
+    <section class="section compact"><div class="container split-layout"><div><p class="section-kicker">Keyboard &amp; access</p><h2>Designed for more than color and motion.</h2></div><div class="prose"><p>Controls use visible text, focus indicators, and minimum touch sizes. Sorting playback supports Left/Right arrow stepping and Space to play or pause when focus is outside an input. Reduced-motion preferences shorten animated transitions.</p><p>Every visualizer includes a textual reference panel. Full serialization of every canvas and SVG edge remains a documented limitation.</p></div></div></section>
+  </main>
+  <footer class="site-footer"><div class="container footer-grid"><div><p class="section-kicker">Learning Lab</p><h2>Manipulate the state. Inspect the rule.</h2></div><ul class="footer-links"><li><a href="../../projects.html">All work</a></li><li><a href="../../about.html">About</a></li><li><a href="https://github.com/DrFaustest/Drfaustest.github.io">Source</a></li></ul></div><div class="container footer-base"><p>© <span data-current-year>2026</span> Scott Faust.</p><a href="#main">Back to top</a></div></footer>
+</body></html>

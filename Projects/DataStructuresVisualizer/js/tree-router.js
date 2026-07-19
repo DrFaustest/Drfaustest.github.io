@@ -38,6 +38,8 @@ function bootstrap(){
       if(value) loadVisualizer(value);
     });
   }
+  const selected=document.getElementById('structure-select')?.value || 'tree';
+  loadVisualizer(selected);
 }
 
 bootstrap();

@@ -1,27 +1,13 @@
-/**
- * Core module
- *  - Shared DOM helpers
- *  - Global application (visualizer) state
- *  - Step playback engine (used by sorting + can be extended)
- *  - Pseudocode + stats panel management
- *
- * Other visualizer modules import only what they need from here.
- */
+/** Shared DOM, playback, pseudocode, statistics, and teardown utilities. */
 
-/** Query a single element. */
 export const qs = (selector, root = document) => root.querySelector(selector);
-/** Query all elements (returns real array). */
 export const qsa = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
-/**
- * Small hyperscript-like helper to create elements declaratively.
- * Supports: dataset, style objects, property assignment or attribute fallback.
- */
 export const el = (tag, props = {}, ...children) => {
   const node = document.createElement(tag);
   for (const [key, value] of Object.entries(props || {})) {
     if (key === 'dataset' && value && typeof value === 'object') {
-      for (const [dataKey, dataVal] of Object.entries(value)) node.dataset[dataKey] = dataVal;
+      for (const [dataKey, dataValue] of Object.entries(value)) node.dataset[dataKey] = dataValue;
     } else if (key === 'style' && value && typeof value === 'object') {
       Object.assign(node.style, value);
     } else if (key in node) {
@@ -30,159 +16,258 @@ export const el = (tag, props = {}, ...children) => {
       node.setAttribute(key, value);
     }
   }
-  children.flat().forEach(child => node.append(child && child.nodeType ? child : document.createTextNode(String(child))));
+  children.flat().forEach((child) => {
+    if (child == null || child === false) return;
+    node.append(child.nodeType ? child : document.createTextNode(String(child)));
+  });
   return node;
 };
 
-/** Promise based delay (used for async algorithm animations). */
-export const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const reducedMotion = typeof window !== 'undefined'
+  && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
 
-/** Named animation speed presets (ms between steps). */
+export const wait = (ms) => new Promise((resolve) => {
+  window.setTimeout(resolve, reducedMotion ? Math.min(ms, 40) : ms);
+});
+
 export const animSpeed = { instant: 15, ultra: 60, fast: 120, normal: 260, slow: 520 };
-export let speed = 'normal'; // current selected speed key
+export let speed = reducedMotion ? 'ultra' : 'normal';
 
-/** Central mutable state for the active visualizer. */
 export const appState = {
-  current: null,                // id of current visualizer ("array", "sorting", etc.)
-  steps: [],                    // recorded steps for playback
-  stepIndex: 0,                 // index of next step to execute
-  playing: false,               // is auto-play active
-  playLoop: null,               // interval handle
-  stats: { comparisons: 0, swaps: 0, operations: 0 }, // cumulative counters
-  pseudoLines: [],              // current pseudocode lines (for re-render on changes)
-  pseudoMap: new Map(),         // id -> line index mapping for highlight lookups
-  teardown: null                // optional cleanup hook supplied by active visualizer
+  current: null,
+  steps: [],
+  stepIndex: 0,
+  playing: false,
+  playLoop: null,
+  stats: { comparisons: 0, swaps: 0, operations: 0 },
+  pseudoLines: [],
+  pseudoMap: new Map(),
+  teardown: null
 };
-/** Reset step playback (used when generating a new set of sorting steps). */
+
+export let drawBars = () => {};
+export let applyStepState = () => {};
+export let activateVertex = () => {};
+export let updateGraphDistance = () => {};
+
+function cancelPlayback() {
+  appState.playing = false;
+  window.clearTimeout(appState.playLoop);
+  appState.playLoop = null;
+}
+
 export function resetStepEngine() {
+  cancelPlayback();
   appState.steps = [];
   appState.stepIndex = 0;
-  appState.playing = false;
-  clearInterval(appState.playLoop);
   appState.stats = { comparisons: 0, swaps: 0, operations: 0 };
   updateStats();
+  updatePlaybackStatus();
   togglePlayButton(false, true);
 }
-/** Ensure side panels (pseudocode, stats, playback) exist; create lazily. */
+
 export function ensurePanels() {
   if (qs('#panel-pseudocode')) return;
   const controls = qs('#controls-area');
   if (!controls) return;
-  const pseudo = el('div', { id: 'panel-pseudocode', className: 'panel' },
-    el('div', { className: 'panel-header' }, 'Pseudocode'),
-    el('pre', { id: 'pseudo-code', className: 'code' })
+
+  const pseudo = el('section', { id: 'panel-pseudocode', className: 'panel', 'aria-labelledby': 'pseudo-title' },
+    el('h3', { id: 'pseudo-title', className: 'panel-header' }, 'Pseudocode'),
+    el('div', {
+      id: 'pseudo-code',
+      className: 'code',
+      role: 'list',
+      tabIndex: 0,
+      'aria-label': 'Pseudocode steps'
+    })
   );
-  const stats = el('div', { id: 'panel-stats', className: 'panel' },
-    el('div', { className: 'panel-header' }, 'Stats'),
+  const stats = el('section', { id: 'panel-stats', className: 'panel', 'aria-labelledby': 'stats-title' },
+    el('h3', { id: 'stats-title', className: 'panel-header' }, 'Operation counters'),
     el('ul', { id: 'stats-list', className: 'stats-list' })
   );
-  const actions = el('div', { id: 'panel-actions', className: 'panel' },
-    el('div', { className: 'panel-header' }, 'Playback'),
+  const actions = el('section', { id: 'panel-actions', className: 'panel', 'aria-labelledby': 'playback-title' },
+    el('h3', { id: 'playback-title', className: 'panel-header' }, 'Playback'),
     el('div', { className: 'playback-controls' },
-      el('button', { id: 'step-prev', className: 'btn', onclick: () => step(-1) }, 'Prev'),
-      el('button', { id: 'step-next', className: 'btn', onclick: () => step(1) }, 'Next'),
-      el('button', { id: 'step-play', className: 'btn primary', onclick: togglePlay }, 'Play'),
-      el('button', { id: 'step-reset', className: 'btn', onclick: () => renderCurrentAgain() }, 'Reset')
+      el('button', { id: 'step-prev', type: 'button', className: 'btn', 'aria-label': 'Previous algorithm step', onclick: () => step(-1) }, 'Previous'),
+      el('button', { id: 'step-next', type: 'button', className: 'btn', 'aria-label': 'Next algorithm step', onclick: () => step(1) }, 'Next'),
+      el('button', { id: 'step-play', type: 'button', className: 'btn primary', 'aria-pressed': 'false', onclick: togglePlay }, 'Play'),
+      el('button', { id: 'step-reset', type: 'button', className: 'btn', onclick: () => renderCurrentAgain(0) }, 'Reset')
     ),
-    el('label', { htmlFor: 'speed-select', style: { marginTop: '.5rem' } }, 'Speed:'),
+    el('label', { htmlFor: 'speed-select' }, 'Playback speed'),
     (() => {
       const select = el('select', { id: 'speed-select' });
-      ['ultra', 'fast', 'normal', 'slow'].forEach(v => select.append(el('option', { value: v, selected: v === speed }, v)));
-      select.onchange = () => speed = select.value;
+      ['ultra', 'fast', 'normal', 'slow'].forEach((value) => select.append(
+        el('option', { value, selected: value === speed }, value[0].toUpperCase() + value.slice(1))
+      ));
+      select.onchange = () => { speed = select.value; };
       return select;
-    })()
+    })(),
+    el('p', { id: 'step-status', className: 'step-status' }, 'Generate or select an operation to begin.'),
+    el('p', { id: 'operation-note', className: 'operation-note', 'aria-live': 'polite' })
   );
   controls.append(pseudo, stats, actions);
   updateStats();
+  updatePlaybackStatus();
 }
-/** Provide a new set of pseudocode lines (array of {text, id?}). */
+
 export function setPseudocode(lines) {
   ensurePanels();
   appState.pseudoLines = lines;
   appState.pseudoMap.clear();
-  const pre = qs('#pseudo-code');
-  pre.innerHTML = '';
-  lines.forEach((ln, i) => {
-    const lineDiv = el('div', { className: 'code-line', dataset: { i } }, ln.text);
-    if (ln.id) appState.pseudoMap.set(ln.id, i);
-    pre.append(lineDiv);
+  const container = qs('#pseudo-code');
+  if (!container) return;
+  container.replaceChildren();
+  lines.forEach((line, index) => {
+    const lineNode = el('div', { className: 'code-line', dataset: { i: index }, role: 'listitem' }, line.text);
+    if (line.id) appState.pseudoMap.set(line.id, index);
+    container.append(lineNode);
   });
 }
-/** Highlight a pseudocode line by id (preferred) or numeric index. */
+
 export function highlightPseudo(idOrIndex) {
-  qsa('#pseudo-code .code-line').forEach(l => l.classList.remove('hl'));
+  qsa('#pseudo-code .code-line').forEach((line) => {
+    line.classList.remove('hl');
+    line.removeAttribute('aria-current');
+  });
   if (idOrIndex == null) return;
-  const idx = typeof idOrIndex === 'number' ? idOrIndex : appState.pseudoMap.get(idOrIndex);
-  if (idx != null) {
-    const line = qs(`#pseudo-code .code-line[data-i='${idx}']`);
-    if (line) line.classList.add('hl');
-    line?.scrollIntoView({ block: 'nearest' });
-  }
+  const index = typeof idOrIndex === 'number' ? idOrIndex : appState.pseudoMap.get(idOrIndex);
+  const line = index == null ? null : qs(`#pseudo-code .code-line[data-i='${index}']`);
+  if (!line) return;
+  line.classList.add('hl');
+  line.setAttribute('aria-current', 'step');
+  line.scrollIntoView({ block: 'nearest' });
 }
-/** Re-render stats list from current counters. */
+
 export function updateStats() {
   ensurePanels();
-  const ul = qs('#stats-list');
-  if (!ul) return;
-  ul.innerHTML = '';
-  Object.entries(appState.stats).forEach(([k, v]) => ul.append(el('li', {}, `${k}: ${v}`)));
+  const list = qs('#stats-list');
+  if (!list) return;
+  list.replaceChildren();
+  const labels = { comparisons: 'Comparisons', swaps: 'Moves / swaps', operations: 'Steps applied' };
+  Object.entries(appState.stats).forEach(([key, value]) => list.append(
+    el('li', {}, el('span', {}, labels[key] || key), el('strong', {}, value))
+  ));
 }
-/** Increment a named statistic counter. */
-export function incStat(name, delta = 1) { appState.stats[name] = (appState.stats[name] || 0) + delta; updateStats(); }
 
-/** Toggle auto-play of recorded steps. */
+export function incStat(name, delta = 1) {
+  appState.stats[name] = (appState.stats[name] || 0) + delta;
+  updateStats();
+}
+
+export function announce(message) {
+  ensurePanels();
+  const note = qs('#operation-note');
+  if (note) note.textContent = message;
+}
+
+function describeStep(stepData) {
+  if (!stepData) return '';
+  if (stepData.message) return stepData.message;
+  if (stepData.type === 'compare') return `Compare positions ${stepData.i} and ${stepData.j}.`;
+  if (stepData.type === 'swap') return `Swap positions ${stepData.i} and ${stepData.j}.`;
+  if (stepData.type === 'write') return `Write ${stepData.value} at position ${stepData.i}.`;
+  if (stepData.type === 'pivot') return `Use position ${stepData.i} as the current pivot.`;
+  if (stepData.type === 'mark-sorted') return `Position ${stepData.i} is now in final order.`;
+  return `Apply ${stepData.type || 'algorithm'} step.`;
+}
+
+function updatePlaybackStatus(stepData) {
+  const status = qs('#step-status');
+  const note = qs('#operation-note');
+  const total = appState.steps.length;
+  if (status) status.textContent = total
+    ? `Step ${Math.min(appState.stepIndex, total)} of ${total}`
+    : 'Generate or select an operation to begin.';
+  if (note) note.textContent = describeStep(stepData);
+  const previous = qs('#step-prev');
+  const next = qs('#step-next');
+  if (previous) previous.disabled = !total || appState.stepIndex === 0;
+  if (next) next.disabled = !total || appState.stepIndex >= total;
+}
+
+function finishPlayback() {
+  cancelPlayback();
+  togglePlayButton(false, false);
+  updatePlaybackStatus(appState.steps[appState.stepIndex - 1]);
+}
+
+function scheduleNextStep() {
+  window.clearTimeout(appState.playLoop);
+  if (!appState.playing) return;
+  if (appState.stepIndex >= appState.steps.length) {
+    finishPlayback();
+    return;
+  }
+  appState.playLoop = window.setTimeout(() => {
+    const nextStep = appState.steps[appState.stepIndex];
+    appState.stepIndex += 1;
+    runStep(nextStep);
+    scheduleNextStep();
+  }, animSpeed[speed]);
+}
+
 export function togglePlay() {
   if (!appState.steps.length) return;
+  if (appState.stepIndex >= appState.steps.length) renderCurrentAgain(0);
   appState.playing = !appState.playing;
   togglePlayButton(appState.playing, false);
-  if (appState.playing) {
-    appState.playLoop = setInterval(() => {
-      if (appState.stepIndex >= appState.steps.length) {
-        appState.playing = false; togglePlayButton(false); clearInterval(appState.playLoop); return;
-      }
-      runStep(appState.steps[appState.stepIndex++]);
-      if(appState.current==='sorting' && appState.stepIndex===appState.steps.length){
-        // clear transient visuals (partition outlines & merge buffer)
-        document.querySelectorAll('#bars .bar.partition').forEach(b=>b.classList.remove('partition'));
-        const mb=document.getElementById('merge-buffer'); if(mb) mb.innerHTML='';
-      }
-    }, animSpeed[speed]);
-  } else { clearInterval(appState.playLoop); }
+  if (appState.playing) scheduleNextStep();
+  else window.clearTimeout(appState.playLoop);
 }
-/** Update play / pause button visual state. */
-export function togglePlayButton(isPlaying, disabled) {
-  const btn = qs('#step-play');
-  if (!btn) return;
-  if (disabled) { btn.disabled = true; btn.textContent = 'Play'; return; }
-  btn.disabled = false; btn.textContent = isPlaying ? 'Pause' : 'Play';
+
+export function togglePlayButton(isPlaying, disabled = false) {
+  const button = qs('#step-play');
+  if (!button) return;
+  button.disabled = disabled;
+  button.textContent = isPlaying ? 'Pause' : 'Play';
+  button.setAttribute('aria-pressed', String(isPlaying));
+  qs('#panel-actions')?.setAttribute('aria-busy', String(isPlaying));
 }
-/** Execute a single step forward (dir>0) or backward (dir<0). */
-export function step(dir) {
+
+export function step(direction) {
   if (!appState.steps.length) return;
-  if (dir > 0 && appState.stepIndex < appState.steps.length) { runStep(appState.steps[appState.stepIndex++]); }
-  else if (dir < 0 && appState.stepIndex > 0) { renderCurrentAgain(appState.stepIndex - 1); appState.stepIndex--; }
-}
-/** Re-render base visualization and re-apply steps up to targetIndex (rewind). */
-export function renderCurrentAgain(targetIndex = 0) {
-  // Reset stats when going back to start
-  if (targetIndex === 0) {
-    appState.stats = { comparisons: 0, swaps: 0, operations: 0 };
-    updateStats();
+  cancelPlayback();
+  togglePlayButton(false, false);
+  if (direction > 0 && appState.stepIndex < appState.steps.length) {
+    const nextStep = appState.steps[appState.stepIndex];
+    appState.stepIndex += 1;
+    runStep(nextStep);
+  } else if (direction < 0 && appState.stepIndex > 0) {
+    renderCurrentAgain(appState.stepIndex - 1);
   }
-  if (appState.current === 'sorting') { drawBars(true); for (let i = 0; i < targetIndex; i++) applyStepState(appState.steps[i], true); }
-  highlightPseudo(null);
 }
-/** Execute a recorded step and highlight its pseudocode (if present). */
-export function runStep(step) { applyStepState(step); if (step.pc) highlightPseudo(step.pc); }
-// Sorting related placeholders (overridden when sorting module loaded)
-// Function references that modules can register to integrate with the core engine.
-export let drawBars = () => {};          // sorting: draw current bar set
-export let applyStepState = () => {};    // sorting: apply a single step
-// Graph related placeholders
-export let activateVertex = () => {};     // graph: mark a vertex active
-export let updateGraphDistance = () => {}; // graph: show distance label
-// Allow modules to wire implementations
-/** Called by feature modules to provide concrete implementations for hooks. */
+
+function statsThrough(targetIndex) {
+  const applied = appState.steps.slice(0, targetIndex);
+  return applied.reduce((stats, item) => {
+    stats.operations += 1;
+    if (item.type === 'compare') stats.comparisons += 1;
+    if (item.type === 'swap' || item.type === 'write') stats.swaps += 1;
+    return stats;
+  }, { comparisons: 0, swaps: 0, operations: 0 });
+}
+
+export function renderCurrentAgain(targetIndex = 0) {
+  cancelPlayback();
+  const boundedTarget = Math.max(0, Math.min(targetIndex, appState.steps.length));
+  appState.stepIndex = boundedTarget;
+  if (appState.current === 'sorting') {
+    drawBars(true);
+    for (let index = 0; index < boundedTarget; index += 1) applyStepState(appState.steps[index], true);
+  }
+  appState.stats = statsThrough(boundedTarget);
+  updateStats();
+  highlightPseudo(boundedTarget ? appState.steps[boundedTarget - 1]?.pc : null);
+  updatePlaybackStatus(boundedTarget ? appState.steps[boundedTarget - 1] : null);
+  togglePlayButton(false, !appState.steps.length);
+}
+
+export function runStep(stepData) {
+  applyStepState(stepData);
+  if (stepData?.pc) highlightPseudo(stepData.pc);
+  updatePlaybackStatus(stepData);
+}
+
 export function registerImplementations(api) {
   if (api.drawBars) drawBars = api.drawBars;
   if (api.applyStepState) applyStepState = api.applyStepState;
@@ -190,19 +275,26 @@ export function registerImplementations(api) {
   if (api.updateGraphDistance) updateGraphDistance = api.updateGraphDistance;
 }
 
-/** Allow modules to register a teardown callback invoked before loading another visualizer. */
-export function setTeardown(fn) {
-  appState.teardown = typeof fn === 'function' ? fn : null;
+export function setTeardown(callback) {
+  appState.teardown = typeof callback === 'function' ? callback : null;
 }
 
-/** Execute and clear the currently registered teardown callback, if any. */
 export function runTeardown() {
+  cancelPlayback();
   if (typeof appState.teardown === 'function') {
-    try {
-      appState.teardown();
-    } catch (err) {
-      console.error('[core] teardown error', err);
-    }
+    try { appState.teardown(); } catch (error) { console.error('[core] teardown error', error); }
   }
   appState.teardown = null;
+}
+
+if (typeof document !== 'undefined') {
+  document.addEventListener('keydown', (event) => {
+    const target = event.target;
+    const isEditing = target instanceof HTMLElement
+      && (target.matches('input, textarea, select, button') || target.isContentEditable);
+    if (isEditing || !appState.steps.length) return;
+    if (event.key === 'ArrowRight') { event.preventDefault(); step(1); }
+    if (event.key === 'ArrowLeft') { event.preventDefault(); step(-1); }
+    if (event.code === 'Space') { event.preventDefault(); togglePlay(); }
+  });
 }

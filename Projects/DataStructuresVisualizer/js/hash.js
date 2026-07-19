@@ -38,6 +38,7 @@ export function renderHashTableVisualizer(visualArea, controlsArea) {
   const tableDiv = el('div', { id: 'hash-table', className: 'hash-table' });
   const statsBar = el('div', { id: 'hash-stats', style:{marginTop:'.5rem', fontSize:'.8rem', opacity:.8} }, 'load: 0.00');
   const controlsForm = el('div', {},
+    el('label', { htmlFor: 'hash-mode', style: { display: 'block', marginBottom: '.35rem' } }, 'Collision strategy'),
     el('select', { id: 'hash-mode', onchange: () => { const mode = qs('#hash-mode').value; hashState.mode = mode; hashState.table = mode === 'chain' ? new HashTableChaining(8) : new HashTableOpen(11); drawHash(); } },
       el('option', { value: 'chain' }, 'Chaining'),
       el('option', { value: 'open' }, 'Open Addressing')
@@ -123,11 +124,3 @@ function rehash(){
     old.slots.forEach(k=>{ if(k!=null && k!=='*') bigger.insert(k); }); hashState.table=bigger; drawHash();
   }
 }
-
-// Future enhancement: dynamically update pseudocode to show rehash procedure when user clicks rehash
-// Example python snippet:
-// new_table = [ [] for _ in range(2*old_size) ]  # chaining
-// for bucket in old_table:
-//     for key in bucket:
-//         insert(new_table, key)
-// table = new_table

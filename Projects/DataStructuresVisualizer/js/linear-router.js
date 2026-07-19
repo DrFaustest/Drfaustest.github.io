@@ -1,4 +1,4 @@
-import { appState, resetStepEngine, setPseudocode, highlightPseudo, ensurePanels } from './core.js';
+import { appState, resetStepEngine, setPseudocode, highlightPseudo, ensurePanels, runTeardown } from './core.js';
 // Router for linear structures
 import { renderArrayVisualizer } from './array.js';
 import { renderLinkedListVisualizer } from './linkedlist.js';
@@ -8,6 +8,7 @@ import { renderQueueVisualizer } from './queue.js';
 export function loadVisualizer(type){
   try {
     console.debug('[linear-router] loadVisualizer called with', type);
+    runTeardown();
     appState.current=type; resetStepEngine();
     const viz=document.getElementById('visualization-area');
     const controls=document.getElementById('controls-area');
@@ -39,6 +40,8 @@ function bootstrap(){
       if(value) loadVisualizer(value);
     });
   }
+  const selected=document.getElementById('structure-select')?.value || 'array';
+  loadVisualizer(selected);
 }
 
 bootstrap();

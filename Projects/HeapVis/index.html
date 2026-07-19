@@ -1,140 +1,38 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Heap Visualizer | Scott Faust</title>
-    <!-- Site-wide styles and icons to match portfolio -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-    <link rel="stylesheet" href="../../style.css" />
-    <!-- App-specific styles -->
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
-    <header class="site-header">
-      <div class="container nav-shell">
-        <a class="brand" href="../../index.html">Scott Faust</a>
-        <nav aria-label="Primary navigation">
-          <ul>
-            <li><a href="../../index.html#profile">Profile</a></li>
-            <li><a href="../../index.html#projects">Projects</a></li>
-            <li><a href="../../index.html#contact">Contact</a></li>
-          </ul>
-        </nav>
-      </div>
-    </header>
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Interactive min and max binary heap explorer with coordinated tree and array representations.">
+  <title>Binary Heap Explorer — Scott Faust</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="../../style.css"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><script src="../../site.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header"><div class="container nav-shell"><a class="brand" href="../../index.html"><span class="brand-mark" aria-hidden="true">SF</span><span class="brand-copy"><span>Scott Faust</span><small>Computer Science + AI</small></span></a><button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-button>Menu</button><nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav data-open="false"><ul><li><a href="../../index.html">Home</a></li><li><a href="../../projects.html">Work</a></li><li><a href="../../research.html">Research</a></li><li><a href="../DataStructuresVisualizer/index.html" aria-current="page">Learning Lab</a></li><li><a href="../../about.html">About</a></li></ul></nav></div></header>
 
-    <section class="project-hero">
-      <div class="container">
-        <p class="section-kicker">Interactive Algorithm Tool</p>
-        <h1>Heap Visualizer</h1>
-        <p>Interactive min and max binary heap operations with animation, array representation, and explanations.</p>
+  <header class="project-hero"><div class="container"><p class="section-kicker">Learning Lab · Maintained demo</p><h1>Binary Heap Explorer</h1><p>Coordinate a complete-binary-tree view with its array representation while inserting, extracting, deleting, updating, and heapifying values.</p></div></header>
+
+  <main class="container" id="main">
+    <section class="controls" aria-label="Heap controls">
+      <div class="control-row">
+        <label class="toggle" for="heapTypeToggle" title="Toggle min or max heap"><input type="checkbox" id="heapTypeToggle"><span class="toggle-label" data-min="Min heap" data-max="Max heap"></span></label>
+        <label class="speed" for="speedRange"><span>Animation speed</span><input type="range" id="speedRange" min="0.25" max="2" step="0.25" value="1"><span id="speedLabel">1x</span></label>
+        <div class="playback"><button id="playPauseBtn" type="button">Play / Pause</button><button id="stepBtn" type="button">Next step</button><button id="clearBtn" class="danger" type="button">Clear</button></div>
+      </div>
+      <div class="control-grid">
+        <div class="card"><h3>Insert</h3><div class="row"><label class="sr-only" for="insertValue">Value to insert</label><input type="number" id="insertValue" placeholder="Value"><button id="insertBtn" type="button">Insert</button></div></div>
+        <div class="card"><h3>Extract root</h3><div class="row"><button id="extractBtn" type="button">Extract</button><span id="extractResult" class="muted" aria-live="polite"></span></div></div>
+        <div class="card"><h3>Delete</h3><div class="row stack"><div class="row"><label class="sr-only" for="deleteIndex">Index to delete</label><input type="number" id="deleteIndex" placeholder="Index"><button id="deleteIndexBtn" type="button">By index</button></div><div class="row"><label class="sr-only" for="deleteValue">Value to delete</label><input type="number" id="deleteValue" placeholder="Value"><button id="deleteValueBtn" type="button">By value</button></div></div></div>
+        <div class="card"><h3>Update key</h3><div class="row stack"><div class="row"><label class="sr-only" for="updateIndex">Index to update</label><input type="number" id="updateIndex" placeholder="Index"><label class="sr-only" for="updateValue">New value</label><input type="number" id="updateValue" placeholder="New value"><button id="updateBtn" type="button">Update</button></div></div></div>
+        <div class="card wide"><h3>Build from array</h3><div class="row"><label class="sr-only" for="arrayInput">Comma-separated values</label><input type="text" id="arrayInput" placeholder="Example: 5, 3, 8, 1, 4"><button id="buildBtn" type="button">Build</button><button id="randomBtn" type="button">Random example</button></div></div>
       </div>
     </section>
-
-    <main class="container">
-      <section class="controls" aria-label="Controls">
-        <div class="control-row">
-          <label class="toggle" for="heapTypeToggle" title="Toggle Min/Max Heap">
-            <input type="checkbox" id="heapTypeToggle" aria-label="Toggle Min or Max Heap" />
-            <span class="toggle-label" data-min="Min Heap" data-max="Max Heap"></span>
-          </label>
-
-          <label class="speed" title="Animation speed">
-            <span>Speed</span>
-            <input type="range" id="speedRange" min="0.25" max="2" step="0.25" value="1" />
-            <span id="speedLabel">1x</span>
-          </label>
-
-          <div class="playback">
-            <button id="playPauseBtn" title="Play/Pause">Play/Pause</button>
-            <button id="stepBtn" title="Next Step">Step</button>
-            <button id="clearBtn" class="danger" title="Clear heap">Clear</button>
-          </div>
-        </div>
-
-        <div class="control-grid">
-          <div class="card">
-            <h3>Insert</h3>
-            <div class="row">
-              <input type="number" id="insertValue" placeholder="Value" />
-              <button id="insertBtn">Insert</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Extract Root</h3>
-            <div class="row">
-              <button id="extractBtn">Extract</button>
-              <span id="extractResult" class="muted" aria-live="polite"></span>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Delete</h3>
-            <div class="row stack">
-              <div class="row">
-                <input type="number" id="deleteIndex" placeholder="Index" />
-                <button id="deleteIndexBtn">By Index</button>
-              </div>
-              <div class="row">
-                <input type="number" id="deleteValue" placeholder="Value" />
-                <button id="deleteValueBtn">By Value</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Update Key</h3>
-            <div class="row stack">
-              <div class="row">
-                <input type="number" id="updateIndex" placeholder="Index" />
-                <input type="number" id="updateValue" placeholder="New Value" />
-                <button id="updateBtn">Update</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="card wide">
-            <h3>Build from Array</h3>
-            <div class="row">
-              <input type="text" id="arrayInput" placeholder="e.g. 5, 3, 8, 1, 4" />
-              <button id="buildBtn">Build</button>
-              <button id="randomBtn" title="Generate random array">Random</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="visualization" aria-label="Heap Visualization">
-        <svg id="heapSvg" preserveAspectRatio="xMidYMin meet"></svg>
-      </section>
-
-      <section class="array-rep" aria-label="Array Representation">
-        <h3>Array Representation</h3>
-        <div id="arrayBar" class="array-bar"></div>
-      </section>
-
-      <section class="log" aria-label="Explanation">
-        <h3>Explanation</h3>
-        <div id="logPanel" class="log-panel" role="log" aria-live="polite"></div>
-      </section>
-    </main>
-
-    <div class="heap-tip">
-      <span>Tip: Indices start at 0 (root). Toggle Min/Max to switch ordering.</span>
-    </div>
-
-    <footer>
-      <div class="container footer-content">
-        <p>&copy; 2026 Scott Faust. All rights reserved.</p>
-        <a href="../../index.html#projects">Back to projects</a>
-      </div>
-    </footer>
-
-    <script src="script.js"></script>
-  </body>
-</html>
+    <section class="visualization" aria-labelledby="heap-view-title"><h2 class="sr-only" id="heap-view-title">Heap tree representation</h2><svg id="heapSvg" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Binary heap shown as a complete tree"></svg></section>
+    <section class="array-rep" aria-labelledby="array-title"><h3 id="array-title">Array representation</h3><div id="arrayBar" class="array-bar" aria-live="polite"></div></section>
+    <section class="log" aria-labelledby="explanation-title"><h3 id="explanation-title">Operation explanation</h3><div id="logPanel" class="log-panel" role="log" aria-live="polite"></div></section>
+    <section class="concept-panel heap-reference" aria-labelledby="reference-title"><div class="concept-heading"><div><p class="section-kicker">Concept reference</p><h2 id="reference-title">Binary heap</h2></div><p>A complete binary tree whose parent is always ordered before its children. A min heap keeps the smallest key at the root; a max heap keeps the largest.</p></div><div class="concept-grid"><section><h3>Defining rules</h3><ul><li>Every level is full except possibly the last.</li><li>The last level fills from left to right.</li><li>Parent index is ⌊(i − 1) / 2⌋; children are 2i + 1 and 2i + 2.</li></ul></section><section><h3>Complexity</h3><p>Peek is O(1). Insert, extract, update, and delete are O(log n). Building a heap bottom-up is O(n).</p></section><section><h3>Tradeoffs &amp; mistakes</h3><p>Heaps provide fast access only to the root, not ordered traversal. Common errors include breaking completeness or restoring order in the wrong direction.</p></section></div></section>
+    <p class="heap-tip">Indices begin at 0. Changing heap type rebuilds the ordering rule for the existing values.</p>
+  </main>
+  <footer class="site-footer"><div class="container footer-grid"><div><p class="section-kicker">Learning Lab</p><h2>Compare hierarchy and storage order.</h2></div><ul class="footer-links"><li><a href="../DataStructuresVisualizer/index.html">All tools</a></li><li><a href="../../projects.html">Project inventory</a></li><li><a href="https://github.com/DrFaustest/Drfaustest.github.io">Source</a></li></ul></div><div class="container footer-base"><p>© <span data-current-year>2026</span> Scott Faust.</p><a href="#main">Back to top</a></div></footer>
+  <script type="module" src="script.js"></script>
+</body></html>

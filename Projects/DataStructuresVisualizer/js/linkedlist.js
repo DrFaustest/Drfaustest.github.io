@@ -1,4 +1,4 @@
-import { el, highlightPseudo, setPseudocode, qs } from './core.js';
+import { announce, el, highlightPseudo, setPseudocode, qs, setTeardown } from './core.js';
 
 // Node for a singly linked list.
 class ListNode { constructor(value, next = null) { this.val = value; this.next = next; } }
@@ -41,6 +41,7 @@ class LinkedList {
 }
 
 let linkedListInstance;
+let searchTimer = null;
 
 /** Render the Linked List visualizer. */
 export function renderLinkedListVisualizer(visualArea, controlsArea) {
@@ -50,8 +51,8 @@ export function renderLinkedListVisualizer(visualArea, controlsArea) {
   const listRow = el('div', { className: 'viz-row', id: 'list-row' });
   const lengthBadge = el('span', { id: 'list-length', style: { marginLeft: 'auto', fontSize: '.8rem', opacity: .75 } }, 'len: 0');
   const controlsForm = el('div', { style:{display:'flex', flexWrap:'wrap', gap:'.5rem', alignItems:'center'} },
-    el('input', { id: 'list-val', placeholder: 'Value', type: 'number' }),
-    el('input', { id: 'list-idx', placeholder: 'Index', type: 'number', min: 0 }),
+    el('input', { id: 'list-val', placeholder: 'Value', type: 'number', 'aria-label': 'Linked list value' }),
+    el('input', { id: 'list-idx', placeholder: 'Index', type: 'number', min: 0, 'aria-label': 'Linked list index' }),
     el('button', {
       className: 'btn',
       onclick: () => {
@@ -65,7 +66,7 @@ export function renderLinkedListVisualizer(visualArea, controlsArea) {
     }, 'Insert/Push'),
   el('button', { className: 'btn', onclick: () => { const index = Number(qs('#list-idx').value); if (!Number.isNaN(index)) { linkedListInstance.removeAt(index); redrawLinkedList(); } } }, 'Remove At'),
   el('button', { className: 'btn', onclick: handleReverse }, 'Reverse'),
-  el('input', { id: 'list-search', placeholder: 'Search', type: 'number', style:{width:'70px'} }),
+  el('input', { id: 'list-search', placeholder: 'Search', type: 'number', style:{width:'90px'}, 'aria-label': 'Value to search for' }),
   el('button', { className: 'btn', onclick: handleSearch }, 'Search'),
   el('button', { className: 'btn', onclick: () => { const v = Number(qs('#list-val').value); if (!Number.isNaN(v)) { linkedListInstance.removeValue(v); redrawLinkedList(); } } }, 'Delete Val'),
   el('button', { className: 'btn', onclick: () => { linkedListInstance = new LinkedList(); redrawLinkedList(); } }, 'Clear'),
@@ -94,6 +95,7 @@ export function renderLinkedListVisualizer(visualArea, controlsArea) {
     { text: '    while cur: nxt=cur.next; cur.next=prev; prev=cur; cur=nxt', id: 'rev3' },
     { text: '    return prev', id: 'rev4' }
   ]);
+  setTeardown(() => window.clearTimeout(searchTimer));
 }
 
 /** Redraw linked list as sequence of nodes + arrows. */
@@ -112,14 +114,15 @@ function redrawLinkedList() {
 function handleReverse(){
   let prev=null, cur=linkedListInstance.head;
   while(cur){ const nxt=cur.next; cur.next=prev; prev=cur; cur=nxt; }
-  linkedListInstance.head=prev; redrawLinkedList(); highlightPseudo('rev3');
+  linkedListInstance.head=prev; redrawLinkedList(); highlightPseudo('rev3'); announce('Reversed every next reference in the list.');
 }
 
 function handleSearch(){
-  const target=Number(qs('#list-search').value); if(Number.isNaN(target)) return;
+  const target=Number(qs('#list-search').value); if(Number.isNaN(target)) { announce('Enter a numeric search target.'); return; }
+  window.clearTimeout(searchTimer);
   let cur=linkedListInstance.head, i=0; const nodes=Array.from(document.querySelectorAll('#list-row .node'));
-  function step(){ nodes.forEach(n=>n.classList.remove('active','ok')); if(!cur){ highlightPseudo('s6'); return; }
-    nodes[i].classList.add('active'); if(cur.val===target){ nodes[i].classList.add('ok'); highlightPseudo('s4'); return; }
-    cur=cur.next; i++; setTimeout(step,300); }
+  function step(){ nodes.forEach(n=>n.classList.remove('active','ok')); if(!cur){ highlightPseudo('s6'); announce(`${target} was not found.`); return; }
+    nodes[i].classList.add('active'); if(cur.val===target){ nodes[i].classList.add('ok'); highlightPseudo('s4'); announce(`Found ${target} at node ${i}.`); return; }
+    cur=cur.next; i++; searchTimer=window.setTimeout(step,300); }
   highlightPseudo('s3'); step();
 }
