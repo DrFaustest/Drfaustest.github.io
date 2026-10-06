@@ -30,19 +30,11 @@ document.querySelectorAll('[data-current-year]').forEach((node) => {
   node.textContent = String(new Date().getFullYear());
 });
 
-const filters = document.querySelectorAll('[data-project-filter]');
-const projectCards = document.querySelectorAll('[data-project-status]');
+const printResumeButton = document.querySelector('[data-print-resume]');
 
-filters.forEach((button) => {
-  button.addEventListener('click', () => {
-    const filter = button.dataset.projectFilter;
-    filters.forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
-    projectCards.forEach((card) => {
-      const visible = filter === 'all' || card.dataset.projectStatus === filter;
-      card.hidden = !visible;
-    });
-  });
-});
+if (printResumeButton) {
+  printResumeButton.addEventListener('click', () => window.print());
+}
 
 const contactForm = document.querySelector('[data-contact-form]');
 

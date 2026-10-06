@@ -43,7 +43,7 @@ test('all local HTML links and assets resolve with deployment-safe case', () => 
 
 test('public portfolio routes have basic document and keyboard-navigation structure', () => {
   const publicRoutes = [
-    'index.html', 'projects.html', 'research.html', 'about.html', 'contact.html',
+    'index.html', 'projects.html', 'research.html', 'about.html', 'resume.html', 'contact.html',
     'Projects/DataStructuresVisualizer/index.html',
     'Projects/DataStructuresVisualizer/linear-structures.html',
     'Projects/DataStructuresVisualizer/tree-structures.html',
@@ -71,4 +71,40 @@ test('HTML contains no editor artifacts, placeholder projects, or stale one-page
     if (/index\.html#(?:profile|projects|contact|research|education|repositories)/i.test(html)) failures.push(`${path.relative(root, htmlFile)}: stale anchor`);
   }
   expect(failures).toEqual([]);
+});
+
+test('primary portfolio emphasizes research and selected work instead of the learning lab', () => {
+  const primaryRoutes = ['index.html', 'projects.html', 'research.html', 'about.html', 'resume.html', 'contact.html'];
+
+  for (const route of primaryRoutes) {
+    const html = fs.readFileSync(path.join(root, route), 'utf8');
+    const nav = html.match(/<nav class="site-nav"[\s\S]*?<\/nav>/i)?.[0] ?? '';
+    expect(nav).not.toMatch(/Learning Lab|DataStructuresVisualizer/i);
+  }
+
+  const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  expect(home).toMatch(/M\.S\. final semester/i);
+  expect(home).toMatch(/Ph\.D\. first semester/i);
+  expect(home).toMatch(/First-author manuscript submitted/i);
+
+  const work = fs.readFileSync(path.join(root, 'projects.html'), 'utf8');
+  expect(work).toMatch(/Auditable knowledge tracing/i);
+  expect(work).toMatch(/Evidence-to-action framework/i);
+  expect(work).toMatch(/Credential renewal tracking/i);
+  expect(work).not.toMatch(/data-project-filter|Data Structures Learning Lab/i);
+
+  const contact = fs.readFileSync(path.join(root, 'contact.html'), 'utf8');
+  expect(contact).not.toMatch(/No résumé attachment/i);
+});
+
+test('primary routes include complete social preview metadata', () => {
+  const primaryRoutes = ['index.html', 'projects.html', 'research.html', 'about.html', 'resume.html', 'contact.html'];
+
+  for (const route of primaryRoutes) {
+    const html = fs.readFileSync(path.join(root, route), 'utf8');
+    expect(html).toMatch(/property="og:title"/i);
+    expect(html).toMatch(/property="og:description"/i);
+    expect(html).toMatch(/property="og:image" content="https:\/\/drfaustest\.github\.io\/media\/img\/og-portfolio\.png"/i);
+    expect(html).toMatch(/name="twitter:card" content="summary_large_image"/i);
+  }
 });

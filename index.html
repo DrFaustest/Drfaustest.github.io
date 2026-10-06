@@ -3,10 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Scott Faust builds interactive software and research prototypes across AI, educational technology, knowledge modeling, visualization, and applied computer science.">
+  <meta name="description" content="Scott Faust studies AI in education and learner modeling while finishing his M.S. and beginning doctoral study. Explore research, applied software, and earlier projects.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Scott Faust — AI, Learning &amp; Software">
+  <meta property="og:description" content="AI in education, learner modeling, and applied software. Follow my path from M.S. research into doctoral study.">
+  <meta property="og:url" content="https://drfaustest.github.io/">
+  <meta property="og:image" content="https://drfaustest.github.io/media/img/og-portfolio.png">
+  <meta property="og:image:width" content="1731">
+  <meta property="og:image:height" content="909">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Scott Faust — AI, Learning &amp; Software">
+  <meta name="twitter:description" content="AI in education, learner modeling, and applied software. Follow my path from M.S. research into doctoral study.">
+  <meta name="twitter:image" content="https://drfaustest.github.io/media/img/og-portfolio.png">
   <meta name="theme-color" content="#17201e">
-  <title>Scott Faust — Computer Science &amp; AI</title>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css">
+  <title>Scott Faust — AI, Learning &amp; Software</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
   <script src="site.js" defer></script>
 </head>
 <body>
@@ -15,7 +27,7 @@
     <div class="container nav-shell">
       <a class="brand" href="index.html" aria-label="Scott Faust, home">
         <span class="brand-mark" aria-hidden="true">SF</span>
-        <span class="brand-copy"><span>Scott Faust</span><small>Computer Science + AI</small></span>
+        <span class="brand-copy"><span>Scott Faust</span><small>AI, learning &amp; software</small></span>
       </a>
       <button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-button>Menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav data-open="false">
@@ -23,8 +35,8 @@
           <li><a href="index.html" aria-current="page">Home</a></li>
           <li><a href="projects.html">Work</a></li>
           <li><a href="research.html">Research</a></li>
-          <li><a href="Projects/DataStructuresVisualizer/index.html">Learning Lab</a></li>
-          <li><a href="about.html">About</a></li>
+          <li><a href="recursion.html">Teaching</a></li><li><a href="about.html">About</a></li>
+          <li><a href="resume.html">Résumé</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
       </nav>
@@ -35,15 +47,15 @@
     <section class="home-hero" aria-labelledby="hero-title">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow">Computer scientist · developing AI researcher</p>
-          <h1 id="hero-title">I build systems that make complex ideas inspectable.</h1>
-          <p class="hero-lead">My work connects artificial intelligence, educational technology, knowledge modeling, visualization, and applied software development—with an emphasis on tools people can question, explore, and understand.</p>
+          <p class="eyebrow">Scott Faust / Researcher &amp; builder</p>
+          <h1 id="hero-title">How can AI help us understand learning?</h1>
+          <p class="hero-lead">I study how AI models learning, what its predictions can tell us, and what evidence we need before using them to make educational decisions. I’m finishing my M.S. in Computer Science and beginning my Ph.D. in Computing &amp; Information Science.</p>
           <div class="hero-actions" aria-label="Primary actions">
-            <a class="button primary" href="projects.html">Explore selected work</a>
-            <a class="button secondary" href="Projects/DataStructuresVisualizer/index.html">Open the Learning Lab</a>
+            <a class="button primary" href="research.html">Explore my research</a>
+            <a class="button secondary" href="about.html">A little about me</a>
           </div>
         </div>
-        <figure class="portrait-card">
+        <figure class="portrait-card"><span class="portrait-coordinate" aria-hidden="true">01 / A work in progress</span>
           <img src="media/img/Profile-portrait-v2.webp" alt="Portrait of Scott Faust" width="800" height="1000" fetchpriority="high">
           <figcaption class="portrait-note"><strong>Scott Faust</strong><span>Omaha, Nebraska</span></figcaption>
         </figure>
@@ -52,52 +64,58 @@
 
     <div class="signal-strip" aria-label="Professional snapshot">
       <dl class="container signal-list">
-        <div><dt>Focus</dt><dd>Human-centered AI systems</dd></div>
-        <div><dt>Research</dt><dd>Knowledge and learner modeling</dd></div>
-        <div><dt>Practice</dt><dd>Interactive technical software</dd></div>
-        <div><dt>Foundation</dt><dd>Computer science + operations</dd></div>
+        <div><dt>Education</dt><dd>M.S. final semester</dd></div>
+        <div><dt>Research</dt><dd>Ph.D. first semester</dd></div>
+        <div><dt>Scholarship</dt><dd>First-author manuscript submitted</dd></div>
+        <div><dt>Foundation</dt><dd>U.S. Air Force veteran</dd></div>
       </dl>
     </div>
+
+    <section class="section compact" aria-labelledby="path-title">
+      <div class="container path-panel">
+        <div><p class="section-kicker">Current chapter / Fall 2026</p><h2 id="path-title">Finishing one chapter. Starting the next.</h2></div>
+        <div class="prose"><p>My M.S. thesis asks how learner models can make their state and evidence inspectable. As I begin doctoral study, I’m carrying that question into a broader interest in AI, assessment, and how people use learning technologies.</p><a class="text-link" href="research.html#questions-title">Questions guiding my research</a></div>
+      </div>
+    </section>
 
     <section class="section" aria-labelledby="featured-title">
       <div class="container">
         <div class="section-intro">
           <div>
             <p class="section-kicker">Selected work</p>
-            <h2 id="featured-title">Built to explain, not merely display.</h2>
+            <h2 id="featured-title">The work shaping my next chapter.</h2>
           </div>
-          <p>These projects are the clearest expression of my current direction: accurate algorithms, transparent internal state, and interfaces that support investigation.</p>
+          <p>My thesis and assessment review anchor my research direction: understanding learner models and the evidence needed to use them in educational decisions.</p>
         </div>
-        <div class="card-grid">
-          <a class="project-card" href="Projects/DataStructuresVisualizer/index.html">
-            <div class="project-media"><img src="media/img/project-covers/data-structures-lab.webp" alt="Illustrated arrays, linked lists, trees, graphs, hash buckets, and sorting bars" width="1280" height="720" loading="lazy"></div>
-            <div class="project-content">
-              <span class="status maintained">Actively maintained</span>
-              <h3>Data Structures Learning Lab</h3>
-              <p>Interactive tools for linear structures, trees, hashing, graphs, and sorting, organized around operations, invariants, and algorithm state.</p>
-              <div class="tag-list" aria-label="Technologies"><span>JavaScript</span><span>Algorithms</span><span>Jest</span></div>
+        <div class="case-study-list">
+          <article class="case-study">
+            <div class="case-study-index" aria-hidden="true">01</div>
+            <div class="case-study-main">
+              <span class="feature-tag">Master’s thesis · 2026</span>
+              <h3>Auditable knowledge tracing with a temporal student knowledge map</h3>
+              <p>A leakage-safe knowledge-tracing system that separates shared structure, mutable learner state, and immutable evidence. The work combines temporal and graph-aware modeling with prospective experiment controls and release verification.</p>
+              <a class="text-link" href="research.html#thesis">Explore the thesis work</a>
             </div>
-          </a>
-          <a class="project-card" href="media/Projects/Graphs/index.html">
-            <div class="project-media"><img src="media/img/project-covers/graph-algorithms.webp" alt="Illustrated node-link graph with a highlighted shortest path" width="1280" height="720" loading="lazy"></div>
-            <div class="project-content">
-              <span class="status prototype">Educational prototype</span>
-              <h3>Graph Algorithms Workspace</h3>
-              <p>A direct-manipulation graph editor for stepping through Dijkstra and Bellman–Ford with distance and predecessor updates.</p>
-              <div class="tag-list" aria-label="Technologies"><span>Graphs</span><span>Shortest paths</span><span>Visualization</span></div>
+            <dl class="case-study-facts">
+              <div><dt>Problem</dt><dd>Predictive systems can hide state, provenance, and update logic.</dd></div>
+              <div><dt>Contribution</dt><dd>An inspectable representation and evidence-controlled evaluation workflow.</dd></div>
+            </dl>
+          </article>
+
+          <article class="case-study">
+            <div class="case-study-index" aria-hidden="true">02</div>
+            <div class="case-study-main">
+              <span class="feature-tag">Submitted manuscript · 2026</span>
+              <h3>From Prediction to Educational Consequence</h3>
+              <p>First and corresponding author of a structured critical narrative review submitted to <em>Studies in Educational Evaluation</em>. The paper connects AI performance claims to the distinct evidence required for educational decisions.</p>
+              <a class="text-link" href="research.html#assessment-review">Review the contribution</a>
             </div>
-          </a>
-          <a class="project-card" href="Projects/Sudoku/index.html">
-            <div class="project-media"><img src="media/img/project-covers/sudoku-solver.webp" alt="Illustrated Sudoku grid and constraint-search tree" width="1280" height="720" loading="lazy"></div>
-            <div class="project-content">
-              <span class="status maintained">Maintained demo</span>
-              <h3>Sudoku Constraint Solver</h3>
-              <p>A playable puzzle and inspectable solver using constraint propagation, minimum-remaining-values selection, and backtracking.</p>
-              <div class="tag-list" aria-label="Technologies"><span>Constraint solving</span><span>Search</span><span>JavaScript</span></div>
-            </div>
-          </a>
+            <dl class="case-study-facts">
+              <div><dt>Framework</dt><dd>Six layers from construct definition through governance.</dd></div>
+              <div><dt>Boundary</dt><dd>Learner-state inference is separated from adaptive policy.</dd></div>
+            </dl>
+          </article>
         </div>
-        <p style="margin-top: 2rem"><a class="text-link" href="projects.html">See maintained tools and archived experiments</a></p>
       </div>
     </section>
 
@@ -106,49 +124,51 @@
         <div class="section-intro">
           <div>
             <p class="section-kicker">Research direction</p>
-            <h2 id="research-title">Models are more useful when their assumptions are visible.</h2>
+            <h2 id="research-title">Move carefully from model output to human consequence.</h2>
           </div>
-          <p>My research interests center on representations of people, knowledge, time, and context—especially where model behavior must remain understandable to learners, researchers, and practitioners.</p>
+          <p>My research asks how representations of people, knowledge, time, and context can remain useful without concealing uncertainty or overstating what a prediction proves.</p>
         </div>
         <div class="card-grid">
           <article class="feature-card">
-            <span class="card-number">01 / Learning</span>
+            <span class="card-number">01 / Learners</span>
+            <h3>Knowledge tracing</h3>
+            <p>Model changing learner state while preserving temporal order, provenance, and clear boundaries around mastery claims.</p>
+          </article>
+          <article class="feature-card">
+            <span class="card-number">02 / Decisions</span>
             <h3>Adaptive assessment</h3>
-            <p>Knowledge tracing, concept dependencies, and assessment systems that distinguish prediction from evidence about learning.</p>
+            <p>Separate what a system predicts from the action it selects and from evidence that the action improves learning.</p>
           </article>
           <article class="feature-card">
-            <span class="card-number">02 / Representation</span>
-            <h3>Knowledge modeling</h3>
-            <p>Temporal and heterogeneous structures for representing relationships, histories, and changing user or learner state.</p>
-          </article>
-          <article class="feature-card">
-            <span class="card-number">03 / Interaction</span>
-            <h3>Explainable interfaces</h3>
-            <p>Visual and interactive systems that expose decisions, state transitions, tradeoffs, and failure conditions.</p>
+            <span class="card-number">03 / Systems</span>
+            <h3>Human-centered AI</h3>
+            <p>Design interfaces, controls, and audit trails that let people inspect assumptions and challenge automated behavior.</p>
           </article>
         </div>
-        <p style="margin-top: 2rem"><a class="text-link" href="research.html">Review research interests and public prototypes</a></p>
+        <p class="section-link"><a class="text-link" href="research.html">Read about current research and writing</a></p>
       </div>
     </section>
+
+    <section class="section tint" aria-labelledby="teaching-title"><div class="container split-layout"><div><p class="section-kicker">For students / Python</p><h2 id="teaching-title">Learn recursion, one call at a time.</h2></div><div><p>Explore Tower of Hanoi, a 2D maze, and Sudoku with a debugger-style lesson. Step through the Python code, inspect the call stack, and watch variables change at your own pace.</p><a class="button primary" href="recursion.html">Open the recursion explorer</a></div></div></section>
 
     <section class="section" aria-labelledby="approach-title">
       <div class="container split-layout">
         <div>
-          <p class="section-kicker">Approach</p>
-          <h2 id="approach-title">Operational discipline, applied to software.</h2>
+          <p class="section-kicker">Working principles</p>
+          <h2 id="approach-title">The way I work.</h2>
         </div>
         <div class="principles-list">
           <article class="principle">
             <div class="detail-label">Evidence</div>
-            <div><h3>Make claims traceable.</h3><p>Separate working behavior from aspiration, test core logic directly, and document what a demonstration does not prove.</p></div>
+            <div><h3>Make claims traceable.</h3><p>Separate demonstrated behavior from aspiration and preserve the evidence needed to reproduce a decision.</p></div>
           </article>
           <article class="principle">
             <div class="detail-label">Systems</div>
-            <div><h3>Design around state and failure.</h3><p>Model transitions deliberately, account for invalid inputs, and treat reset, cancellation, and recovery as first-class interactions.</p></div>
+            <div><h3>Design for state and failure.</h3><p>Model transitions deliberately, account for invalid inputs, and treat recovery as a first-class requirement.</p></div>
           </article>
           <article class="principle">
             <div class="detail-label">People</div>
-            <div><h3>Teach through the interface.</h3><p>Use precise language, accessible controls, and visual explanations that map back to the underlying representation.</p></div>
+            <div><h3>Keep human authority visible.</h3><p>Build tools that support judgment without disguising model output as certainty or policy as inference.</p></div>
           </article>
         </div>
       </div>
@@ -156,16 +176,16 @@
 
     <section class="section dark" aria-labelledby="cta-title">
       <div class="container split-layout">
-        <div><p class="section-kicker">Start a conversation</p><h2 id="cta-title">Interested in research, software, or learning tools?</h2></div>
-        <div><p>I welcome conversations about educational technology, AI research, applied software, and technical collaboration.</p><a class="button primary" href="contact.html">Contact Scott</a></div>
+        <div><p class="section-kicker">Collaborate</p><h2 id="cta-title">Let’s talk about learning, AI, or building something thoughtful.</h2></div>
+        <div><p>I welcome conversations about educational technology, learner modeling, responsible AI evaluation, and software for real operational problems.</p><div class="button-row"><a class="button primary" href="contact.html">Contact Scott</a><a class="button secondary" href="resume.html">View résumé</a></div></div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="container footer-grid">
-      <div><p class="section-kicker">Scott Faust</p><h2>Computer science made inspectable.</h2><p>AI · educational technology · visualization · applied software</p></div>
-      <ul class="footer-links"><li><a href="projects.html">Work</a></li><li><a href="research.html">Research</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://github.com/DrFaustest" rel="me">GitHub</a></li></ul>
+      <div><p class="section-kicker">Scott Faust</p><h2>Researcher. Builder. Still curious.</h2><p>AI in education · learner modeling · applied software</p></div>
+      <ul class="footer-links"><li><a href="projects.html">Work</a></li><li><a href="research.html">Research</a></li><li><a href="about.html">About</a></li><li><a href="resume.html">Résumé</a></li><li><a href="contact.html">Contact</a></li><li><a href="archive.html">Archive</a></li><li><a href="https://github.com/DrFaustest" rel="me">GitHub</a></li></ul>
     </div>
     <div class="container footer-base"><p>© <span data-current-year>2026</span> Scott Faust.</p><a href="#main">Back to top</a></div>
   </footer>

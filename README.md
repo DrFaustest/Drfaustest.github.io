@@ -1,78 +1,64 @@
 # Scott Faust portfolio
 
-Static portfolio and interactive computer-science learning lab hosted with GitHub Pages. The site presents research interests, selected software projects, and browser-based demonstrations without a framework or production build step.
+Static research and software engineering portfolio hosted with GitHub Pages. The public experience highlights auditable knowledge-tracing research, adaptive-assessment scholarship, applied product prototyping, military systems experience, and selected public repositories.
 
 ## Architecture
 
-- Root HTML pages provide the main portfolio routes.
-- `style.css` and `site.js` provide shared design, navigation, accessibility, and progressive enhancement.
-- `Projects/DataStructuresVisualizer/` contains the maintained learning lab and pure algorithm libraries.
-- `Projects/Sudoku/`, `Projects/HeapVis/`, and `Projects/advanced_algo/` contain maintained demonstrations.
-- `media/Projects/` contains older demonstrations and archived experiments. These remain available for source history but are not all presented as finished work.
-- `tests/` contains Jest unit and repository-integrity tests.
-- `docs/AUDIT.md` records the pre-redesign baseline and implementation decisions.
+- Root HTML pages provide the primary portfolio routes.
+- style.css and site.js provide shared design, navigation, accessibility, print behavior, and progressive enhancement.
+- media/img/og-portfolio.png is the site-wide social preview.
+- Projects/ and media/Projects/ preserve earlier algorithm visualizations and browser experiments as linked project history in archive.html. Original demo URLs remain intact.
+- tests/ contains algorithm and repository-integrity tests.
+- docs/AUDIT.md and docs/REDESIGN_REPORT.md record the July 2026 redesign history.
 
 ## Local setup
 
 Requirements: Node.js 20 or newer and npm.
 
-```sh
+~~~sh
 npm install
 npm run dev
-```
+~~~
 
 Open the local URL printed by the static server. Directly opening HTML files is not sufficient for pages that use JavaScript modules.
 
 ## Validation
 
-```sh
+~~~sh
 npm test
 npm run check
-```
+~~~
 
-`npm test` runs algorithm and repository-integrity tests. `npm run check` runs the complete local validation sequence. The project has no compile or type-check phase because it is plain JavaScript served as static files.
+npm test runs algorithm and repository-integrity tests. npm run check runs the complete local validation sequence. The project has no compile or type-check phase because it is plain JavaScript served as static files.
 
-## Route overview
+## Primary routes
 
-- `/` — focused home page and featured work
-- `/projects.html` — maintained projects plus archived experiments
-- `/research.html` — research interests and linked public artifacts
-- `/about.html` — background, education, and technical approach
-- `/contact.html` — contact paths and third-party contact form
-- `/Projects/DataStructuresVisualizer/` — learning-lab hub
-- `/Projects/DataStructuresVisualizer/linear-structures.html` — arrays, linked lists, stacks, and queues
-- `/Projects/DataStructuresVisualizer/tree-structures.html` — BST, AVL, and red-black trees
-- `/Projects/DataStructuresVisualizer/hash-tables.html` — collision handling and probing
-- `/Projects/DataStructuresVisualizer/graph-structures.html` — graph construction and traversal
-- `/Projects/DataStructuresVisualizer/sorting-algorithms.html` — step-based sorting algorithms
-- `/Projects/HeapVis/` — binary heap operations
-- `/Projects/Sudoku/` — constraint-solving demonstration
-- `/Projects/advanced_algo/Partision/` — partitioning-problem comparison
+- / — professional positioning, accomplishments, and flagship work
+- /projects.html — research foundations, an applied prototype, and related repositories
+- /archive.html — earlier coursework, browser experiments, and data projects
+- /research.html — thesis research, submitted scholarship, and related artifacts
+- /about.html — background, education, accomplishments, and technical practice
+- /resume.html — printable online résumé
+- /contact.html — professional contact paths and the Formspree contact form
+- /recursion.html — student-facing Python recursion explorer with Hanoi, maze-solving, and Sudoku traces, stack frames, variable inspection, and downloadable examples
 
-## Learning-lab architecture
+## Recursion lesson
 
-Pure algorithm implementations live in `Projects/DataStructuresVisualizer/js/lib/` so they can be tested without a browser. Visualizer modules render structure-specific DOM or SVG views. `js/core.js` owns shared playback, pseudocode, counters, announcements, speed, cancellation, and teardown. `js/concepts.js` owns concise educational reference material displayed by category pages.
+The lesson is a dependency-free browser simulation of the Python functions in `lessons/recursion/`. A highlighted line is the next line to execute; stepping changes the state and pauses at the next executable line. The sample runner is included in each downloaded script but is outside the visualized function trace.
 
-To add a learning tool:
+`npm test` checks algorithm invariants and site integrity. Run `python tests/verify_recursion.py` to compare every simulated line pause and watched frame variable with real CPython for all six tower sizes, three maze presets, and five Sudoku presets. This additional check requires Python 3 and Node.js, with no third-party packages.
 
-1. Add a pure, side-effect-free implementation under `js/lib/`.
-2. Add deterministic step objects or snapshots for every animated operation.
-3. Add unit tests under `tests/`.
-4. Add the renderer under `js/` and register it in the appropriate router.
-5. Add concept metadata in `js/concepts.js`, including invariants, complexity, uses, limitations, and representation notes.
-6. Add or update the category card and route documentation.
-7. Run `npm run check` and verify keyboard, reduced-motion, mobile, and reset behavior.
+The teaching navigation links directly to the lesson. `recursion.html#maze` opens the maze example; `recursion.html#sudoku` opens Sudoku. Maze editing is local to the browser session; downloads contain the original sample layouts. The maze searches for a goal and permanently marks visited cells as 3 directly in the grid, without a separate visited set or path. The flood-fill homework solution is not included. Instructor documents and video are not redistributed.
+
+## Content boundaries
+
+- The adaptive-assessment manuscript is labeled as submitted, not published.
+- Thesis claims remain bounded to the verified evaluation and do not imply mastery validity, fairness, instructional effectiveness, or universal model superiority.
+- The contractor credential tracker is described as a private prototype and does not claim legal or regulatory compliance.
+- Earlier learning tools and experiments are labeled as archived work and linked from a dedicated archive. Archive placement describes portfolio relevance, not repository maintenance status.
 
 ## Deployment
 
 GitHub Pages serves the repository directly from the default branch. Keep URL paths case-correct and use forward slashes in HTML. No secrets or runtime environment variables are required by the site itself.
 
-The contact form posts to Formspree and therefore depends on that external service and the endpoint currently configured in `contact.html`. The portfolio remains useful if that service is unavailable because GitHub and LinkedIn contact paths are also provided.
-
-## Known limitations
-
-- Deterministic replay is complete for sorting and used where maintained tools expose step playback; some direct-manipulation structure operations still update immediately.
-- SVG and canvas demonstrations provide textual instructions and status, but do not yet expose every visual edge or animation state as a full screen-reader data model.
-- Legacy experiments under `media/Projects/` retain varied internal architectures and are intentionally labeled archived or experimental.
-- No résumé or publication list is included because neither artifact is present in this repository.
-- Third-party links and the contact endpoint require network access.
+The contact form posts to Formspree and therefore depends on the external service and the endpoint configured in contact.html. GitHub and LinkedIn remain available if it is unavailable.
