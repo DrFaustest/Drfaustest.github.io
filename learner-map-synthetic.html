@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore a synthetic learner-map replay: fixed relationships, changing response evidence, and the limits of interpreting model estimates.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Inside a learner map — Scott Faust">
+  <meta property="og:description" content="An interactive, synthetic explanation of auditable knowledge tracing. Follow the evidence, one response at a time.">
+  <meta property="og:url" content="https://drfaustest.github.io/learner-map-synthetic.html">
+  <meta property="og:image" content="https://drfaustest.github.io/media/img/og-portfolio.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Inside a learner map — Scott Faust</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="learner-map/map.css">
+  <script src="site.js" defer></script>
+  <script type="module" src="learner-map/synthetic-replay.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header"><div class="container nav-shell"><a class="brand" href="index.html"><span class="brand-mark" aria-hidden="true">SF</span><span class="brand-copy"><span>Scott Faust</span><small>AI, learning &amp; software</small></span></a><button class="menu-button" type="button" aria-expanded="false" aria-controls="site-nav" data-menu-button>Menu</button><nav class="site-nav" id="site-nav" aria-label="Primary navigation" data-site-nav data-open="false"><ul><li><a href="index.html">Home</a></li><li><a href="projects.html">Work</a></li><li><a href="research.html">Research</a></li><li><a href="recursion.html">Teaching</a></li><li><a href="about.html">About</a></li><li><a href="resume.html">Résumé</a></li><li><a href="contact.html">Contact</a></li></ul></nav></div></header>
+  <main id="main">
+    <header class="map-hero container">
+      <p class="eyebrow">Research, made inspectable / 01</p>
+      <h1>Inside a learner map.</h1>
+      <p class="page-lead">A response changes the evidence. The map makes that change visible.</p>
+      <p class="map-intro">My knowledge-tracing research asks how we can inspect a learner model’s state and reconstruct how it got there. Follow this small replay to see the mechanics—and where interpretation needs care.</p>
+      <div class="map-hero-links"><a class="button primary" href="#explorer">Explore the replay</a><a class="text-link" href="research.html#thesis">Research context</a></div>
+    </header>
+    <section class="section tint map-primer" aria-labelledby="read-title"><div class="container">
+      <div class="section-intro"><div><p class="section-kicker">Read the map</p><h2 id="read-title">Structure stays. Evidence changes.</h2></div><p>This is a descriptive learner-state display. It does not choose instruction or demonstrate an educational outcome.</p></div>
+      <div class="card-grid"><article class="feature-card"><span class="card-number">01 / Structure</span><h3>Dots are concepts.</h3><p>Lines are fixed relationships. The research system builds them from prepared concept relations; this example uses six invented concepts and equal-weight links. Neither the topology nor the layout changes during replay.</p></article><article class="feature-card"><span class="card-number">02 / State</span><h3>Numbers summarize evidence.</h3><p>Responses tagged to a concept update its correct and total counts. A prior keeps the direct estimate away from certainty after only a few observations.</p></article><article class="feature-card"><span class="card-number">03 / Context</span><h3>Neighbors can move a value.</h3><p>Optional smoothing mixes 80% of the direct estimate with 20% of the neighbors’ direct estimates. A smoothed change can occur without a new response on that concept.</p></article></div>
+    </div></section>
+    <section class="section" id="explorer" aria-labelledby="explorer-title"><div class="container">
+      <div class="section-intro"><div><p class="section-kicker">Interactive replay</p><h2 id="explorer-title">Follow one response at a time.</h2></div><p><strong>Synthetic demonstration.</strong> All concepts, links, responses, and times below are invented for explanation. They are not learner records or research results.</p></div>
+      <noscript><p class="map-notice">The replay needs JavaScript. The explanations and formulas below remain available. Direct evidence uses d = (1 + correct) / (2 + total); smoothing uses 0.8d + 0.2 × neighbor mean.</p></noscript>
+      <div id="replay-app" hidden>
+        <div class="map-toolbar">
+          <label for="scenario">Replay story<select id="scenario"><option value="practice">Direct practice on A</option><option value="neighbors">Neighbors change; A is untouched</option></select></label>
+          <label for="view">Color and node number<select id="view"><option value="direct">Direct estimate d</option><option value="smoothed">Neighbor-smoothed estimate g</option></select></label>
+          <label for="concept">Inspect concept<select id="concept"></select></label>
+        </div>
+        <div class="replay-layout">
+          <div class="map-stage">
+            <div class="map-stage-heading"><span class="feature-tag">Fixed topology · 6 concepts</span><strong id="frame-label">After record 0 of 12</strong></div>
+            <svg id="concept-graph" viewBox="0 0 440 350" role="group" aria-label="Synthetic concept map. Select a concept to inspect its evidence."></svg>
+            <div class="map-legend" aria-label="Estimate color scale, from 0 to 1">
+              <strong id="legend-title">Direct estimate d · fixed 0–1 scale</strong>
+              <div class="estimate-gradient" aria-hidden="true"></div><div class="legend-ticks"><span>0.00</span><span>0.25</span><span>0.50</span><span>0.75</span><span>1.00</span></div>
+              <p>Orange = lower estimate; blue = higher estimate. Numbers give the value. Dashed border = no direct observations (<strong>n = 0</strong>); double ring = selected concept. Circle sizes are equal.</p>
+            </div>
+          </div>
+          <aside class="map-inspector" aria-labelledby="inspect-title">
+            <p class="section-kicker">Inspect the evidence</p><h3 id="inspect-title">Concept A</h3>
+            <p id="event-note" class="event-note"></p>
+            <dl id="state-details" class="state-details"></dl>
+            <div class="calculation"><strong>Trace the calculation</strong><p id="direct-calc"></p><p id="neighbor-calc"></p><p id="smooth-calc"></p></div>
+            <p class="map-small" id="recent-note"></p>
+          </aside>
+        </div>
+        <div class="playback" role="group" aria-label="Replay controls">
+          <div class="playback-buttons"><button type="button" id="reset">Reset</button><button type="button" id="back">← Back</button><button type="button" id="play" aria-pressed="false">Play</button><button type="button" id="next">Next →</button><label for="speed">Pace<select id="speed"><option value="1800">Slow</option><option value="900">Normal</option></select></label></div>
+          <label for="scrub">Response record <output id="record-output" for="scrub">0 / 12</output></label><input type="range" id="scrub" min="0" max="12" value="0" step="1" aria-describedby="keyboard-help">
+          <p class="map-small" id="keyboard-help">Tab to a control. Enter/Space activates buttons; arrow keys step the slider; Home/End jump to the start/end. Changing a story or scrubbing pauses playback.</p>
+          <p class="map-small" id="motion-note"></p>
+          <p class="replay-status" role="status" aria-live="polite" aria-atomic="true" id="replay-status"></p>
+        </div>
+        <div class="trajectory-panel"><div><p class="section-kicker">Same concept, full context</p><h3 id="trajectory-title">A across the replay</h3><p id="trajectory-note"></p></div><svg id="trajectory" viewBox="0 0 640 230" role="img" aria-labelledby="trajectory-title trajectory-note"></svg><p class="chart-key"><span>━ Direct d</span><span>┄ Neighbor-smoothed g</span><span>│ Current record</span></p></div>
+        <details class="map-data"><summary>Inspect every concept at this record (numeric table)</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Concept evidence table, scroll horizontally if needed"><table><caption id="table-caption">Synthetic state after record 0</caption><thead><tr><th scope="col">Concept</th><th scope="col">Correct s</th><th scope="col">Count n</th><th scope="col">Direct d</th><th scope="col">Smoothed g</th><th scope="col">Last seen record</th></tr></thead><tbody id="state-table"></tbody></table></div></details>
+        <details class="map-data"><summary>Read the complete invented response sequence</summary><ol id="event-sequence"></ol></details>
+      </div>
+    </div></section>
+    <section class="section tint" aria-labelledby="mechanics-title"><div class="container"><div class="section-intro"><div><p class="section-kicker">Under the surface</p><h2 id="mechanics-title">A small model, with a visible trail.</h2></div><p>This replay implements the native map’s default count update and 80/20 smoothing. It is an explanatory reimplementation, not the full research pipeline.</p></div>
+      <div class="card-grid"><article class="feature-card"><span class="card-number">Before → observe → after</span><h3>Keep temporal order.</h3><p>Record k’s response is unavailable to the state before record k. Step forward to observe it, then inspect the updated state. A question tagged with two concepts increments both counts once.</p></article><article class="feature-card"><span class="card-number">Direct estimate</span><h3>d = (1 + s) / (2 + n)</h3><p>Here s counts correct responses and n counts all responses on that concept. With no responses, d = 0.50 is the Beta(1,1) prior—not evidence of 50% mastery. Recent outcomes and last-seen record are displayed separately.</p></article><article class="feature-card"><span class="card-number">Neighbor estimate</span><h3>g = 0.8d + 0.2 × mean</h3><p>The mean uses neighbors’ direct estimates, not their smoothed estimates. These links have equal weights; the native system can use weighted links. With no neighbors, g = d. The native default does not decay counts with elapsed time.</p></article></div>
+    </div></section>
+    <section class="section" aria-labelledby="limits-title"><div class="container split-layout"><div><p class="section-kicker">Interpretation</p><h2 id="limits-title">A changing map is a question, not a verdict.</h2></div><div class="principles-list"><article class="principle"><div class="detail-label">Check</div><div><h3>Ask what changed underneath.</h3><p>Was there direct practice, a different mix of questions, a shared concept tag, or movement in neighbors? Counts and recency provide context. Even a rising direct estimate can reflect easier questions rather than learning.</p></div></article><article class="principle"><div class="detail-label">Separate</div><div><h3>The benchmark is a different system.</h3><p>The thesis also evaluates a separate predictive representation using a 70/30 mixture, additional history features, fitted correction, and calibration. That predictor is not integrated into this native map replay. These node values are not its calibrated response probabilities.</p></div></article><article class="principle"><div class="detail-label">Bound</div><div><h3>Inspectability does not establish validity.</h3><p>This display does not validate mastery, diagnose a learner, establish causal learning gains, or demonstrate a tutor’s effectiveness. It shows how a specified model summarizes evidence. Human interpretation and educational decisions need additional evidence.</p></div></article></div></div></section>
+    <section class="section dark"><div class="container split-layout"><div><p class="section-kicker">The broader research</p><h2>From a visible state to a defensible claim.</h2></div><div><p>The thesis studies technical auditability. The submitted evidence-to-action framework asks what further evidence is needed before model output can justify educational decisions. This demonstration sits at the representation and inspection stage.</p><a class="button primary" href="research.html">Read the research overview</a><p class="map-small">Public demo updated October 30, 2026. Research manuscripts, learner records, and full reproduction code remain private.</p></div></div></section>
+  </main>
+  <footer class="site-footer"><div class="container footer-base"><p>© <span data-current-year>2026</span> Scott Faust.</p><a href="#main">Back to top</a></div></footer>
+</body>
+</html>

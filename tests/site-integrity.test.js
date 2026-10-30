@@ -43,7 +43,7 @@ test('all local HTML links and assets resolve with deployment-safe case', () => 
 
 test('public portfolio routes have basic document and keyboard-navigation structure', () => {
   const publicRoutes = [
-    'index.html', 'projects.html', 'research.html', 'about.html', 'resume.html', 'contact.html',
+    'index.html', 'projects.html', 'research.html', 'about.html', 'resume.html', 'contact.html', 'learner-map.html',
     'Projects/DataStructuresVisualizer/index.html',
     'Projects/DataStructuresVisualizer/linear-structures.html',
     'Projects/DataStructuresVisualizer/tree-structures.html',
